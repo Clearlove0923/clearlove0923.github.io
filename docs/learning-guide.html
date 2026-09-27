@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SteamCN-GameLauncher 学习与二次开发指南：项目原理、开发环境、学习路线、二次开发任务与排错方法。">
+  <title>学习与二次开发指南 | SteamCN-GameLauncher</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html">SteamCN-GameLauncher</a>
+      <nav class="nav-links">
+        <a href="../features.html">功能</a>
+        <a href="../tutorial.html">教程</a>
+        <a href="../docs.html">文档</a>
+        <a href="../index.html#examples">示例</a>
+        <a href="../about.html">关于此软件</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="../docs.html">返回文档</a>
+        <a class="btn btn-primary" href="../index.html#download">下载</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="container">
+      <h1>学习与二次开发指南</h1>
+      <p>面向目标：先读懂这个项目，再在它基础上做自己的开发。建议总投入 2~3 个学习单元（每单元 1~2 小时）。</p>
+    </div>
+  </section>
+
+  <main class="container doc-body">
+
+    <div class="toc">
+      <strong>目录</strong>
+      <ol>
+        <li><a href="#s1">这个项目在做什么（5 分钟版）</a></li>
+        <li><a href="#s2">开发环境</a></li>
+        <li><a href="#s3">学习路线（按顺序执行）</a></li>
+        <li><a href="#s4">二次开发路线（由小到大）</a></li>
+        <li><a href="#s5">调试与排错</a></li>
+        <li><a href="#s6">延伸阅读</a></li>
+      </ol>
+    </div>
+
+    <h2 id="s1">一、这个项目在做什么（5 分钟版）</h2>
+    <p><strong>一句话</strong>：生成符合 Steam 格式的 <code>appmanifest_*.acf</code>（安装记录）文件，让 Steam 将已安装的国服游戏识别为库内条目，再通过 Steam 启动选项在点"开始"时运行国服游戏本体——从而使用 Steam 的截图覆盖层、时长记录、好友状态。</p>
+
+    <h3>两层机制</h3>
+    <table class="spec-table">
+      <tr><th>层</th><th>手段</th><th>效果</th></tr>
+      <tr><td>文件层</td><td>生成 ACF（<code>StateFlags=4</code> = 已安装）</td><td>Steam 库里出现游戏条目</td></tr>
+      <tr><td>进程层</td><td>启动选项 <code>"国服EXE" %command%</code></td><td>点"开始"实际运行国服 exe</td></tr>
+    </table>
+
+    <p><strong>关键认知</strong>：这个软件<strong>不启动任何游戏</strong>。它是一个"配置生成器"，启动器角色始终由 Steam 承担。所有 Steam 功能（截图 / 时长 / 好友）零开发、自动生效，前提是游戏从 Steam 库启动。</p>
+
+    <h3>启动链路</h3>
+    <pre class="code-block"><code>Program.Main (Program.cs:36)
+  └─ Application.Start → new App()          (App.xaml.cs:20)
+       └─ App.OnLaunched (App.xaml.cs:29)
+            └─ MainWindow（导航 + 日志面板）
+                 └─ 各功能页（鸣潮页 / 自定义页 / 设置页）
+                      └─ 配置落盘：ACF + 占位 EXE + 启动命令
+                           └─ 重启 Steam → 库中出现条目 → 点开始跑国服</code></pre>
+
+    <p><strong>为什么比传统做法好</strong>：传统做法需要完整下载国际服本体（约 60GB）来让 Steam 生成"真实 ACF"模板，再另装国服。本项目用 steamcmd.net 公开 API 在线查 buildid / manifest，手写 ACF + 空占位 EXE，国际服本体全程不存在——只留国服一份。</p>
+
+    <h2 id="s2">二、开发环境</h2>
+    <ul>
+      <li>Windows 10/11 x64 + <strong>.NET 8 SDK</strong> + <strong>Visual Studio 2022</strong>（勾选 WinUI 3 / Windows App SDK 工作负载）</li>
+      <li>依赖（NuGet 自动还原）：<code>Microsoft.WindowsAppSDK 1.8</code>、<code>CommunityToolkit.Mvvm 8.3.2</code>、<code>Microsoft.Win32.Registry</code></li>
+      <li>目标框架：<code>net8.0-windows10.0.19041.0</code>，非 MSIX 打包（<code>WindowsPackageType=None</code>），入口由 <code>DISABLE_XAML_GENERATED_MAIN</code> 指定到 <code>Program.Main</code></li>
+      <li>打开 <code>SteamCN-GameLauncher.sln</code>，F5 即可调试；打包见 <code>packaging/README.md</code>（Inno Setup：<code>SteamCN-GameLauncher.iss</code>）</li>
+    </ul>
+
+    <h3>测试</h3>
+    <p>断言式控制台程序，非 xUnit，每个都是一个行为契约：</p>
+    <pre class="code-block"><code>dotnet run --project Tests/ManifestUpdate.Tests
+dotnet run --project Tests/SteamAppInfo.Tests
+dotnet run --project Tests/CustomNavigation.Tests
+dotnet run --project Tests/BackgroundCrop.Tests</code></pre>
+    <div class="note"><p>改 ACF 生成相关代码后，至少跑 <code>ManifestUpdate.Tests</code> 回归。</p></div>
+
+    <h2 id="s3">三、学习路线（按顺序执行）</h2>
+
+    <h3>阶段 0 · 前置认知（半天）</h3>
+    <ul>
+      <li>C# 基础 + XAML / WinUI 3 概念（页面、ContentDialog、NavigationView）</li>
+      <li><strong>最重要的一步</strong>：用文本编辑器打开自己电脑上 <code>Steam\steamapps\</code> 下任意一个 <code>appmanifest_*.acf</code>，对照本项目的 <code>GenerateAcfContent</code> 输出看结构</li>
+    </ul>
+
+    <h3>阶段 1 · 数据模型（0.5 小时）</h3>
+    <table class="spec-table">
+      <tr><th>文件</th><th>内容</th></tr>
+      <tr><td><code>Models/GameConfig.cs</code></td><td>游戏预设（AppID / DepotID / 路径），鸣潮硬编码在 <code>GameConfigs.All</code></td></tr>
+      <tr><td><code>Models/SteamAppInfo.cs</code></td><td>steamcmd.net 返回的元数据模型</td></tr>
+      <tr><td><code>Models/AppSettings.cs</code></td><td>全局设置（Steam 路径、SteamID 等）</td></tr>
+    </table>
+
+    <h3>阶段 2 · 核心服务（重点，2 小时）</h3>
+    <p>按此顺序读 <code>Services/SteamService.cs</code>：</p>
+    <ol>
+      <li><code>DetectSteamInstallPath()</code> — 注册表 + 常见路径找 Steam</li>
+      <li><code>DetectSteamLibraryPaths()</code> — 解析 <code>libraryfolders.vdf</code></li>
+      <li><code>DetectCnWutheringWavesPaths()</code> — 三路找国服本体（官方注册表 / WeGame 注册表 / 全盘扫描）</li>
+      <li><strong><code>GenerateAcfContent()</code>（约 L301，全项目灵魂）</strong> — 手写 ACF 模板；注意 <code>StateFlags=4</code>、路径 <code>\\</code> 转义、<code>SharedDepots 228989</code>（Steamworks 运行库，不可删）</li>
+      <li><code>EnsureGameDirAndPlaceholder()</code>（L262）— 建占位目录和 0 字节 EXE，绝不覆盖真实文件</li>
+      <li><code>GenerateLaunchCommand()</code> — 生成 <code>"国服EXE" %command%</code></li>
+    </ol>
+    <p>然后读 <code>Services/ManifestFileService.cs</code>（很短）：<code>WriteWithBackupAsync</code> 的临时文件原子替换 + 滚动备份（每 AppID 最多 2 份 / 30 天）。</p>
+
+    <h3>阶段 3 · 完整链路（1 小时）</h3>
+    <p>精读 <code>Views/Pages/WutheringWavesPage.xaml.cs</code>：</p>
+    <ul>
+      <li><code>Generate_Click</code>（L222）— 从 UI 点击到 ACF 落盘的完整闭环，<strong>读懂这个方法主流程就通了</strong></li>
+      <li>获取元数据按钮处理（约 L190）→ <code>FetchSteamDbInfoAsync</code></li>
+      <li><code>CopyCommand_Click</code>（L312）— 生成 / 复制启动命令</li>
+    </ul>
+
+    <h3>阶段 4 · 工程化版本（1.5 小时）</h3>
+    <p><code>CustomManifestPage</code>（3 个分部文件）= 鸣潮页的泛化版：</p>
+    <ul>
+      <li><code>CustomManifestPage.xaml.cs</code> — 任意游戏配置 + 离开页面自动保存</li>
+      <li><code>CustomManifestPage.GameInfo.cs</code> — AppID 自动填充（调 steamcmd.net，候选筛选、过期结果丢弃）</li>
+      <li><code>CustomManifestPage.OneClickUpdate.cs</code> — 一键更新（重拉元数据重写 ACF，走带备份的 <code>ManifestFileService</code>）</li>
+      <li><code>Services/SteamAppSelectionService.cs</code> — 多候选筛选策略</li>
+    </ul>
+    <div class="note"><p>注意对比：鸣潮页直写 ACF（<code>File.WriteAllTextAsync</code>），自定义页走带备份的服务——项目正在从"专版"向"通用版"迁移。</p></div>
+
+    <h3>阶段 5 · 外围与测试（按需）</h3>
+    <ul>
+      <li><code>SettingsService</code>（JSON 持久化 + 锁内更新防覆盖）、<code>LogService</code>、<code>UpdateService</code>、<code>AppearanceService</code> / <code>BackgroundCrop*</code></li>
+      <li><code>Tests/</code> 4 个测试项目 = 各服务的行为文档</li>
+    </ul>
+
+    <h3>自检标准</h3>
+    <p>能不看代码回答：① ACF 里 <code>StateFlags=4</code> 是什么意思？② 占位 EXE 的作用？③ 启动命令 <code>%command%</code> 怎么工作？④ 为什么不需要下载国际服？⑤ 一键更新在更新什么？</p>
+
+    <h2 id="s4">四、二次开发路线（由小到大）</h2>
+
+    <h3>动手前</h3>
+    <ul>
+      <li>新建 git 分支；<strong>备份 Steam <code>steamapps</code> 目录</strong>（改的是真实 Steam 文件）</li>
+      <li>先跑一遍 4 个测试确认基线全绿</li>
+    </ul>
+
+    <h3>任务 1（入门）· 预设数据驱动化</h3>
+    <p><code>GameConfigs.All</code> 目前硬编码在代码里。把它挪到 JSON（随程序分发或放设置目录），UI 预设下拉框动态读取。涉及：<code>Models/GameConfig.cs</code>、鸣潮页 / 自定义页预设区、<code>SettingsService</code>。</p>
+
+    <h3>任务 2（进阶）· 新增一个游戏的专用页</h3>
+    <p>两条路：</p>
+    <ul>
+      <li>零代码：直接用 <code>CustomManifestPage</code> 的 AppID 自动填充，填好保存即可</li>
+      <li>做专用页：复制 <code>WutheringWavesPage.xaml(.cs)</code> 改造——替换 GameConfig 常量、目录检测逻辑（参考 <code>SteamService</code> 里国服检测的三种手段），再在 <code>MainWindow</code> 注册导航项</li>
+    </ul>
+
+    <h3>任务 3（工程）· 多 Depot 支持</h3>
+    <p>当前 ACF 只支持一个 Depot（<code>InstalledDepots</code> 单条）。某些游戏需要多个 Depot 共同生效。涉及：<code>SteamService.GenerateAcfContent</code> 的 <code>AcfParameters</code>、<code>SteamAppSelectionService</code>。改完跑 <code>ManifestUpdate.Tests</code> 回归。</p>
+
+    <h3>任务 4（产品化）· 统一"游戏库" UI</h3>
+    <p>把"逐页配置"改成卡片网格（<code>GridView</code> + <code>GameConfig</code> 数据源）：每张卡片显示游戏封面 / 名称，点击进配置或直接执行配置流程。这是向"统一启动中心"演进的自然方向。</p>
+
+    <h3>任务 5（重构）· 轻量启动器路线（放弃 Steam 集成）</h3>
+    <p>如果你想要的是"独立 UI + 点一下启动"（不依赖 Steam 的时长与社交功能）：</p>
+    <ul>
+      <li><strong>砍掉</strong>：<code>GenerateAcfContent</code>、<code>EnsureGameDirAndPlaceholder</code>、<code>ManifestFileService</code>、<code>SteamAppInfoService</code>、<code>CustomManifestPage</code></li>
+      <li><strong>保留</strong>：<code>SteamService</code> 的检测逻辑（注册表 + 全盘扫描，通用价值最高）、<code>GameConfig</code>、<code>SettingsService</code>、<code>LogService</code>、MainWindow 框架</li>
+      <li><strong>新增</strong>：<code>Process.Start</code> 启动 + 自己监听进程退出做时长统计（不再有 Steam 帮你记）</li>
+    </ul>
+
+    <h2 id="s5">五、调试与排错</h2>
+    <table class="spec-table">
+      <tr><th>手段</th><th>位置</th></tr>
+      <tr><td>UI 日志面板</td><td>各页面底部（<code>LogService</code>）</td></tr>
+      <tr><td>启动早期日志</td><td><code>%LOCALAPPDATA%\SteamCN-GameLauncher\logs\early-startup.log</code></td></tr>
+      <tr><td>启动崩溃日志</td><td><code>%LOCALAPPDATA%\SteamCN-GameLauncher\logs\startup-crash.log</code>（兜底：程序目录）</td></tr>
+      <tr><td>设置文件</td><td><code>%APPDATA%\SteamCN-GameLauncher\settings.json</code></td></tr>
+      <tr><td>ACF 备份</td><td>程序目录 <code>backups\&lt;AppID&gt;\</code>（最多 2 份 / 30 天）</td></tr>
+    </table>
+    <p>常见问题：</p>
+    <ul>
+      <li>Steam 库条目报"需要更新 / 校验失败" → manifest 过期，用一键更新重写 ACF</li>
+      <li>改完没生效 → <strong>重启 Steam</strong>（Steam 启动时才读 ACF）</li>
+      <li>想回滚 → 从 <code>backups\&lt;AppID&gt;</code> 拷回原 ACF</li>
+    </ul>
+
+    <h2 id="s6">六、延伸阅读（仓库内）</h2>
+    <ul>
+      <li><code>README.md</code> — 功能与原理</li>
+      <li><code>APPID_AUTO_FILL_REQUIREMENTS.md</code> — 自动填充的需求、边界、验收</li>
+      <li><code>Tests/*/README.md</code> — 回归检查说明</li>
+      <li><code>packaging/README.md</code> — 安装包构建</li>
+      <li><code>CHANGELOG.md</code> — 版本演进</li>
+    </ul>
+
+    <p style="margin-top:36px;"><a href="../docs.html">← 返回文档首页</a></p>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>SteamCN-GameLauncher</strong>
+        <p class="muted">国服二游接入 Steam 的配置助手。</p>
+      </div>
+      <nav class="footer-links">
+        <a href="../index.html">首页</a>
+        <a href="../features.html">功能</a>
+        <a href="../tutorial.html">教程</a>
+        <a href="../docs.html">文档</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
+    </div>
+  </footer>
+
+</body>
+</html>

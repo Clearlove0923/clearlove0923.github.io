@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SteamCN-GameLauncher 文档：系统要求、一键更新策略、AppID 自动填充字段说明、已知限制与注意事项。">
+  <title>文档 | SteamCN-GameLauncher</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">SteamCN-GameLauncher</a>
+      <nav class="nav-links">
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于此软件</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="#requirements">系统要求</a>
+        <a class="btn btn-primary" href="index.html#download">下载</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="container">
+      <h1>文档</h1>
+      <p>运行环境要求、更新与自动填充的实现策略，以及当前版本的已知限制。</p>
+    </div>
+  </section>
+
+  <main class="container doc-body">
+
+    <div class="toc">
+      <strong>本页内容</strong>
+      <ol>
+        <li><a href="#requirements">系统要求</a></li>
+        <li><a href="#one-click-update">一键更新是怎么工作的</a></li>
+        <li><a href="#auto-fill">根据 AppID 自动填充</a></li>
+        <li><a href="#limits">已知限制与注意事项</a></li>
+      </ol>
+    </div>
+
+    <h2 id="requirements">系统要求</h2>
+    <table class="spec-table">
+      <tr><th>操作系统</th><td>Windows 10 / 11，基于 x64</td></tr>
+      <tr><th>运行库</th><td>官方安装包已包含 .NET 与 Windows App SDK 运行库，无需单独安装</td></tr>
+      <tr><th>Steam 客户端</th><td>需已安装并可正常登录</td></tr>
+      <tr><th>游戏库</th><td>Steam 游戏库内需已入库对应游戏</td></tr>
+      <tr><th>游戏本体</th><td>本地已安装国服游戏本体（无需国际服）</td></tr>
+    </table>
+
+    <h2 id="one-click-update">一键更新是怎么工作的</h2>
+    <p>已有配置可在预设区域点击「一键更新」，助手会重新获取元数据。</p>
+
+    <h3>候选沿用与切换</h3>
+    <ul>
+      <li>优先沿用当前仍有效的 <strong>Depot</strong> 与<strong>占位 EXE</strong>。</li>
+      <li>当前候选失效时，只在<strong>剩余候选唯一</strong>的情况下自动切换。</li>
+      <li>存在多个有效候选时，仍需<strong>手动选择后重试</strong>，避免按返回顺序误写配置。</li>
+    </ul>
+
+    <h3>备份策略</h3>
+    <ul>
+      <li>内容发生变化时，原 ACF 会备份到软件安装目录的 <code>backups\&lt;AppID&gt;</code>。</li>
+      <li>每个 AppID 最多保留<strong>最近 2 份</strong>备份，最长保留 <strong>30 天</strong>。</li>
+      <li>内容相同则不产生新的备份。</li>
+      <li>安装器会为该目录设置<strong>普通用户写入权限</strong>，避免因权限不足导致备份失败。</li>
+    </ul>
+
+    <h2 id="auto-fill">根据 AppID 自动填充</h2>
+    <p>在自定义页面填写 AppID，点击「自动获取游戏信息」，即可通过 steamcmd.net 获取以下信息：</p>
+    <ul>
+      <li>显示名称（优先使用页面所选语言）</li>
+      <li>安装目录（保留 Steam 登记值）</li>
+      <li>Steam 占位 EXE</li>
+      <li>DepotID</li>
+      <li>公开分支的 BuildID / Manifest</li>
+    </ul>
+
+    <h3>仍需手动处理的部分</h3>
+    <ul>
+      <li><strong>真实游戏 EXE / 启动器位置</strong>需要你在本地选择。</li>
+      <li>出现多个 Depot 或启动 EXE 时，需要在候选列表中选择；同一个 EXE 的不同启动参数会合并展示。</li>
+      <li>选择 Depot 时会同步对应的 Manifest。</li>
+    </ul>
+
+    <h3>结果处理</h3>
+    <ul>
+      <li>唯一候选会直接填入。</li>
+      <li>网络失败或缺失字段会<strong>保留原值并标明未验证</strong>。</li>
+      <li>请求期间修改输入、切换语言、切换预设或离开页面，会<strong>丢弃过期结果</strong>。</li>
+      <li>获取操作<strong>不会直接写入 Steam 文件</strong>；配置保存继续沿用现有按钮，以及离开页面时的自动保存流程。</li>
+    </ul>
+
+    <h2 id="limits">已知限制与注意事项</h2>
+    <div class="note">
+      <p><strong>多 Depot 限制：</strong>当前 ACF 仍只支持一个 Depot。多个 Depot 可能需要共同使用，请核对后再选择。</p>
+    </div>
+    <ul>
+      <li>自动填充功能<strong>不保证生成完整的安装配置</strong>，生成后请自行核对关键字段。</li>
+      <li>DepotID / Manifest 等元数据以 steamcmd.net 的公开数据为准，官方调整后需要重新获取或一键更新。</li>
+      <li>本工具不提供游戏本体下载，也不改动国服客户端的更新机制。</li>
+      <li>请在遵守游戏与平台相关用户协议的前提下使用。</li>
+    </ul>
+
+    <h2>相关页面</h2>
+    <ul>
+      <li><a href="learning-guide.html">学习与二次开发指南</a>（项目原理、学习路线、二次开发任务、排错方法）</li>
+      <li><a href="tutorial.html">完整使用教程</a></li>
+      <li><a href="features.html">功能展示</a></li>
+      <li><a href="about.html">关于此软件</a></li>
+    </ul>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>SteamCN-GameLauncher</strong>
+        <p class="muted">国服二游接入 Steam 的配置助手。</p>
+      </div>
+      <nav class="footer-links">
+        <a href="index.html">首页</a>
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于</a>
+      </nav>
+      <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
+    </div>
+  </footer>
+
+</body>
+</html>

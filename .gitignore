@@ -1,0 +1,4 @@
+# 安装包走 GitHub Release，不再随站点仓库提交（避免 git 历史累积体积）
+downloads/
+*.exe
+.deploy-repo

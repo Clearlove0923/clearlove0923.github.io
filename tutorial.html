@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SteamCN-GameLauncher 使用教程：安装、选择游戏、自动填充、保存配置、一键更新与在 Steam 中启动。">
+  <title>使用教程 | SteamCN-GameLauncher</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">SteamCN-GameLauncher</a>
+      <nav class="nav-links">
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于此软件</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="docs.html#requirements">系统要求</a>
+        <a class="btn btn-primary" href="index.html#download">下载</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="container">
+      <h1>使用教程</h1>
+      <p>从下载安装到在 Steam 里启动国服游戏，按顺序走一遍即可。</p>
+    </div>
+  </section>
+
+  <main class="container doc-body">
+
+    <div class="toc">
+      <strong>本页内容</strong>
+      <ol>
+        <li><a href="#prepare">准备工作</a></li>
+        <li><a href="#install">安装助手</a></li>
+        <li><a href="#add">添加游戏（两种方式）</a></li>
+        <li><a href="#save">保存并启动</a></li>
+        <li><a href="#update">后续一键更新</a></li>
+      </ol>
+    </div>
+
+    <h2 id="prepare">一、准备工作</h2>
+    <p>开始前请确认以下几项已就绪：</p>
+    <ul>
+      <li>Windows 10 / 11（x64）操作系统</li>
+      <li>已安装 Steam 客户端并正常登录</li>
+      <li>Steam 游戏库内已入库对应游戏</li>
+      <li>国服游戏本体已安装在本地</li>
+    </ul>
+    <div class="note">
+      <p>官方安装包已包含 .NET 与 Windows App SDK 运行库，无需另行下载安装。</p>
+    </div>
+
+    <h2 id="install">二、安装助手</h2>
+    <ol class="steps-list">
+      <li><strong>下载安装包</strong>在首页点击「下载安装包」，保存到本地。</li>
+      <li><strong>运行安装程序</strong>双击安装包，按向导提示完成安装。</li>
+      <li><strong>打开助手</strong>首次打开时建议保持 Steam 处于运行状态，便于读取库信息。</li>
+    </ol>
+
+    <h2 id="add">三、添加游戏（两种方式）</h2>
+
+    <h3>方式 A：使用预设（推荐新手）</h3>
+    <ol class="steps-list">
+      <li><strong>进入预设区域</strong>在助手中选择你要配置的游戏。</li>
+      <li><strong>等待元数据读取</strong>助手会自动带出该游戏的常用配置。</li>
+      <li><strong>确认本地路径</strong>检查游戏安装目录与启动器位置是否正确。</li>
+    </ol>
+
+    <h3>方式 B：填入 AppID 自动获取</h3>
+    <ol class="steps-list">
+      <li><strong>进入自定义页面</strong>切换到自定义配置页面。</li>
+      <li><strong>填写 AppID</strong>输入该游戏在 Steam 上的 AppID。</li>
+      <li><strong>点击「自动获取游戏信息」</strong>助手通过 steamcmd.net 获取显示名称、安装目录、Steam 占位 EXE、DepotID 以及公开分支的 BuildID / Manifest。</li>
+      <li><strong>处理候选列表</strong>唯一候选会直接填入；出现多个 Depot 或启动 EXE 时，在候选列表中选择（同一个 EXE 的不同启动参数会合并展示）。选择 Depot 时会同步对应 Manifest。</li>
+      <li><strong>手动选择真实启动器</strong>真实游戏 EXE / 启动器位置仍需你在本地选择。</li>
+    </ol>
+    <div class="note">
+      <p>当前 ACF 只支持一个 Depot。若出现多个 Depot，请核对后选择，必要时参考文档中的<a href="docs.html#limits">已知限制</a>。</p>
+    </div>
+
+    <h2 id="save">四、保存并启动</h2>
+    <ol class="steps-list">
+      <li><strong>保存配置</strong>点击保存按钮；离开页面时也会自动保存。</li>
+      <li><strong>回到 Steam</strong>在 Steam 库中可以看到刚配置好的游戏。</li>
+      <li><strong>点击启动</strong>像普通 Steam 游戏一样启动，时长与好友可见状态同步生效。</li>
+      <li><strong>验证覆盖层</strong>进入游戏后按 Steam 快捷键，确认截图与分享可用。</li>
+    </ol>
+
+    <h2 id="update">五、后续一键更新</h2>
+    <p>游戏本体或 Steam 侧数据变化后，可在预设区域点击「一键更新」：</p>
+    <ul>
+      <li>助手重新获取元数据，优先沿用当前仍有效的 Depot 和占位 EXE</li>
+      <li>当前候选失效且剩余候选唯一时，自动切换</li>
+      <li>存在多个有效候选时，需手动选择后重试</li>
+      <li>内容变化时原 ACF 备份到安装目录下的 <code>backups\&lt;AppID&gt;</code></li>
+    </ul>
+    <p>更详细的策略说明见 <a href="docs.html#one-click-update">文档：一键更新是怎么工作的</a>。</p>
+
+    <div class="note">
+      <p>遇到问题？先查看 <a href="docs.html">文档</a> 中的系统要求与已知限制，多数异常都能在那里找到答案。</p>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>SteamCN-GameLauncher</strong>
+        <p class="muted">国服二游接入 Steam 的配置助手。</p>
+      </div>
+      <nav class="footer-links">
+        <a href="index.html">首页</a>
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于</a>
+      </nav>
+      <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
+    </div>
+  </footer>
+
+</body>
+</html>

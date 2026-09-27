@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 生成页面一键发布 · 示例</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      color: #1f2328;
+      background: #fff;
+      line-height: 1.65;
+    }
+    .demo-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 10px 24px; background: #1f2328; color: #d8dee6; font-size: 13px; flex-wrap: wrap;
+    }
+    .demo-bar a { color: #85b7eb; }
+    .hero {
+      padding: 84px 24px 72px;
+      text-align: center;
+      background: linear-gradient(135deg, #6d5efc 0%, #46b3ff 55%, #3ee0c8 100%);
+      color: #fff;
+    }
+    .hero h1 { margin: 0 auto 14px; max-width: 720px; font-size: 38px; line-height: 1.25; }
+    .hero p { margin: 0 auto 28px; max-width: 560px; opacity: 0.92; }
+    .hero .btn {
+      display: inline-block; padding: 12px 28px; background: #fff; color: #2b2340;
+      border-radius: 999px; font-weight: 600; text-decoration: none;
+    }
+    .features {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      max-width: 1000px; margin: -48px auto 0; padding: 0 24px;
+    }
+    .f {
+      background: #fff; border-radius: 14px; padding: 24px;
+      box-shadow: 0 10px 30px rgba(20, 25, 40, 0.12);
+    }
+    .f .ico {
+      width: 36px; height: 36px; border-radius: 10px; margin-bottom: 12px;
+      background: linear-gradient(135deg, #6d5efc, #46b3ff);
+    }
+    .f h3 { margin: 0 0 6px; font-size: 17px; }
+    .f p { margin: 0; color: #6b7280; font-size: 14px; }
+    .band { max-width: 1000px; margin: 72px auto; padding: 0 24px; }
+    .band h2 { font-size: 26px; margin: 0 0 18px; }
+    .band p { color: #6b7280; margin: 0 0 12px; }
+    .quote {
+      padding: 20px 24px; border-left: 4px solid #6d5efc; background: #f5f4ff;
+      border-radius: 0 12px 12px 0; margin-top: 20px;
+    }
+    .cta { text-align: center; padding: 64px 24px 80px; background: #f7f8fb; }
+    .cta .btn {
+      display: inline-block; padding: 13px 32px; border-radius: 999px;
+      background: linear-gradient(135deg, #6d5efc, #46b3ff); color: #fff;
+      font-weight: 600; text-decoration: none;
+    }
+    footer { padding: 28px 24px; text-align: center; color: #9096a2; font-size: 13px; }
+    @media (max-width: 820px) {
+      .features { grid-template-columns: 1fr; margin-top: 24px; }
+      .hero h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-bar">
+    <span>示例 · AI 生成的页面，一键发布到公网</span>
+    <span><a href="../index.html">← 返回主站</a></span>
+  </div>
+
+  <section class="hero">
+    <h1>一句话生成一个能上线的页面</h1>
+    <p>由 AI 生成的 HTML 落地页，无需服务器配置，直接发布成可分享的公网链接。</p>
+    <a class="btn" href="../index.html#download">立即体验</a>
+  </section>
+
+  <div class="features">
+    <div class="f">
+      <div class="ico"></div>
+      <h3>秒级生成</h3>
+      <p>给出主题与要点，页面结构、文案与配色一次成型。</p>
+    </div>
+    <div class="f">
+      <div class="ico"></div>
+      <h3>零配置发布</h3>
+      <p>不需要 Git、不需要买服务器，生成后即可拿到访问链接。</p>
+    </div>
+    <div class="f">
+      <div class="ico"></div>
+      <h3>随时可改</h3>
+      <p>改完再发一版，链接即可更新，适合快速迭代与验证。</p>
+    </div>
+  </div>
+
+  <section class="band">
+    <h2>适合用在这些场景</h2>
+    <p>活动落地页、产品预告、内部评审原型、个人作品集，以及任何「先要个链接看看」的场合。</p>
+    <div class="quote">
+      把想法丢给 AI，几分钟后就把链接发给别人——这就是这个流程的全部。
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2 style="margin:0 0 18px;font-size:26px;">准备好了？</h2>
+    <a class="btn" href="../index.html#download">生成一个页面</a>
+  </section>
+
+  <footer>
+    本页为演示用途：它展示的是「AI 生成之后发布出来的成品」长什么样，页面本身不含生成能力。<br>
+    真正的生成发生在发布之前——由人在本地用 AI 写好 HTML，再推到站点上。<br>
+    在线实时生成需要后端和大模型接口，纯静态站点做不到。
+  </footer>
+
+</body>
+</html>

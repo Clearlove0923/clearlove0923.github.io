@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SteamCN-GameLauncher 功能展示：统一管理、时长记录、Steam 覆盖、单份本体、多游戏配置、一键更新与 AppID 自动填充。">
+  <title>功能展示 | SteamCN-GameLauncher</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">SteamCN-GameLauncher</a>
+      <nav class="nav-links">
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于此软件</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="docs.html#requirements">系统要求</a>
+        <a class="btn btn-primary" href="index.html#download">下载</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="container">
+      <h1>功能展示</h1>
+      <p>把国服二游接进 Steam 之后，具体能获得哪些能力，以及助手为你做了哪些自动化处理。</p>
+    </div>
+  </section>
+
+  <main class="container doc-body">
+
+    <div class="toc">
+      <strong>本页内容</strong>
+      <ol>
+        <li><a href="#unify">一个 Steam 统一管理</a></li>
+        <li><a href="#playtime">时长记录</a></li>
+        <li><a href="#overlay">Steam 游戏内覆盖</a></li>
+        <li><a href="#single-copy">只需一份国服本体</a></li>
+        <li><a href="#multi-config">支持多个游戏配置</a></li>
+        <li><a href="#one-click">一键更新</a></li>
+        <li><a href="#auto-fill">根据 AppID 自动填充</a></li>
+      </ol>
+    </div>
+
+    <div class="feature-block" id="unify">
+      <div>
+        <h3>打开一个 Steam 即可统一管理</h3>
+        <p class="lead">启动器太多，桌面开一堆窗口的日子结束了。</p>
+      </div>
+      <div>
+        <p>想象一下：同时玩多家厂商的游戏时，需要打开米哈游启动器 + 库洛的启动器 + 异环的启动器；要是还玩 Steam 平台的游戏，就再开一个 Steam。</p>
+        <p>本工具把这些入口收敛进同一个 Steam 库，游戏像普通 Steam 游戏一样列在一起，点谁启动谁。</p>
+        <ul>
+          <li>国服启动器与 Steam 游戏共用同一个库视图</li>
+          <li>不改动你原有的国服安装目录与更新方式</li>
+          <li>Steam 库内按显示名称与图标统一管理</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="playtime">
+      <div>
+        <h3>时长记录</h3>
+        <p class="lead">知道自己的时间到底花到了哪里。</p>
+      </div>
+      <div>
+        <p>一般二游都没有时长记录功能，而这一点对于想了解自己游戏时间分布的人来说很关键——不然永远觉得「打游戏的时间总是不够」。</p>
+        <ul>
+          <li>由 Steam 负责计时，数据进入你的个人游戏时长统计</li>
+          <li>与其他 Steam 游戏并列展示，方便横向对比</li>
+          <li>无需额外安装统计插件</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="overlay">
+      <div>
+        <h3>享受 Steam 游戏内覆盖</h3>
+        <p class="lead">截图、分享、好友可见状态一并获得。</p>
+      </div>
+      <div>
+        <ul>
+          <li>可使用 Steam 快捷键截图，并直接分享到 Steam 社区</li>
+          <li>Steam 好友可以看到你正在游玩某某游戏</li>
+          <li>覆盖层（Overlay）在游戏中正常呼出</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="single-copy">
+      <div>
+        <h3>只需下载一份国服游戏</h3>
+        <p class="lead">以鸣潮为例：不再需要国服 + 国际服两份本体。</p>
+      </div>
+      <div>
+        <p>以往也有传统做法能实现类似效果，但需要在电脑上分别下载国服和国际服的游戏本体，而且一旦遇到更新，两份文件都要更新。</p>
+        <p>本方案只保留你已经装好的那份国服本体，避免重复占用磁盘与重复下载更新。</p>
+        <ul>
+          <li>不额外下载国际服客户端</li>
+          <li>游戏更新只需更新一次</li>
+          <li>节省磁盘空间与更新时间</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="multi-config">
+      <div>
+        <h3>支持多个游戏配置</h3>
+        <p class="lead">多款游戏各自独立保存，互不覆盖。</p>
+      </div>
+      <div>
+        <ul>
+          <li>每个 AppID 对应独立配置与备份目录</li>
+          <li>预设区域可切换不同游戏</li>
+          <li>配置沿用现有保存按钮，离开页面时也会自动保存</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="one-click">
+      <div>
+        <h3>一键更新</h3>
+        <p class="lead">重新获取元数据，尽量沿用现有有效配置。</p>
+      </div>
+      <div>
+        <p>已有配置可在预设区域点击「一键更新」，助手会重新获取元数据，并优先沿用当前仍有效的 Depot 和占位 EXE。</p>
+        <ul>
+          <li>当前候选失效时，只在剩余候选唯一的情况下自动切换</li>
+          <li>存在多个有效候选时仍需手动选择后重试，避免按返回顺序误写配置</li>
+          <li>内容变化时，原 ACF 会备份到软件安装目录的 <code>backups\&lt;AppID&gt;</code></li>
+          <li>每个 AppID 最多保留最近 2 份备份，最长保留 30 天，内容相同则不产生新备份</li>
+          <li>安装器会为该备份目录设置普通用户写入权限</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="auto-fill">
+      <div>
+        <h3>根据 AppID 自动填充</h3>
+        <p class="lead">填入 AppID，剩下的元数据交给助手。</p>
+      </div>
+      <div>
+        <p>在自定义页面填写 AppID，点击「自动获取游戏信息」，即可通过 steamcmd.net 获取显示名称、安装目录、Steam 占位 EXE、DepotID 以及公开分支的 BuildID / Manifest。</p>
+        <ul>
+          <li>显示名称优先使用页面所选语言，安装目录保留 Steam 登记值</li>
+          <li>真实游戏 EXE / 启动器位置仍需本地选择</li>
+          <li>唯一候选直接填入；多个 Depot 或启动 EXE 会显示候选列表，同一个 EXE 的不同启动参数会合并展示</li>
+          <li>选择 Depot 时会同步对应的 Manifest</li>
+        </ul>
+        <div class="note">
+          <p><strong>注意：</strong>当前 ACF 仍只支持一个 Depot，多个 Depot 可能需要共同使用，请核对后选择；此功能不保证生成完整安装配置。</p>
+        </div>
+        <ul>
+          <li>网络失败或缺失字段会保留原值并标明未验证</li>
+          <li>请求期间修改输入、切换语言、切换预设或离开页面，会丢弃过期结果</li>
+          <li>获取信息不会直接写入 Steam 文件，需通过保存按钮或离开页面时的自动保存流程落盘</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>SteamCN-GameLauncher</strong>
+        <p class="muted">国服二游接入 Steam 的配置助手。</p>
+      </div>
+      <nav class="footer-links">
+        <a href="index.html">首页</a>
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于</a>
+      </nav>
+      <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
+    </div>
+  </footer>
+
+</body>
+</html>

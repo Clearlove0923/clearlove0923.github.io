@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SteamCN-GameLauncher：不用下载国际服，不用繁琐的配置流程，只需几步即可在 Steam 游玩国服二游，并享受 Steam 的时长记录、游戏内覆盖等功能。">
+  <title>SteamCN-GameLauncher | 国服游戏，也能在 Steam 里统一管理</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">SteamCN-GameLauncher</a>
+      <nav class="nav-links">
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="#examples">示例</a>
+        <a href="about.html">关于此软件</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="docs.html#requirements">系统要求</a>
+        <a class="btn btn-primary" href="#download">下载</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>国服二游，也能在 Steam 里统一管理</h1>
+      <p class="hero-sub">
+        不用下载国际服，不用繁琐的配置流程，只需几步即可在 Steam 游玩国服二游，
+        并且享受 Steam 的时长记录、游戏内覆盖与好友状态。
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="#download">下载安装包</a>
+        <a class="btn btn-outline btn-lg" href="tutorial.html">看使用教程</a>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="terminal-title">SteamCN-GameLauncher</span>
+        </div>
+        <pre class="terminal-body"><code><span class="prompt">$</span> <span id="typing"></span><span class="cursor"></span>
+<span class="out">读取 Steam 库信息... 完成</span>
+<span class="out">匹配国服游戏本体... 命中 1 个</span>
+<span class="out">生成占位 EXE 与 ACF 配置... 完成</span>
+<span class="ok">已完成！在 Steam 库中启动即可：</span> <span class="url">鸣潮</span></code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="steps">
+    <div class="container">
+      <h2 class="section-title">三步把国服游戏放进 Steam</h2>
+      <p class="section-desc">不需要重装国际服，不需要手动改配置文件，全程图形界面操作。</p>
+
+      <div class="grid grid-3">
+        <article class="card">
+          <div class="step-num">1</div>
+          <h3>安装并打开助手</h3>
+          <p>官方安装包已内置 .NET 与 Windows App SDK 运行库，解压运行即可，无需另行配置环境。</p>
+          <ul class="tags"><li>Windows 10 / 11</li><li>x64</li></ul>
+        </article>
+        <article class="card">
+          <div class="step-num">2</div>
+          <h3>选择或自动填充游戏</h3>
+          <p>在预设区域点选游戏，或填入 AppID 后点「自动获取游戏信息」，元数据自动带出。</p>
+          <ul class="tags"><li>预设一键配置</li><li>AppID 自动填充</li></ul>
+        </article>
+        <article class="card">
+          <div class="step-num">3</div>
+          <h3>打开 Steam 启动</h3>
+          <p>配置保存后回到 Steam 库，像普通 Steam 游戏一样点击启动，时长与状态同步记录。</p>
+          <ul class="tags"><li>时长记录</li><li>覆盖与截图</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="features">
+    <div class="container">
+      <h2 class="section-title">核心功能</h2>
+      <p class="section-desc">解决「国服启动器一大堆、Steam 里又看不到时长」的实际痛点。</p>
+
+      <div class="grid grid-3">
+        <article class="card">
+          <h3>一个 Steam 统一管理</h3>
+          <p>米哈游启动器、库洛启动器、异环启动器、Steam……不用再来回切换，全部收进同一个库。</p>
+          <a class="card-link" href="features.html#unify">了解详情</a>
+        </article>
+        <article class="card">
+          <h3>时长记录</h3>
+          <p>多数二游本身没有时长统计，接入 Steam 后能清楚看到时间花在了哪款游戏上。</p>
+          <a class="card-link" href="features.html#playtime">了解详情</a>
+        </article>
+        <article class="card">
+          <h3>Steam 游戏内覆盖</h3>
+          <p>可用 Steam 快捷键截图并分享到社区，好友也能看到你正在玩什么。</p>
+          <a class="card-link" href="features.html#overlay">了解详情</a>
+        </article>
+        <article class="card">
+          <h3>只需一份游戏本体</h3>
+          <p>以鸣潮为例，不再需要同时装国服和国际服两份文件，更新也只需更新一次。</p>
+          <a class="card-link" href="features.html#single-copy">了解详情</a>
+        </article>
+        <article class="card">
+          <h3>支持多个游戏配置</h3>
+          <p>可为多款游戏分别保存配置，互不干扰，随时切换与更新。</p>
+          <a class="card-link" href="features.html#multi-config">了解详情</a>
+        </article>
+        <article class="card">
+          <h3>一键更新与自动填充</h3>
+          <p>预设区一键刷新元数据；填 AppID 即可自动带出名称、目录、DepotID 与 Manifest。</p>
+          <a class="card-link" href="features.html#auto-fill">了解详情</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="links">
+    <div class="container">
+      <h2 class="section-title">按需求查看文档</h2>
+      <p class="section-desc">常见问题、配置细节和限制说明都写在文档页里。</p>
+      <ul class="link-list">
+        <li><a href="docs.html#requirements">系统要求</a><span>运行前需要准备的环境与依赖</span></li>
+        <li><a href="docs/learning-guide.html">学习与二次开发指南</a><span>想读懂项目或在此基础上开发，看这篇</span></li>
+        <li><a href="docs.html#one-click-update">一键更新是怎么工作的</a><span>候选沿用、自动切换与备份策略</span></li>
+        <li><a href="docs.html#auto-fill">根据 AppID 自动填充</a><span>会获取哪些字段，哪些仍需手动</span></li>
+        <li><a href="docs.html#limits">已知限制与注意事项</a><span>多 Depot、网络失败时的处理方式</span></li>
+        <li><a href="examples/md.html">文档变可分享网页</a><span>上传 .md / .docx / .pdf 即可渲染成带目录的网页</span></li>
+        <li><a href="examples/vite.html">Vite + React 构建产物示例</a><span>dist 打包后发布的实际效果</span></li>
+        <li><a href="examples/ai.html">AI 生成页面示例</a><span>一句话生成的落地页长什么样</span></li>
+        <li><a href="tutorial.html">完整使用教程</a><span>从安装到启动的分步说明</span></li>
+        <li><a href="about.html">关于此软件</a><span>项目动机与说明</span></li>
+        <li><a href="#download">下载安装包</a><span>Windows 10 / 11 · x64</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="examples">
+    <div class="container">
+      <h2 class="section-title">几分钟看完三个示例</h2>
+      <p class="section-desc">点开就能看到实际效果，从打包产物到 AI 生成页面，再到文档转网页。</p>
+
+      <div class="grid grid-3">
+        <article class="card">
+          <span class="badge">前端项目</span>
+          <h3>Vite + React 构建产物</h3>
+          <p>npm run build 后把 dist 打包发布，即可拿到一个可分享链接。</p>
+          <pre class="code-block"><code>cd my-app &amp;&amp; npm run build</code></pre>
+          <a class="card-link" href="examples/vite.html">打开示例</a>
+        </article>
+        <article class="card">
+          <span class="badge">文档转网页</span>
+          <h3>Markdown 变可分享网页</h3>
+          <p>上传 .md / .docx / .pdf，自动渲染为带目录的网页，适合说明文档与笔记。</p>
+          <pre class="code-block"><code>拖入文档即可预览</code></pre>
+          <a class="card-link" href="examples/md.html">打开示例</a>
+        </article>
+        <article class="card">
+          <span class="badge">AI 发布页面</span>
+          <h3>AI 生成页面一键发布</h3>
+          <p>AI 生成的 HTML 落地页，无需服务器配置，直接发布成公网链接。</p>
+          <pre class="code-block"><code>deploy ./ai-generated.html</code></pre>
+          <a class="card-link" href="examples/ai.html">打开示例</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="download">
+    <div class="container">
+      <h2>准备好开始了吗？</h2>
+      <p>下载安装包，几分钟后就能在 Steam 里看到你的国服游戏。</p>
+      <div class="hero-actions" style="margin-bottom:0;">
+        <!-- 写死的是当版本的 GitHub Release 直链；页面加载后会用 version.json + GitHub API 更新为最新版 -->
+        <a class="btn btn-primary btn-lg" id="downloadBtn"
+           href="https://github.com/Clearlove0923/SteamCN-GameLauncher/releases/download/v2.6.1/SteamCN-GameLauncher-v2.6.1-win-x64-setup.exe">
+          下载安装包（65 MB）
+        </a>
+        <a class="btn btn-outline btn-lg" id="downloadMirrorBtn"
+           href="https://wwaqe.lanzouq.com/iN0aT4a36t9c">
+          备用下载（国内加速）
+        </a>
+      </div>
+      <p class="muted" style="margin-top:14px;font-size:13px;">
+        <span id="versionInfo">当前版本 v2.6.1</span> · Windows 10 / 11 · x64 · 安装包已包含 .NET 与 Windows App SDK 运行库
+      </p>
+      <p class="muted" id="mirrorPwdLine" style="margin-top:8px;font-size:13px;">
+        点备用下载后会要求输入密码，点此复制：
+        <code id="mirrorPwd" title="点击复制"
+              style="padding:2px 8px;border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer;user-select:all;">e2me</code>
+      </p>
+      <p class="muted" style="margin-top:6px;font-size:13px;">
+        <a href="https://github.com/Clearlove0923/SteamCN-GameLauncher/releases" id="changelogLink">查看历史版本与更新日志</a>
+      </p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>SteamCN-GameLauncher</strong>
+        <p class="muted">国服二游接入 Steam 的配置助手。</p>
+      </div>
+      <nav class="footer-links">
+        <a href="index.html">首页</a>
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于</a>
+      </nav>
+      <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
+    </div>
+  </footer>
+
+  <script>
+    // 下载信息统一由 version.json 控制；取不到时再回退到 GitHub API；都失败就保留页面写死的地址
+    (function () {
+      var btn = document.getElementById('downloadBtn');
+      if (!btn) return;
+      var mirror = document.getElementById('downloadMirrorBtn');
+      var info = document.getElementById('versionInfo');
+      var changelog = document.getElementById('changelogLink');
+      var cfg = null;
+
+      function fill(o) {
+        if (o.windows && o.windows.url) {
+          btn.setAttribute('href', o.windows.url);
+          if (o.windows.label) btn.textContent = o.windows.label;
+        }
+        if (mirror && o.mirror) {
+          if (o.mirror.hide) {
+            mirror.style.display = 'none';
+          } else if (o.mirror.url) {
+            mirror.setAttribute('href', o.mirror.url);
+            if (o.mirror.label) mirror.textContent = o.mirror.label;
+          }
+        }
+        if (changelog && o.changelog) changelog.setAttribute('href', o.changelog);
+        var pwdLine = document.getElementById('mirrorPwdLine');
+        var pwdEl = document.getElementById('mirrorPwd');
+        if (pwdLine && pwdEl) {
+          var pwd = (o.mirror && o.mirror.pwd) ? o.mirror.pwd : '';
+          if (pwd) { pwdEl.textContent = pwd; pwdLine.style.display = ''; }
+          else { pwdLine.style.display = 'none'; }
+        }
+        if (info) {
+          var t = '当前版本 ' + (o.version || '');
+          if (o.date) t += ' · 更新于 ' + o.date;
+          if (o.size) t += ' · ' + o.size;
+          info.textContent = t;
+        }
+      }
+
+      fetch('version.json', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (data) { cfg = data; fill(data); }
+          // 以 GitHub Release 为主渠道：再问一次最新版，成功就用最新资产覆盖
+          if (!data || data.autoLatest === false) return Promise.reject('skip-api');
+          var repo = data.repo || 'Clearlove0923/SteamCN-GameLauncher';
+          var API = 'https://api.github.com/repos/' + repo + '/releases/latest';
+          return fetch(API, { headers: { 'Accept': 'application/vnd.github+json' } })
+            .then(function (r) { return r.ok ? r.json() : null; });
+        })
+        .then(function (data) {
+          if (!data || !data.assets) return;
+          var exe = data.assets.filter(function (a) { return /\.exe$/i.test(a.name); })[0];
+          if (!exe) return;
+          btn.setAttribute('href', exe.browser_download_url);
+          var d = data.published_at ? new Date(data.published_at) : null;
+          var date = d ? (d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2)) : '';
+          if (info) {
+            var t = '当前版本 ' + (data.tag_name || (cfg && cfg.version) || '');
+            if (date) t += ' · 更新于 ' + date;
+            if (cfg && cfg.size) t += ' · ' + cfg.size;
+            info.textContent = t;
+          }
+        })
+        .catch(function () { /* 保持 version.json 或页面写死的地址 */ });
+    })();
+  </script>
+
+  <script>
+    // 点击提取码自动复制
+    (function () {
+      var el = document.getElementById('mirrorPwd');
+      if (!el) return;
+      function flash() {
+        var old = el.textContent;
+        el.textContent = '已复制 ✓';
+        setTimeout(function () { el.textContent = old; }, 1200);
+      }
+      function bySelection() {
+        var r = document.createRange();
+        r.selectNodeContents(el);
+        var s = window.getSelection();
+        s.removeAllRanges();
+        s.addRange(r);
+        try { document.execCommand('copy'); } catch (e) {}
+        s.removeAllRanges();
+        flash();
+      }
+      el.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(el.textContent.trim()).then(flash, bySelection);
+        } else {
+          bySelection();
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var target = document.getElementById('typing');
+      if (!target) return;
+      var text = 'SteamCN-GameLauncher setup';
+      var i = 0;
+      (function type() {
+        if (i <= text.length) {
+          target.textContent = text.slice(0, i++);
+          setTimeout(type, 90);
+        }
+      })();
+    })();
+  </script>
+
+</body>
+</html>

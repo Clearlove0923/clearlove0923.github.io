@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="关于 SteamCN-GameLauncher：做这个工具的起因、它解决的问题以及使用声明。">
+  <title>关于此软件 | SteamCN-GameLauncher</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">SteamCN-GameLauncher</a>
+      <nav class="nav-links">
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于此软件</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="docs.html#requirements">系统要求</a>
+        <a class="btn btn-primary" href="index.html#download">下载</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="container">
+      <h1>关于此软件</h1>
+      <p>为什么会有这个工具，它想解决什么，以及它的边界在哪里。</p>
+    </div>
+  </section>
+
+  <main class="container doc-body">
+
+    <h2>它是什么</h2>
+    <p>
+      SteamCN-GameLauncher 是一个 Windows 上的配置助手，用来把已经安装在本地的国服二游接入 Steam。
+      它读取 Steam 库与公开元数据，生成对应的占位 EXE 与 ACF 配置，让游戏出现在 Steam 库中，
+      从而可以使用 Steam 的时长记录、游戏内覆盖、截图分享与好友可见状态。
+    </p>
+
+    <h2>为什么要做它</h2>
+    <ul>
+      <li><strong>启动器太多。</strong>同时玩多家厂商的游戏时，要在米哈游启动器、库洛启动器、异环启动器和 Steam 之间来回切换。</li>
+      <li><strong>没有时长记录。</strong>多数二游本身不提供时长统计，很难知道时间花在了哪里。</li>
+      <li><strong>覆盖功能用不上。</strong>无法用 Steam 快捷键截图并分享，好友也看不到你在玩什么。</li>
+      <li><strong>以往方案太重。</strong>以鸣潮为例，过去要实现同样效果，需要同时下载国服和国际服两份本体，更新时两份都要更新。</li>
+    </ul>
+
+    <h2>它不做什么</h2>
+    <ul>
+      <li>不提供、不分发任何游戏本体</li>
+      <li>不修改国服客户端本身的更新机制</li>
+      <li>不保证自动生成完整的安装配置，关键字段仍需人工核对</li>
+    </ul>
+
+    <div class="note">
+      <p>请在遵守游戏与平台相关用户协议的前提下使用本工具。因配置不当导致的问题，请通过 <code>backups\&lt;AppID&gt;</code> 中的备份恢复原始 ACF。</p>
+    </div>
+
+    <h2>运行环境</h2>
+    <table class="spec-table">
+      <tr><th>操作系统</th><td>Windows 10 / 11，基于 x64</td></tr>
+      <tr><th>运行库</th><td>官方安装包包含 .NET 与 Windows App SDK 运行库</td></tr>
+      <tr><th>依赖</th><td>已安装 Steam 客户端，且 Steam 游戏库内已入库对应游戏</td></tr>
+    </table>
+
+    <h2>下一步</h2>
+    <ul>
+      <li><a href="index.html#download">下载安装包</a></li>
+      <li><a href="tutorial.html">阅读使用教程</a></li>
+      <li><a href="docs.html">查看文档与已知限制</a></li>
+    </ul>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>SteamCN-GameLauncher</strong>
+        <p class="muted">国服二游接入 Steam 的配置助手。</p>
+      </div>
+      <nav class="footer-links">
+        <a href="index.html">首页</a>
+        <a href="features.html">功能</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于</a>
+      </nav>
+      <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
+    </div>
+  </footer>
+
+</body>
+</html>

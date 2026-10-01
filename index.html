@@ -6,7 +6,7 @@
   <meta name="description" content="SteamCN-GameLauncher：不用下载国际服，不用繁琐的配置流程，只需几步即可在 Steam 游玩国服二游，并享受 Steam 的时长记录、游戏内覆盖等功能。">
   <title>SteamCN-GameLauncher | 国服游戏，也能在 Steam 里统一管理</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20261001231704">
+  <link rel="stylesheet" href="css/style.css?v=20261001233051">
 </head>
 <body>
 
@@ -210,6 +210,7 @@
       </div>
       <div class="edit-bar-actions">
         <button class="btn btn-primary btn-sm" id="editSaveBtn" type="button">保存并发布</button>
+        <button class="btn btn-outline btn-sm" id="editExportBtn" type="button">导出文案</button>
         <button class="btn btn-outline btn-sm" id="editResetBtn" type="button">恢复默认文案</button>
         <button class="btn btn-ghost btn-sm" id="editExitBtn" type="button">退出编辑</button>
       </div>
@@ -440,11 +441,14 @@
     })();
   </script>
   <script>
-    /* ---------- 站点文案：云端托管 + 管理员就地编辑 ----------
-       访客：读云端文案覆盖页面内置文字（读到就缓存到 localStorage，下次秒开）。
-       管理员：点底部「编辑文案」→ 输口令 → 页面上直接改 → 「保存并发布」写入云端。
-       关掉 JS、云端不通：页面始终保留 HTML 里写好的内置文案，不会白屏。
-       可改的位置 = HTML 上带 data-edit="key" 的元素；key 就是云端存的那份文案的字段名。
+    /* ---------- 站点文案：三层来源 + 管理员就地编辑 ----------
+       文案优先级从低到高（高的覆盖低的）：
+         ① HTML 里写死的文字        —— 关掉 JS 也能看，是最终兜底
+         ② 仓库根目录 content.json  —— 管理员「导出文案」后放进项目并推送，等于把线上文案存进 Git
+         ③ 云端 KV（/api/site）     —— 「保存并发布」写的那份，线上实时生效
+       访客：读三层并合成一份文案，再把带 data-edit 的元素刷成它（读到云端就缓存到 localStorage，下次秒开）。
+       管理员：点顶部「编辑文案」→ 输口令 → 页面上直接改 → 「保存并发布」写云端 / 「导出文案」存进仓库。
+       可改的位置 = HTML 上带 data-edit="key" 的元素；key 就是文案的字段名。
        带 data-edit-hl 的元素支持用 { } 圈出高亮词（首页大标题就是这样）。 */
     (function () {
       var nodes = Array.prototype.slice.call(document.querySelectorAll('[data-edit]'));
@@ -456,12 +460,18 @@
       var KEY_ADMIN = 'mdm.adminHash';
       var KEY_CACHE = 'mdm.siteContent';
 
-      var content = {};        // 当前生效的文案
+      var content = {};        // 当前生效的文案（三层合成后的结果）
+      var baked = {};          // ② 仓库里的 content.json
+      var cloud = null;        // ③ 云端 KV；null = 云端没内容（此时不覆盖 baked）
+      var originals = {};      // ① HTML 内置文案，apply 时用来兜底／还原
       var snapshot = {};       // 进编辑模式前的 DOM，用于退出时还原
       var beforeText = [];     // 进编辑模式时的文字，用来判断「有没有改过」
       var adminHash = '';
       var editing = false;
       var busy = false;
+
+      // 先把 HTML 原样记下来（必须在任何 apply() 之前）
+      nodes.forEach(function (el) { originals[keyOf(el)] = el.innerHTML; });
 
       var bar = document.getElementById('editBar');
       var barState = document.getElementById('editState');
@@ -519,14 +529,46 @@
         }
       }
 
+      function has(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }
+
+      // 三层合成：baked（仓库固化）打底，cloud（云端）覆盖在上面
+      function effective() {
+        var out = {}, k;
+        for (k in baked) { if (has(baked, k)) out[k] = baked[k]; }
+        if (cloud) { for (k in cloud) { if (has(cloud, k)) out[k] = cloud[k]; } }
+        return out;
+      }
+
       function apply() {
         if (editing) return;
         nodes.forEach(function (el) {
           var k = keyOf(el);
-          if (Object.prototype.hasOwnProperty.call(content, k) && typeof content[k] === 'string') {
+          if (has(content, k) && typeof content[k] === 'string') {
             render(el, content[k]);
+          } else if (has(originals, k)) {
+            el.innerHTML = originals[k];   // 三层都没有 → 回到 HTML 内置文案
           }
         });
+      }
+
+      // ② 读仓库根目录的 content.json（没有这个文件也没关系，静默跳过）
+      function loadBaked() {
+        return fetch('content.json?ts=' + Date.now(), { cache: 'no-store' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (j) {
+            if (!j || typeof j !== 'object') return;
+            var c = (j.content && typeof j.content === 'object') ? j.content : j;
+            if (!c || typeof c !== 'object') return;
+            var next = {};
+            for (var k in c) {
+              if (has(c, k) && typeof c[k] === 'string') next[k] = c[k];
+            }
+            if (!Object.keys(next).length) return;
+            baked = next;
+            content = effective();
+            apply();
+          })
+          .catch(function () { /* 没有该文件 / 读取失败 → 用 HTML 内置文案 */ });
       }
 
       // 高亮元素转成「{ }」纯文本形式，方便在 contenteditable 里直接编辑
@@ -632,12 +674,18 @@
         fetch(base + '/api/site', { cache: 'no-store' })
           .then(function (r) { return r.ok ? r.json() : null; })
           .then(function (j) {
-            if (!j || editing) return;
-            content = (j.content && typeof j.content === 'object') ? j.content : {};
-            lsSet(KEY_CACHE, JSON.stringify(content));
+            if (editing) return;
+            // 云端不通 / Worker 还是旧版（没有该接口）→ j 为 null，此时什么都不动，
+            // 保留 content.json 与本机缓存，免得访客突然看到出厂文字。
+            if (!j) return;
+            var c = (j.content && typeof j.content === 'object') ? j.content : null;
+            // 云端**明确**返回空（管理员点过「恢复默认」）→ cloud 归零，让 content.json / HTML 内置文案生效
+            cloud = (c && Object.keys(c).length) ? c : null;
+            content = effective();
+            lsSet(KEY_CACHE, JSON.stringify(cloud || {}));
             apply();
           })
-          .catch(function () { /* 云端不通 → 保留本机缓存或页面内置文案 */ });
+          .catch(function () { /* 云端不通 → 保留 content.json / 本机缓存 / 页面内置文案 */ });
       }
 
       function save() {
@@ -684,8 +732,9 @@
             toast('保存失败：' + ((res.body && res.body.error) || '未知错误'));
             return;
           }
-          content = next;
-          lsSet(KEY_CACHE, JSON.stringify(content));
+          cloud = next;
+          content = effective();
+          lsSet(KEY_CACHE, JSON.stringify(next));
           exitEdit();
           apply();
           toast('已发布 ✓ 访客刷新页面即可看到');
@@ -722,10 +771,44 @@
       var saveBtn = document.getElementById('editSaveBtn');
       if (saveBtn) saveBtn.addEventListener('click', save);
 
+      /* 导出文案：把「页面上现在看到的文案」存成 content.json 下载下来。
+         放进项目根目录并推送后，它就成为页面的第二层默认文案 —— 相当于把线上文案存进 Git，
+         以后云端 KV 丢了、或者换了 Worker，文案依然在仓库里。 */
+      var exportBtn = document.getElementById('editExportBtn');
+      if (exportBtn) {
+        exportBtn.addEventListener('click', function () {
+          var now = collect();
+          var out = {}, k;
+          for (k in content) { if (has(content, k)) out[k] = content[k]; }
+          for (k in now) { if (has(now, k)) out[k] = now[k]; }
+          var payload = {
+            note: '站点文案快照。放到项目根目录并推送到 GitHub，它就会成为页面的默认文案（优先级低于云端 KV、高于 HTML 内置文字）。',
+            exportedAt: new Date().toISOString(),
+            content: out
+          };
+          var text = JSON.stringify(payload, null, 2) + '\n';
+          var fileName = 'content.json';
+          try {
+            var blob = new Blob([text], { type: 'application/json' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+            toast('已导出 ' + fileName + '（' + Object.keys(out).length + ' 条）—— 放进项目根目录，双击 push.bat 即可');
+          } catch (e) {
+            window.alert('导出失败：' + (e.message || e));
+          }
+        });
+      }
+
       var resetBtn = document.getElementById('editResetBtn');
       if (resetBtn) {
         resetBtn.addEventListener('click', function () {
-          if (!window.confirm('把所有文案恢复成页面内置的默认版本？（云端那份会被清空，不可撤销）')) return;
+          if (!window.confirm('清空云端那份文案？（清空后会回到仓库 content.json 的版本；若没有该文件，则回到 HTML 内置文字。此操作不可撤销）')) return;
           var base = apiBase();
           if (!base || !adminHash) { toast('需要先解锁管理员并配置云端'); return; }
           busy = true;
@@ -737,11 +820,13 @@
           }).then(function (r) {
             busy = false;
             if (!r.ok) { setState('恢复失败（' + r.status + '）', 'warn'); return; }
-            content = {};
-            lsSet(KEY_CACHE, '{}');
+            // 先把编辑模式里的改动丢掉，再重新按三层合成一次
             exitEdit();
+            cloud = null;
+            content = effective();
+            lsSet(KEY_CACHE, '{}');
             apply();
-            toast('已恢复默认文案');
+            toast(Object.keys(baked).length ? '已清空云端，回到仓库固化的文案' : '已恢复 HTML 内置文案');
           }).catch(function () {
             busy = false;
             setState('连不上云端', 'warn');
@@ -757,16 +842,19 @@
         });
       }
 
-      /* ---------- 启动：先套本机缓存，再向云端要最新 ---------- */
+      /* ---------- 启动：本机缓存秒开 → 仓库固化文案 / 云端最新（并行，谁后到谁重新合成一次） ---------- */
       try {
         var cached = lsGet(KEY_CACHE);
         if (cached) {
           var o = JSON.parse(cached);
-          if (o && typeof o === 'object') { content = o; apply(); }
+          if (o && typeof o === 'object' && Object.keys(o).length) { content = o; apply(); }
         }
       } catch (e) {}
 
       adminHash = ssGet(KEY_ADMIN) || '';
+      // ② content.json 与 ③ 云端 KV 并行取：两者拿到后都会重算 effective() 再 apply()，
+      //    所以谁先谁后都不会算错（合成时云端天然压在 baked 上面，优先级是对的）。
+      loadBaked();
       pull();
     })();
   </script>

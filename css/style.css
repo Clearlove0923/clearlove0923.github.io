@@ -3,9 +3,13 @@
   --bg-alt: #f6f7f9;
   --card: #ffffff;
   --text: #1f2328;
-  --muted: #6b7280;
+  /* 整页底图上线后，正文区的次级文字压在半透明照片上，
+     #6b7280 最不利处只有 2.3:1，故调深为 #4b5563（照片上 ≥4.1:1，纯白卡片上 7.5:1） */
+  --muted: #4b5563;
   --line: #e5e7eb;
   --accent: #185fa5;
+  /* 压在照片上的文字链接：品牌蓝 #185fa5 在浅底图上仅 3.5:1，用加深版保证 ≥4.5:1 */
+  --accent-ink: #12497f;
   --accent-soft: #e6f1fb;
   --radius: 12px;
 
@@ -13,6 +17,8 @@
   --accent-2: #0ea5a4;
   --accent-3: #2b8fd6;
   --grad: linear-gradient(115deg, #185fa5 0%, #2b8fd6 48%, #0ea5a4 100%);
+  /* 压在半透明底图上的渐变字：整条渐变都要够深，否则最亮的青端会掉到 3:1 以下 */
+  --grad-ink: linear-gradient(115deg, #12497f 0%, #1a5a8a 46%, #0d6f6d 100%);
   --grad-text: linear-gradient(100deg, #7dd3fc, #5eead4);
   --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04), 0 6px 18px rgba(16, 24, 40, 0.05);
   --shadow-md: 0 12px 32px rgba(16, 24, 40, 0.10);
@@ -21,19 +27,54 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* 底图加载前的兜底色，避免白闪 */
+  background-color: #e7eef4;
+}
 
 body {
   margin: 0;
-  background: var(--bg);
+  /* 页面背景交给 body::before 的整页固定底图，body 自身必须透明 */
+  background: transparent;
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
   font-size: 15px;
   line-height: 1.7;
 }
 
+/* ---------- 整页固定底图：不只顶部 Hero，滚动到哪都是这张图 ----------
+   思路与 Hero 一致：先把画面的暖绿压成品牌青蓝，再用一层冷调「雾化提亮」
+   把它拉成浅色底，保证深色文字的对比度（最不利处正文仍 ≥8:1）。
+   层序自上而下 = 青色点缀 → 蓝色点缀 → 雾化提亮 → 青色罩 → 蓝色罩 → 底图。
+   位置固定，所以页面滚动时底图不动，形成轻微视差错觉。 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #e7eef4;
+  background-image:
+    linear-gradient(rgba(14, 165, 164, 0.06), rgba(14, 165, 164, 0.06)),
+    linear-gradient(rgba(24, 95, 165, 0.10), rgba(24, 95, 165, 0.10)),
+    linear-gradient(rgba(232, 239, 246, 0.82), rgba(232, 239, 246, 0.82)),
+    linear-gradient(rgba(14, 165, 164, 0.14), rgba(14, 165, 164, 0.14)),
+    linear-gradient(rgba(24, 95, 165, 0.28), rgba(24, 95, 165, 0.28)),
+    url("../assets/hero-bg.jpg?v=3") center 46% / cover no-repeat;
+}
+
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+
+/* 直接压在整页底图上的正文链接：品牌蓝在这层浅底图上只有 ~3.5:1，
+   换成加深版（--accent-ink）保证 ≥4.5:1；白色卡片里的链接仍用品牌蓝。 */
+.link-list a,
+.doc-body a,
+.page-head a,
+.notfound .links a {
+  color: var(--accent-ink);
+}
 
 .container {
   max-width: 1080px;
@@ -155,6 +196,8 @@ a:hover { text-decoration: underline; }
 .btn-lg { padding: 11px 26px; font-size: 15px; }
 
 /* ---------- Hero ---------- */
+/* Hero 自身不再画背景：底图交给 .hero-bg（带底部淡出遮罩），
+   这样 Hero 下沿能无缝融进 body::before 那张整页固定底图。 */
 .hero {
   position: relative;
   padding: 124px 0 92px;
@@ -164,8 +207,16 @@ a:hover { text-decoration: underline; }
   isolation: isolate;
   --mx: 50%;
   --my: 28%;
-  /* 背景分两层思路：先把画面的暖绿压成品牌青蓝，再用手写叠层把文字区稳住。
-     层次自上而下 = 内层聚焦 → 柔光背板 → 竖向压暗/接底 → 青色罩 → 蓝色罩 → 底图 */
+}
+
+/* Hero 底图：与整页底图同一张、同一取景，只是这里是「原力度 + 压暗」版本。
+   背景分两层思路：先把画面的暖绿压成品牌青蓝，再用手写叠层把文字区稳住。
+   层次自上而下 = 内层聚焦 → 柔光背板 → 竖向压暗 → 青色罩 → 蓝色罩 → 底图 */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   background:
     radial-gradient(36% 28% at 50% 30%,
       rgba(6, 16, 28, 0.22) 0%, rgba(6, 16, 28, 0.22) 50%, rgba(6, 16, 28, 0) 100%),
@@ -174,10 +225,13 @@ a:hover { text-decoration: underline; }
       rgba(6, 16, 28, 0.17) 82%, rgba(6, 16, 28, 0.07) 92%, rgba(6, 16, 28, 0) 100%),
     linear-gradient(180deg,
       rgba(8, 19, 33, 0.62) 0%, rgba(9, 24, 40, 0.34) 38%,
-      rgba(11, 32, 50, 0.44) 72%, rgba(246, 247, 249, 1) 97%),
+      rgba(11, 32, 50, 0.44) 72%, rgba(11, 32, 50, 0.20) 86%, rgba(11, 32, 50, 0) 100%),
     linear-gradient(rgba(14, 165, 164, 0.14), rgba(14, 165, 164, 0.14)),
     linear-gradient(rgba(24, 95, 165, 0.28), rgba(24, 95, 165, 0.28)),
-    url("../assets/hero-bg.jpg?v=2") center 46% / cover no-repeat;
+    url("../assets/hero-bg.jpg?v=3") center 46% / cover no-repeat;
+  /* 下沿 16% 淡出：让「原力度 Hero」过渡到「雾化的整页底图」 */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0) 100%);
 }
 
 /* 科技网格：中间清晰、四周淡出，只做质感，不抢内容 */
@@ -185,7 +239,7 @@ a:hover { text-decoration: underline; }
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
@@ -199,7 +253,7 @@ a:hover { text-decoration: underline; }
 .hero::after {
   content: '';
   position: absolute;
-  z-index: 0;
+  z-index: 1;
   left: var(--mx);
   top: var(--my);
   width: 720px;
@@ -370,7 +424,8 @@ a:hover { text-decoration: underline; }
 
 /* ---------- 通用区块 ---------- */
 .section { padding: 76px 0; }
-.section-alt { background: var(--bg-alt); }
+/* 交替区块用「薄纱白」而不是实色：既保留深浅节奏，又能透出整页底图 */
+.section-alt { background: rgba(255, 255, 255, 0.5); }
 
 /* 区块上方的小英文标签 + 渐变短线 */
 .section-eyebrow {
@@ -380,11 +435,9 @@ a:hover { text-decoration: underline; }
   font-weight: 600;
   letter-spacing: 2.4px;
   text-transform: uppercase;
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  /* 12px 小字压在半透明底图上，渐变字过不了 4.5:1，改用加深版品牌蓝；
+     下面那条渐变短线继续承担品牌标识 */
+  color: var(--accent-ink);
 }
 .section-eyebrow::after {
   content: '';
@@ -598,9 +651,9 @@ a:hover { text-decoration: underline; }
   text-indent: 5px;
   line-height: 1.45;
   /* 兜底色：不支持 background-clip:text 的浏览器退化为品牌蓝 */
-  color: var(--accent);
-  /* 主品牌渐变（深蓝 → 青），白底上对比足够，用来突出重点 */
-  background: var(--grad);
+  color: var(--accent-ink);
+  /* 整页底图上线后，吸底条底下不再是纯白，改用「加深版品牌渐变」保证 4.5:1 以上 */
+  background: var(--grad-ink);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -650,7 +703,7 @@ a:hover { text-decoration: underline; }
   text-align: center;
   background:
     radial-gradient(760px 320px at 50% 0%, rgba(24, 95, 165, 0.10), transparent 72%),
-    var(--bg-alt);
+    rgba(246, 247, 249, 0.82);
   border-top: 1px solid var(--line);
   overflow: hidden;
 }
@@ -673,6 +726,8 @@ a:hover { text-decoration: underline; }
 .site-footer {
   padding: 40px 0;
   border-top: 1px solid var(--line);
+  /* 页脚正好落在底图最暗的草地带，垫一层薄白保证次级文字可读 */
+  background: rgba(255, 255, 255, 0.55);
   font-size: 14px;
 }
 
@@ -742,7 +797,7 @@ a:hover { text-decoration: underline; }
 /* ---------- 子页面通用 ---------- */
 .page-head {
   padding: 56px 0 32px;
-  background: var(--bg-alt);
+  background: rgba(255, 255, 255, 0.62);
   border-bottom: 1px solid var(--line);
 }
 .page-head h1 { margin: 0 0 10px; font-size: 32px; font-weight: 600; }
@@ -787,6 +842,8 @@ a:hover { text-decoration: underline; }
   border-collapse: collapse;
   margin: 16px 0;
   font-size: 14px;
+  /* 表格文字（td 用的是次级色）垫一层薄白，避免直接压在半透明底图上 */
+  background: rgba(255, 255, 255, 0.72);
 }
 .spec-table th, .spec-table td {
   padding: 10px 12px;

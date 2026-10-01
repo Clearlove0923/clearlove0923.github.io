@@ -59,14 +59,20 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-color: #e7eef4;
-  background-image:
+  /* ⚠️ 这里必须用 background 简写，不能写成 background-image！
+     末尾那层的 "center 46% / cover no-repeat" 分别属于
+     background-position / size / repeat，只有简写才认；
+     写成 background-image（长写属性）会让「整条声明」被判非法而整体丢弃，
+     于是只有 background-color 生效 —— 页面就成了纯色，图一张都看不到。
+     这个坑踩过一次：Hero 用的是简写所以正常，整页底图用长写所以一直是纯色。
+     颜色只能写在最后一层的末尾。 */
+  background:
     linear-gradient(rgba(14, 165, 164, 0.06), rgba(14, 165, 164, 0.06)),
     linear-gradient(rgba(24, 95, 165, 0.10), rgba(24, 95, 165, 0.10)),
     linear-gradient(rgba(232, 239, 246, 0.66), rgba(232, 239, 246, 0.66)),
     linear-gradient(rgba(14, 165, 164, 0.14), rgba(14, 165, 164, 0.14)),
     linear-gradient(rgba(24, 95, 165, 0.28), rgba(24, 95, 165, 0.28)),
-    url("../assets/hero-bg.jpg?v=3") center 46% / cover no-repeat;
+    url("../assets/hero-bg.jpg?v=3") center 46% / cover no-repeat #e7eef4;
 }
 
 a { color: var(--accent); text-decoration: none; }

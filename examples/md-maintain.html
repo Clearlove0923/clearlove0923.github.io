@@ -147,6 +147,37 @@
       background: var(--accent-soft); color: #374151; border-radius: 0 8px 8px 0;
     }
 
+    /* ---------- 访客视图（默认）：只读看最新维护文档 ---------- */
+    [hidden] { display: none !important; }
+
+    #visitorView {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 22px 22px 48px;
+    }
+    .v-head {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap; margin-bottom: 14px;
+    }
+    .v-badge {
+      display: inline-block; padding: 2px 10px; border-radius: 20px;
+      background: var(--accent-soft); color: var(--accent); font-size: 12px;
+    }
+    .v-badge.old { background: #fdf3e3; color: #8a5a12; }
+    .v-ver { margin: 8px 0 4px; font-size: 22px; }
+    .v-meta { margin: 0; color: var(--muted); font-size: 13px; }
+    .v-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .v-pick {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--muted);
+    }
+    .v-warn {
+      margin-bottom: 12px; padding: 8px 12px; border-radius: 8px;
+      background: #fdf3e3; border: 1px solid #f0dfc0; color: #8a5a12; font-size: 13px;
+    }
+    .v-body { max-height: none; }
+    .v-body > :first-child { margin-top: 0; }
+
     .tip { margin-top: 12px; font-size: 12px; color: var(--muted); line-height: 1.7; }
     @media (max-width: 900px) {
       .work { grid-template-columns: 1fr; }
@@ -159,10 +190,37 @@
 <body>
 
   <div class="demo-bar">
-    <span>MD 文档维护 · 按版本写维护文档，对比两个版本的差异</span>
+    <span>MD 文档维护 · 访客直接看最新文档，管理员解锁后可编辑、对比历史版本</span>
     <span><a href="../index.html">← 返回主站</a></span>
   </div>
 
+  <!-- ========== 访客视图（默认）：只看最新的维护文档，外加一个「查看之前的版本」 ========== -->
+  <div id="visitorView">
+    <div class="v-head">
+      <div>
+        <span class="v-badge" id="vBadge">最新版本</span>
+        <h1 class="v-ver" id="vVer">—</h1>
+        <p class="v-meta" id="vMeta"></p>
+      </div>
+      <div class="v-actions">
+        <label class="v-pick" for="vPick">查看之前的版本
+          <select class="ctl" id="vPick"></select>
+        </label>
+        <button class="btn btn-outline" id="goAdminBtn" type="button">管理员</button>
+      </div>
+    </div>
+
+    <div class="v-warn" id="vWarn" hidden>
+      正在查看历史版本 <strong id="vWarnVer"></strong> —— <a href="#" id="vBackLatest">回到最新</a>
+    </div>
+
+    <article class="preview v-body" id="vBody"></article>
+    <p class="tip">文档由管理员维护，内容随云端更新自动变化；普通访客无需口令即可阅读。</p>
+    <p class="status" id="vState"></p>
+  </div>
+
+  <!-- ========== 管理员视图：输入口令解锁后才出现 ========== -->
+  <div id="adminView" hidden>
   <div class="toolbar">
     <label class="status" for="verSelect">版本</label>
     <select class="ctl" id="verSelect"></select>
@@ -174,19 +232,16 @@
     <button class="btn btn-outline" id="importBtn">导入 .md</button>
     <button class="btn btn-outline" id="exportBtn">导出 .md</button>
     <span class="sep"></span>
-    <button class="btn btn-outline" id="adminBtn">管理员解锁</button>
     <button class="btn btn-outline" id="setupBtn">云端设置</button>
+    <button class="btn btn-outline" id="hashBtn">生成口令哈希</button>
     <span class="grow"></span>
     <span class="cloud-state" id="cloudState">本机模式</span>
     <span class="status" id="status"></span>
+    <button class="btn btn-outline" id="lockBtn" type="button">退出管理</button>
   </div>
 
   <div class="work">
     <div class="pane left">
-      <div class="readonly-note" id="roNote">
-        <span>只读模式：可查看与对比，编辑需要先点上方「管理员解锁」。</span>
-        <button class="btn btn-outline" id="hashBtn">生成口令哈希</button>
-      </div>
       <div class="pane-title">
         <span>更新维护内容（Markdown）</span>
         <span class="status" id="saveState"></span>
@@ -238,10 +293,11 @@
 
       <p class="tip">
         对比是逐行计算的：绿色 <code>+</code> 为更新后新增的行，红色 <code>-</code> 为更新后被删除的行。<br>
-        未解锁时页面只读；解锁后保存会写入云端，访客刷新即可看到最新内容。云端连不上时自动退回本机保存。
+        保存会写入云端，访客刷新即可看到最新内容；云端连不上时自动退回本机保存。
       </p>
     </div>
   </div>
+  </div><!-- /#adminView -->
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
@@ -328,7 +384,13 @@
     var editor = el('editor'), verName = el('verName'), verDate = el('verDate'), verNote = el('verNote');
     var diffView = el('diffView'), preview = el('preview'), sum = el('sum');
     var status = el('status'), saveState = el('saveState'), counter = el('counter');
-    var cloudState = el('cloudState'), roNote = el('roNote');
+    var cloudState = el('cloudState');
+
+    // 访客视图的节点（不需要口令就能看的那一页）
+    var visitorView = el('visitorView'), adminView = el('adminView');
+    var vBadge = el('vBadge'), vVer = el('vVer'), vMeta = el('vMeta');
+    var vPick = el('vPick'), vBody = el('vBody'), vWarn = el('vWarn');
+    var vWarnVer = el('vWarnVer'), vState = el('vState');
 
     var data = load();
     var current = null;
@@ -435,6 +497,7 @@
           fillSelect(cmpA, list[1] || list[0]);
           fillSelect(cmpB, list[0]);
           switchTo(keep);
+          renderVisitor();
           var t = j.updatedAt ? new Date(j.updatedAt) : null;
           setCloudState('云端已同步 · ' + (t ? ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2) : '刚刚'), 'ok');
           status.textContent = '已读取云端 ' + list.length + ' 个版本';
@@ -486,36 +549,88 @@
       });
     }
 
+    /* 访客视图 / 管理员视图 二选一：只有解锁后才出现工具栏和编辑器 */
     function setAdminUI() {
       var on = !!adminHash;
-      roNote.className = on ? 'readonly-note hidden' : 'readonly-note';
+      visitorView.hidden = on;
+      adminView.hidden = !on;
       editor.readOnly = !on;
       el('saveBtn').disabled = !on;
       el('newBtn').disabled = !on;
       el('delBtn').disabled = !on;
       el('importBtn').disabled = !on;
-      el('adminBtn').textContent = on ? '已解锁（锁定）' : '管理员解锁';
+      if (!on) renderVisitor();     // 退出管理/未解锁 → 回到访客视图
     }
 
-    el('adminBtn').addEventListener('click', function () {
-      if (adminHash) {
-        adminHash = '';
-        try { sessionStorage.removeItem(KEY_ADMIN); } catch (e) {}
-        setAdminUI();
-        status.textContent = '已锁定，回到只读';
-        return;
-      }
+    /* ---------- 访客视图：只渲染一个版本的正文 ---------- */
+    function renderVisitor(want) {
+      var list = versions();
+      if (!list.length) { vBody.innerHTML = '<p class="empty">暂无内容。</p>'; return; }
+      var latest = list[0];
+      var ver = (want && data[want]) ? want : latest;
+      var o = data[ver] || {};
+
+      vBadge.textContent = (ver === latest) ? '最新版本' : '历史版本';
+      vBadge.className = 'v-badge' + (ver === latest ? '' : ' old');
+      vVer.textContent = ver;
+      vMeta.textContent = [o.date, o.note].filter(Boolean).join('　·　');
+
+      vPick.innerHTML = '';
+      list.forEach(function (x) {
+        var opt = document.createElement('option');
+        opt.value = x;
+        opt.textContent = (x === latest ? '最新 · ' : '') + x + (data[x] && data[x].date ? ' · ' + data[x].date : '');
+        vPick.appendChild(opt);
+      });
+      vPick.value = ver;
+
+      var src = o.content || '';
+      vBody.innerHTML = (typeof marked !== 'undefined' && marked.parse) ? marked.parse(src) : miniMd(src);
+      vWarn.hidden = (ver === latest);
+      vWarnVer.textContent = ver;
+      vState.textContent = '共 ' + list.length + ' 个版本';
+    }
+
+    vPick.addEventListener('change', function () { renderVisitor(vPick.value); });
+    el('vBackLatest').addEventListener('click', function (e) {
+      e.preventDefault();
+      renderVisitor();
+    });
+
+    // 有云端时先交给服务器校验口令哈希：正确才放行，避免随便输一串就进了管理页
+    function verifyHash(hex) {
+      var base = apiBase();
+      if (!base) return Promise.resolve(true);          // 本机模式：本地解锁
+      return fetch(base + '/api/verify', { headers: { 'X-Admin-Hash': hex }, cache: 'no-store' })
+        .then(function (r) {
+          if (r.status === 401) return false;
+          return true;   // 旧版 Worker 没有该接口（404 等）或网络异常 → 先放行，保存时会再校验一次
+        })
+        .catch(function () { return true; });
+    }
+
+    el('goAdminBtn').addEventListener('click', function () {
       var pwd = window.prompt('输入管理员口令（只在本机当前标签页生效，关闭即失效）');
       if (!pwd) return;
       sha256hex(pwd).then(function (hex) {
-        adminHash = hex;
-        try { sessionStorage.setItem(KEY_ADMIN, hex); } catch (e) {}
-        setAdminUI();
-        status.textContent = '已解锁，可以编辑并写入云端';
-        if (apiBase()) cloudPull();
+        return verifyHash(hex).then(function (ok) {
+          if (!ok) { vState.textContent = '口令不正确'; window.alert('口令不正确，已留在访客页面'); return; }
+          adminHash = hex;
+          try { sessionStorage.setItem(KEY_ADMIN, hex); } catch (e) {}
+          setAdminUI();
+          status.textContent = '已解锁，可以编辑并写入云端';
+          if (apiBase()) cloudPull();
+        });
       }).catch(function (e) {
-        status.textContent = e.message || '解锁失败';
+        window.alert(e.message || '解锁失败');
       });
+    });
+
+    el('lockBtn').addEventListener('click', function () {
+      adminHash = '';
+      try { sessionStorage.removeItem(KEY_ADMIN); } catch (e) {}
+      setAdminUI();
+      window.scrollTo({ top: 0 });
     });
 
     el('hashBtn').addEventListener('click', function () {
@@ -564,6 +679,7 @@
       if (!silent) status.textContent = '已保存版本 ' + ver;
       renderDiff();
       renderPreview();
+      renderVisitor();
       if (adminHash && apiBase()) cloudPush();
     }
 
@@ -596,6 +712,7 @@
       var a = cmpA.value, b = cmpB.value;
       fillSelect(cmpA, a); fillSelect(cmpB, b);
       switchTo(ver);
+      renderVisitor();
       status.textContent = '已新建版本 ' + ver + '，改完记得保存';
       if (adminHash && apiBase()) cloudPush();
     });
@@ -611,6 +728,7 @@
       fillSelect(cmpA, rest[1] || rest[0]);
       fillSelect(cmpB, rest[0]);
       switchTo(rest[0]);
+      renderVisitor();
       status.textContent = '已删除版本';
       if (adminHash && apiBase()) cloudPush();
     });

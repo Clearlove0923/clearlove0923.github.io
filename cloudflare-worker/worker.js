@@ -4,6 +4,7 @@
  * 给静态站（GitHub Pages）提供一个读写维护文档的接口：
  *   GET  /api/docs   任何人可读（访客看到最新内容）
  *   PUT  /api/docs   需要管理员口令（口令只以 SHA-256 哈希形式校验，明文不落任何地方）
+ *   GET  /api/verify 只校验口令对不对，不读不写数据（维护页用它决定要不要显示管理界面）
  *   GET  /api/health 自检
  *
  * 部署步骤：
@@ -80,6 +81,15 @@ export default {
 
     if (url.pathname === '/api/health') {
       return json({ ok: true, hasAdminHash: !!(env.ADMIN_HASH) }, 200, origin);
+    }
+
+    // 只校验口令，不读也不写任何数据：维护页用它决定「要不要显示管理界面」
+    if (url.pathname === '/api/verify') {
+      var vExpected = (env && env.ADMIN_HASH) ? String(env.ADMIN_HASH).toLowerCase() : '';
+      if (!vExpected) return json({ error: 'Worker 未配置 ADMIN_HASH' }, 500, origin);
+      var vGot = (request.headers.get('X-Admin-Hash') || '').toLowerCase();
+      if (!safeEqual(vGot, vExpected)) return json({ ok: false, error: '口令不正确' }, 401, origin);
+      return json({ ok: true }, 200, origin);
     }
 
     if (url.pathname === '/api/docs') {

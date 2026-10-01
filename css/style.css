@@ -331,6 +331,70 @@ a:hover { text-decoration: underline; }
   text-decoration: none;
 }
 
+/* ---------- 底部「运行维护」向下箭头入口 ---------- */
+.mm-entry {
+  padding: 16px 0 58px;
+  text-align: center;
+  background: var(--bg);
+}
+
+.mm-arrow {
+  display: inline-block;
+  padding: 4px 20px 0;
+  background: none;
+  text-decoration: none;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+.mm-arrow:hover { text-decoration: none; }
+
+.mm-arrow-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  text-indent: 5px;
+  line-height: 1.5;
+  color: var(--muted);
+  transition: color 0.18s ease;
+}
+
+.mm-arrow:hover .mm-arrow-title,
+.mm-arrow:focus-visible .mm-arrow-title { color: var(--accent); }
+
+/* 文字下面的两个小勾（⌄⌄） */
+.mm-chev {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  transition: color 0.18s ease;
+}
+
+.mm-arrow:hover .mm-chev,
+.mm-arrow:focus-visible .mm-chev { color: var(--accent); }
+
+.mm-chev > span {
+  display: block;
+  width: 13px;
+  height: 13px;
+  margin: -5px auto 0;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  border-radius: 0 0 0 2px;
+  transform: rotate(-45deg);
+  animation: mmFloat 1.9s ease-in-out infinite;
+}
+
+.mm-chev > span:nth-child(2) {
+  opacity: 0.5;
+  animation-delay: 0.18s;
+}
+
+@keyframes mmFloat {
+  0%, 100% { transform: rotate(-45deg) translate(0, 0); }
+  50%      { transform: rotate(-45deg) translate(2px, 2px); }
+}
+
 /* ---------- 底部 CTA ---------- */
 .cta {
   padding: 88px 0;
@@ -375,6 +439,7 @@ a:hover { text-decoration: underline; }
   .hero h1 { font-size: 27px; }
   .section { padding: 52px 0; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
+  .mm-arrow-title { font-size: 14px; }
 }
 
 /* ---------- 关于页 ---------- */

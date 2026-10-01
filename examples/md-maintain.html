@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD 文档维护工作台 · 示例</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .demo-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 24px;
+      background: #1f2328;
+      color: #d8dee6;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .demo-bar a { color: #85b7eb; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 10px 22px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    .toolbar .sep { width: 1px; height: 22px; background: var(--line); }
+    .toolbar .grow { flex: 1 1 auto; }
+    .ctl {
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+    }
+    .ctl:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+    .status { font-size: 12px; color: var(--muted); }
+    .cloud-state {
+      padding: 3px 10px; border-radius: 20px; font-size: 12px;
+      background: var(--bg-alt); color: var(--muted); border: 1px solid var(--line);
+    }
+    .cloud-state.ok { background: #e8f6ec; color: #17642c; border-color: #cfe9d7; }
+    .cloud-state.warn { background: #fdf3e3; color: #8a5a12; border-color: #f0dfc0; }
+
+    .readonly-note {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 12px; padding: 8px 12px;
+      background: var(--accent-soft); border: 1px solid #cfe0f2; border-radius: 8px;
+      font-size: 12.5px; color: #1f4f7a;
+    }
+    .readonly-note.hidden { display: none; }
+
+    .work {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: calc(100vh - 100px);
+    }
+    .pane { padding: 18px 22px; overflow: auto; }
+    .pane.left { background: var(--bg-alt); border-right: 1px solid var(--line); }
+    .pane-title {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; margin-bottom: 10px; font-size: 14px; font-weight: 600;
+    }
+    .pane-title .status { font-weight: 400; }
+
+    .meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .meta-row label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .meta-row .ctl { width: 100%; }
+    .meta-note { margin-bottom: 12px; }
+    .meta-note label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .meta-note .ctl { width: 100%; }
+
+    textarea#editor {
+      width: 100%;
+      height: calc(100vh - 380px);
+      min-height: 260px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      font-family: Consolas, Menlo, monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      resize: vertical;
+    }
+    textarea#editor[readonly] { background: #f6f7f9; color: #4b5563; }
+    .editor-foot {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      margin-top: 10px; font-size: 12px; color: var(--muted);
+    }
+
+    .cmp-head {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      padding: 12px 14px; margin-bottom: 12px;
+      border: 1px solid var(--line); border-radius: 10px; background: #fff;
+    }
+    .cmp-head .arrow { color: var(--muted); }
+    .cmp-head label { font-size: 12px; color: var(--muted); }
+    .sum { font-size: 12.5px; }
+    .sum .add { color: #17642c; font-weight: 600; }
+    .sum .del { color: #8a1f1f; font-weight: 600; }
+
+    .tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+    .tab {
+      padding: 5px 14px; border: 1px solid var(--line); border-radius: 20px;
+      background: #fff; color: var(--muted); font-size: 13px; cursor: pointer;
+    }
+    .tab.on { background: var(--accent-soft); border-color: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+    .diff-view, .preview {
+      border: 1px solid var(--line); border-radius: 10px; background: #fff;
+      padding: 10px 12px; overflow: auto; max-height: calc(100vh - 280px);
+    }
+    .dl {
+      display: flex; gap: 8px; padding: 1px 8px; border-radius: 4px;
+      font-family: Consolas, Menlo, monospace; font-size: 12.5px; line-height: 1.65;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .dl-add { background: #e8f6ec; color: #17642c; }
+    .dl-del { background: #fdecec; color: #8a1f1f; }
+    .dl-eq { color: var(--muted); }
+    .mk { flex: none; width: 12px; opacity: .75; user-select: none; }
+    .file-head {
+      padding: 6px 8px; margin-bottom: 6px;
+      border-bottom: 1px dashed var(--line);
+      font-size: 12px; color: var(--muted);
+    }
+    .empty { color: var(--muted); font-size: 14px; padding: 8px; }
+
+    .preview h1 { font-size: 24px; margin: 0 0 10px; }
+    .preview h2 { font-size: 19px; margin: 22px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+    .preview h3 { font-size: 16px; margin: 16px 0 6px; }
+    .preview p, .preview li { color: #4b5563; }
+    .preview code { padding: 2px 6px; background: #f1efe8; border-radius: 4px; font-size: 13px; }
+    .preview pre { padding: 12px; background: #1f2328; color: #d8dee6; border-radius: 8px; overflow-x: auto; }
+    .preview pre code { background: none; color: inherit; padding: 0; }
+    .preview blockquote {
+      margin: 10px 0; padding: 8px 14px; border-left: 3px solid var(--accent);
+      background: var(--accent-soft); color: #374151; border-radius: 0 8px 8px 0;
+    }
+
+    .tip { margin-top: 12px; font-size: 12px; color: var(--muted); line-height: 1.7; }
+    @media (max-width: 900px) {
+      .work { grid-template-columns: 1fr; }
+      .pane.left { border-right: none; border-bottom: 1px solid var(--line); }
+      textarea#editor { height: 260px; min-height: 0; }
+      .diff-view, .preview { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-bar">
+    <span>MD 文档维护 · 按版本写维护文档，对比两个版本的差异</span>
+    <span><a href="../index.html">← 返回主站</a></span>
+  </div>
+
+  <div class="toolbar">
+    <label class="status" for="verSelect">版本</label>
+    <select class="ctl" id="verSelect"></select>
+    <button class="btn btn-primary" id="saveBtn">保存</button>
+    <button class="btn btn-outline" id="newBtn">+ 新建版本</button>
+    <button class="btn btn-outline" id="delBtn">删除版本</button>
+    <span class="sep"></span>
+    <input type="file" id="importInput" accept=".md,.markdown,.txt" style="display:none;">
+    <button class="btn btn-outline" id="importBtn">导入 .md</button>
+    <button class="btn btn-outline" id="exportBtn">导出 .md</button>
+    <span class="sep"></span>
+    <button class="btn btn-outline" id="adminBtn">管理员解锁</button>
+    <button class="btn btn-outline" id="setupBtn">云端设置</button>
+    <span class="grow"></span>
+    <span class="cloud-state" id="cloudState">本机模式</span>
+    <span class="status" id="status"></span>
+  </div>
+
+  <div class="work">
+    <div class="pane left">
+      <div class="readonly-note" id="roNote">
+        <span>只读模式：可查看与对比，编辑需要先点上方「管理员解锁」。</span>
+        <button class="btn btn-outline" id="hashBtn">生成口令哈希</button>
+      </div>
+      <div class="pane-title">
+        <span>更新维护内容（Markdown）</span>
+        <span class="status" id="saveState"></span>
+      </div>
+
+      <div class="meta-row">
+        <div>
+          <label for="verName">版本号</label>
+          <input class="ctl" id="verName" type="text" spellcheck="false">
+        </div>
+        <div>
+          <label for="verDate">更新日期</label>
+          <input class="ctl" id="verDate" type="date">
+        </div>
+      </div>
+      <div class="meta-note">
+        <label for="verNote">一句话备注（可选）</label>
+        <input class="ctl" id="verNote" type="text" placeholder="例如：功能 + 工程改进">
+      </div>
+
+      <textarea id="editor" spellcheck="false" readonly></textarea>
+      <div class="editor-foot">
+        <span id="counter"></span>
+        <span>本机保留一份副本；联网时以云端内容为准。</span>
+      </div>
+    </div>
+
+    <div class="pane">
+      <div class="cmp-head">
+        <label for="cmpA">更新前</label>
+        <select class="ctl" id="cmpA"></select>
+        <span class="arrow">→</span>
+        <label for="cmpB">更新后</label>
+        <select class="ctl" id="cmpB"></select>
+        <label style="display:flex;align-items:center;gap:6px;">
+          <input type="checkbox" id="onlyChanged"> 只看变更
+        </label>
+        <span style="flex:1 1 auto;"></span>
+        <span class="sum" id="sum"></span>
+      </div>
+
+      <div class="tabs">
+        <button class="tab on" id="tabDiff">更新前后对比</button>
+        <button class="tab" id="tabPreview">预览</button>
+      </div>
+
+      <div class="diff-view" id="diffView"></div>
+      <div class="preview" id="preview" style="display:none;"></div>
+
+      <p class="tip">
+        对比是逐行计算的：绿色 <code>+</code> 为更新后新增的行，红色 <code>-</code> 为更新后被删除的行。<br>
+        未解锁时页面只读；解锁后保存会写入云端，访客刷新即可看到最新内容。云端连不上时自动退回本机保存。
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    var KEY = 'mdm.versions';
+    var KEY_CUR = 'mdm.current';
+    var KEY_API = 'mdm.apiBase';
+    var KEY_ADMIN = 'mdm.adminHash';   // 只存口令的 SHA-256，且只在当前标签页有效
+    // 默认云端地址（Worker 只读公开，地址放前端无风险；写入仍需管理员口令）
+    var DEFAULT_API = 'https://solitary-glitter-af03.m13618472002.workers.dev';
+
+    var SEED = {
+      'v2.6.1': {
+        date: '2026-09-11',
+        note: '功能 + 工程改进',
+        content: [
+          '# v2.6.1 更新维护说明',
+          '',
+          '> 更新日期：2026-09-11　·　类型：功能 + 工程改进',
+          '',
+          '## 本次更新内容',
+          '',
+          '- 侧边栏新增「开始游戏（测试）」入口，可选择已添加的游戏并通过 Steam 的 AppID 启动。',
+          '- 启动前检查 Steam 客户端、活动登录用户、真实游戏 EXE 和 ACF；Steam 未运行或未登录时提示用户。',
+          '- Steam 状态改为直接检查 `steam.exe` 进程，避免注册表登录值缺失导致误报。',
+          '- 项目迁移到独立仓库 `Clearlove0923/SteamCN-GameLauncher`，更新、下载与问题反馈均使用新地址。',
+          '- 预设区域新增「一键更新」：自动获取最新游戏信息，在 Depot 与 EXE 候选能明确确定时更新配置。',
+          '- ACF 内容变化时先备份原文件再替换；备份按 AppID 保存到 `backups`，每个 AppID 最多 2 份、最长 30 天。',
+          '- 安装包仅包含简体中文和英文资源。',
+          '',
+          '## 维护备注',
+          '',
+          '- 发布前确认安装器已为备份目录配置写入权限。',
+          '- 更新完成说明已改为逐行显示，帮助入口指向指定视频。'
+        ].join('\n')
+      },
+      'v2.6.0': {
+        date: '2026-09-07',
+        note: '功能 + 界面',
+        content: [
+          '# v2.6.0 更新维护说明',
+          '',
+          '> 更新日期：2026-09-07　·　类型：功能 + 界面',
+          '',
+          '## 本次更新内容',
+          '',
+          '- 新增背景图片库：导入、切换、删除及重新裁切，原图保存在 `Backgrounds/Originals`。',
+          '- 导入时显示固定 16:9 裁切框，支持拖动、滚轮缩放、铺满、完整显示和居中；输出 1920×1080。',
+          '- 支持背景不透明度、遮罩及内容卡片不透明度调节，设置自动保存。',
+          '- 窗口固定为 1920×1080，并采用约 102 像素的紧凑侧栏。',
+          '- 删除侧栏「敬请期待」占位项。',
+          '- 安装器语言仅提供简体中文、英文。',
+          '',
+          '## 维护备注',
+          '',
+          '- 英文界面翻译尚未实现，界面当前仍为简体中文。'
+        ].join('\n')
+      },
+      'v2.5.0': {
+        date: '2026-09-04',
+        note: '更名 + 重构',
+        content: [
+          '# v2.5.0 更新维护说明',
+          '',
+          '> 更新日期：2026-09-04　·　类型：更名 + 重构',
+          '',
+          '## 本次更新内容',
+          '',
+          '- 项目、命名空间、程序 EXE 和安装包统一使用 SteamCN-GameLauncher；中文名「Steam国服游戏启动助手」。',
+          '- 增加可重复运行的发布脚本，校验版本一致性、打包运行库并生成 SHA-256 校验文件。',
+          '- 移除默认鸣潮导航，启动时恢复已添加的游戏。',
+          '- 已添加的游戏支持在侧边栏拖动排序并持久化。',
+          '- 自定义页新增按 AppID 自动获取游戏信息，一次填入名称、目录、占位 EXE、DepotID 等。',
+          '',
+          '## 维护备注',
+          '',
+          '- 保留历史配置目录和安装器标识以支持升级。',
+          '- 修正文案中误标为 SteamDB 的日志与按钮。'
+        ].join('\n')
+      }
+    };
+
+    var el = function (id) { return document.getElementById(id); };
+    var verSelect = el('verSelect'), cmpA = el('cmpA'), cmpB = el('cmpB');
+    var editor = el('editor'), verName = el('verName'), verDate = el('verDate'), verNote = el('verNote');
+    var diffView = el('diffView'), preview = el('preview'), sum = el('sum');
+    var status = el('status'), saveState = el('saveState'), counter = el('counter');
+    var cloudState = el('cloudState'), roNote = el('roNote');
+
+    var data = load();
+    var current = null;
+    var adminHash = '';   // 空 = 未解锁
+
+    /* ---------- 本地存储 ---------- */
+    function load() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (raw) {
+          var o = JSON.parse(raw);
+          if (o && typeof o === 'object' && Object.keys(o).length) return o;
+        }
+      } catch (e) {}
+      localStorage.setItem(KEY, JSON.stringify(SEED));
+      return JSON.parse(JSON.stringify(SEED));
+    }
+
+    function persist() {
+      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+    }
+
+    function cmpVer(a, b) {
+      var pa = String(a).replace(/^v/i, '').split('.').map(Number);
+      var pb = String(b).replace(/^v/i, '').split('.').map(Number);
+      for (var i = 0; i < 3; i++) {
+        var x = pa[i] || 0, y = pb[i] || 0;
+        if (x !== y) return y - x;
+      }
+      return 0;
+    }
+
+    function versions() { return Object.keys(data).sort(cmpVer); }
+
+    function fillSelect(sel, selected) {
+      var list = versions();
+      sel.innerHTML = '';
+      list.forEach(function (v) {
+        var o = document.createElement('option');
+        o.value = v;
+        o.textContent = v + (data[v] && data[v].date ? ' · ' + data[v].date : '');
+        sel.appendChild(o);
+      });
+      if (selected && list.indexOf(selected) >= 0) sel.value = selected;
+    }
+
+    function today() {
+      var d = new Date();
+      return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    }
+
+    function switchTo(ver) {
+      if (!data[ver]) return;
+      current = ver;
+      verName.value = ver;
+      verDate.value = data[ver].date || '';
+      verNote.value = data[ver].note || '';
+      editor.value = data[ver].content || '';
+      try { localStorage.setItem(KEY_CUR, ver); } catch (e) {}
+      verSelect.value = ver;
+      updateCounter();
+      saveState.textContent = '已保存';
+      renderDiff();
+      renderPreview();
+    }
+
+    function updateCounter() {
+      var lines = editor.value ? editor.value.split('\n').length : 0;
+      counter.textContent = editor.value.length + ' 字符 · ' + lines + ' 行';
+    }
+
+    /* ---------- 云端读写 ---------- */
+    function apiBase() {
+      var v;
+      try { v = localStorage.getItem(KEY_API); } catch (e) {}
+      if (v === null || v === undefined) return DEFAULT_API;  // 从未改过设置 → 用默认云端
+      return String(v).trim().replace(/\/+$/, '');            // 清空后保存 = 只用本机
+    }
+
+    function setCloudState(text, cls) {
+      cloudState.textContent = text;
+      cloudState.className = 'cloud-state' + (cls ? ' ' + cls : '');
+    }
+
+    function cloudPull() {
+      var base = apiBase();
+      if (!base) { setCloudState('本机模式（未配置云端）'); return Promise.resolve(); }
+      setCloudState('读取云端…', 'warn');
+      return fetch(base + '/api/docs', { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (!j || !j.versions || !Object.keys(j.versions).length) {
+            setCloudState('云端为空', 'warn');
+            if (adminHash && window.confirm('云端还没有内容，要把本机的 ' + versions().length + ' 个版本上传吗？')) {
+              cloudPush();
+            }
+            return;
+          }
+          data = j.versions;
+          persist();
+          var list = versions();
+          var keep = (current && data[current]) ? current : list[0];
+          fillSelect(verSelect, keep);
+          fillSelect(cmpA, list[1] || list[0]);
+          fillSelect(cmpB, list[0]);
+          switchTo(keep);
+          var t = j.updatedAt ? new Date(j.updatedAt) : null;
+          setCloudState('云端已同步 · ' + (t ? ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2) : '刚刚'), 'ok');
+          status.textContent = '已读取云端 ' + list.length + ' 个版本';
+        })
+        .catch(function () {
+          setCloudState('云端连接失败（用本机副本）', 'warn');
+        });
+    }
+
+    function cloudPush() {
+      var base = apiBase();
+      if (!base) return Promise.resolve();
+      if (!adminHash) { status.textContent = '请先解锁管理员'; return Promise.resolve(); }
+      setCloudState('写入云端…', 'warn');
+      return fetch(base + '/api/docs', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Hash': adminHash },
+        body: JSON.stringify({ versions: data })
+      }).then(function (r) {
+        if (r.status === 401) {
+          adminHash = '';
+          try { sessionStorage.removeItem(KEY_ADMIN); } catch (e) {}
+          setAdminUI();
+          setCloudState('口令不正确，已退回只读', 'warn');
+          status.textContent = '口令不正确，请重新解锁';
+          return;
+        }
+        return r.json().then(function (j) {
+          if (!r.ok) { setCloudState('云端写入失败', 'warn'); status.textContent = (j && j.error) || '云端写入失败'; return; }
+          var t = j.updatedAt ? new Date(j.updatedAt) : new Date();
+          setCloudState('云端已同步 · ' + ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2), 'ok');
+          status.textContent = '已写入云端，访客刷新即可看到';
+        });
+      }).catch(function () {
+        setCloudState('云端连接失败（已存本机）', 'warn');
+      });
+    }
+
+    /* ---------- 管理员口令 ---------- */
+    function sha256hex(str) {
+      if (!(window.crypto && crypto.subtle && window.TextEncoder)) {
+        return Promise.reject(new Error('当前环境不支持口令校验，请用 https 或本地服务打开'));
+      }
+      var buf = new TextEncoder().encode(str);
+      return crypto.subtle.digest('SHA-256', buf).then(function (d) {
+        return Array.prototype.map.call(new Uint8Array(d), function (b) {
+          return ('0' + b.toString(16)).slice(-2);
+        }).join('');
+      });
+    }
+
+    function setAdminUI() {
+      var on = !!adminHash;
+      roNote.className = on ? 'readonly-note hidden' : 'readonly-note';
+      editor.readOnly = !on;
+      el('saveBtn').disabled = !on;
+      el('newBtn').disabled = !on;
+      el('delBtn').disabled = !on;
+      el('importBtn').disabled = !on;
+      el('adminBtn').textContent = on ? '已解锁（锁定）' : '管理员解锁';
+    }
+
+    el('adminBtn').addEventListener('click', function () {
+      if (adminHash) {
+        adminHash = '';
+        try { sessionStorage.removeItem(KEY_ADMIN); } catch (e) {}
+        setAdminUI();
+        status.textContent = '已锁定，回到只读';
+        return;
+      }
+      var pwd = window.prompt('输入管理员口令（只在本机当前标签页生效，关闭即失效）');
+      if (!pwd) return;
+      sha256hex(pwd).then(function (hex) {
+        adminHash = hex;
+        try { sessionStorage.setItem(KEY_ADMIN, hex); } catch (e) {}
+        setAdminUI();
+        status.textContent = '已解锁，可以编辑并写入云端';
+        if (apiBase()) cloudPull();
+      }).catch(function (e) {
+        status.textContent = e.message || '解锁失败';
+      });
+    });
+
+    el('hashBtn').addEventListener('click', function () {
+      var pwd = window.prompt('输入你想用的管理员口令（只在本地计算，不会发送）');
+      if (!pwd) return;
+      sha256hex(pwd).then(function (hex) {
+        window.prompt('这是口令的 SHA-256，复制到 Cloudflare Worker 的 ADMIN_HASH 机密里：', hex);
+      }).catch(function (e) {
+        window.alert(e.message || '生成失败');
+      });
+    });
+
+    el('setupBtn').addEventListener('click', function () {
+      var cur = apiBase();
+      var v = window.prompt('填写 Worker 地址（点确定生效；清空后点确定 = 只用本机）', cur);
+      if (v === null) return;
+      v = String(v).trim().replace(/\/+$/, '');
+      try { localStorage.setItem(KEY_API, v); } catch (e) {}
+      status.textContent = v ? ('云端地址已设置：' + v) : '已改为本机模式';
+      cloudPull();
+    });
+
+    /* ---------- 版本操作 ---------- */
+    function save(silent) {
+      var ver = (verName.value || '').trim();
+      if (!ver) { status.textContent = '请先填写版本号'; return; }
+      var renamed = current && ver !== current;
+      if (renamed) { delete data[current]; }
+      data[ver] = {
+        date: verDate.value || today(),
+        note: verNote.value || '',
+        content: editor.value,
+        updatedAt: new Date().toISOString()
+      };
+      current = ver;
+      persist();
+      fillSelect(verSelect, ver);
+      var a = cmpA.value, b = cmpB.value;
+      fillSelect(cmpA, a); fillSelect(cmpB, b);
+      if (cmpA.value === cmpB.value) {
+        var list = versions();
+        if (list.length > 1) { cmpA.value = list[1]; cmpB.value = list[0]; }
+      }
+      var t = new Date();
+      saveState.textContent = '已保存 · ' + ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2);
+      if (!silent) status.textContent = '已保存版本 ' + ver;
+      renderDiff();
+      renderPreview();
+      if (adminHash && apiBase()) cloudPush();
+    }
+
+    var timer = null;
+    editor.addEventListener('input', function () {
+      updateCounter();
+      saveState.textContent = '未保存…';
+      clearTimeout(timer);
+      timer = setTimeout(function () { if (adminHash) save(true); }, 1500);
+    });
+    [verDate, verNote].forEach(function (n) {
+      n.addEventListener('change', function () { if (adminHash) save(true); });
+    });
+
+    verSelect.addEventListener('change', function () { switchTo(verSelect.value); });
+    el('saveBtn').addEventListener('click', function () { save(false); });
+
+    el('newBtn').addEventListener('click', function () {
+      var base = (current && /^v?(\d+)\.(\d+)\.(\d+)$/.test(current)) ? current : 'v2.6.1';
+      var m = base.replace(/^v/i, '').split('.').map(Number);
+      var guess = 'v' + m[0] + '.' + m[1] + '.' + (m[2] + 1);
+      var ver = window.prompt('新版本号（任意都行，例如 v2.6.4 / v2.7.0），将复制当前内容作为起点', guess);
+      if (!ver) return;
+      ver = ver.trim();
+      if (!/^v/i.test(ver)) ver = 'v' + ver;
+      if (data[ver]) { status.textContent = '版本 ' + ver + ' 已存在'; return; }
+      data[ver] = { date: today(), note: verNote.value || '', content: editor.value };
+      persist();
+      fillSelect(verSelect, ver);
+      var a = cmpA.value, b = cmpB.value;
+      fillSelect(cmpA, a); fillSelect(cmpB, b);
+      switchTo(ver);
+      status.textContent = '已新建版本 ' + ver + '，改完记得保存';
+      if (adminHash && apiBase()) cloudPush();
+    });
+
+    el('delBtn').addEventListener('click', function () {
+      var list = versions();
+      if (list.length <= 1) { status.textContent = '至少保留一个版本'; return; }
+      if (!window.confirm('确定删除版本 ' + current + '？保存后云端也会移除。')) return;
+      delete data[current];
+      persist();
+      var rest = versions();
+      fillSelect(verSelect, rest[0]);
+      fillSelect(cmpA, rest[1] || rest[0]);
+      fillSelect(cmpB, rest[0]);
+      switchTo(rest[0]);
+      status.textContent = '已删除版本';
+      if (adminHash && apiBase()) cloudPush();
+    });
+
+    el('importBtn').addEventListener('click', function () { el('importInput').click(); });
+    el('importInput').addEventListener('change', function (e) {
+      var f = e.target.files && e.target.files[0];
+      e.target.value = '';
+      if (!f) return;
+      var r = new FileReader();
+      r.onload = function (ev) {
+        editor.value = ev.target.result;
+        updateCounter();
+        saveState.textContent = '未保存…';
+        status.textContent = '已导入 ' + f.name + '，点「保存」写入';
+        renderDiff();
+        renderPreview();
+      };
+      r.readAsText(f, 'utf-8');
+    });
+
+    el('exportBtn').addEventListener('click', function () {
+      var name = (verName.value || 'maintain').replace(/[\\/:*?"<>|]/g, '_') + '.md';
+      var blob = new Blob([editor.value], { type: 'text/markdown;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      status.textContent = '已导出 ' + name;
+    });
+
+    /* ---------- 差异对比 ---------- */
+    function esc(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function diffLines(a, b) {
+      var n = a.length, m = b.length, out = [];
+      if (n * m > 4000000) { // 太长时退化处理，避免卡死
+        var max = Math.max(n, m);
+        for (var k = 0; k < max; k++) {
+          if (k < n && k < m) {
+            if (a[k] === b[k]) out.push({ t: 'eq', s: a[k] });
+            else { out.push({ t: 'del', s: a[k] }); out.push({ t: 'add', s: b[k] }); }
+          } else if (k < n) out.push({ t: 'del', s: a[k] });
+          else out.push({ t: 'add', s: b[k] });
+        }
+        return out;
+      }
+      var dp = [], i, j;
+      for (i = 0; i <= n; i++) dp.push(new Uint16Array(m + 1));
+      for (i = n - 1; i >= 0; i--) {
+        for (j = m - 1; j >= 0; j--) {
+          dp[i][j] = (a[i] === b[j]) ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+        }
+      }
+      i = 0; j = 0;
+      while (i < n && j < m) {
+        if (a[i] === b[j]) { out.push({ t: 'eq', s: a[i] }); i++; j++; }
+        else if (dp[i + 1][j] >= dp[i][j + 1]) { out.push({ t: 'del', s: a[i] }); i++; }
+        else { out.push({ t: 'add', s: b[j] }); j++; }
+      }
+      while (i < n) out.push({ t: 'del', s: a[i++] });
+      while (j < m) out.push({ t: 'add', s: b[j++] });
+      return out;
+    }
+
+    function contentOf(ver) {
+      if (ver === '__editor__') return editor.value;
+      return (data[ver] && data[ver].content) || '';
+    }
+
+    function renderDiff() {
+      var a = cmpA.value, b = cmpB.value;
+      if (!a || !b) { diffView.innerHTML = '<p class="empty">请选择要对比的两个版本。</p>'; return; }
+      var la = contentOf(a).split('\n'), lb = contentOf(b).split('\n');
+      var rows = diffLines(la, lb);
+      var add = 0, del = 0;
+      rows.forEach(function (r) { if (r.t === 'add') add++; else if (r.t === 'del') del++; });
+      sum.innerHTML = (add || del)
+        ? '新增 <span class="add">' + add + '</span> 行 · 删除 <span class="del">' + del + '</span> 行'
+        : '两个版本内容一致';
+      var only = el('onlyChanged').checked;
+      var html = '<div class="file-head">更新前 ' + a + '　→　更新后 ' + b + '</div>';
+      rows.forEach(function (r) {
+        if (only && r.t === 'eq') return;
+        var mark = r.t === 'add' ? '+' : (r.t === 'del' ? '-' : ' ');
+        var cls = r.t === 'add' ? 'dl-add' : (r.t === 'del' ? 'dl-del' : 'dl-eq');
+        html += '<div class="dl ' + cls + '"><span class="mk">' + mark + '</span><span>' + (esc(r.s) || '&nbsp;') + '</span></div>';
+      });
+      if (only && !add && !del) html += '<p class="empty">没有变更行。</p>';
+      diffView.innerHTML = html;
+    }
+
+    cmpA.addEventListener('change', renderDiff);
+    cmpB.addEventListener('change', renderDiff);
+    el('onlyChanged').addEventListener('change', renderDiff);
+
+    /* ---------- 预览 ---------- */
+    function miniMd(src) {
+      var out = [], inList = false, lines = src.split('\n');
+      function inline(s) {
+        return s
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+          .replace(/`([^`]+)`/g, '<code>$1</code>')
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      }
+      lines.forEach(function (line) {
+        var h = /^(#{1,6})\s+(.*)$/.exec(line);
+        if (h) {
+          if (inList) { out.push('</ul>'); inList = false; }
+          var lv = h[1].length;
+          out.push('<h' + lv + '>' + inline(h[2]) + '</h' + lv + '>');
+          return;
+        }
+        if (/^>\s?/.test(line)) {
+          if (inList) { out.push('</ul>'); inList = false; }
+          out.push('<blockquote>' + inline(line.replace(/^>\s?/, '')) + '</blockquote>');
+          return;
+        }
+        var li = /^\s*[-*]\s+(.*)$/.exec(line);
+        if (li) {
+          if (!inList) { out.push('<ul>'); inList = true; }
+          out.push('<li>' + inline(li[1]) + '</li>');
+          return;
+        }
+        if (!line.trim()) { if (inList) { out.push('</ul>'); inList = false; } return; }
+        if (inList) { out.push('</ul>'); inList = false; }
+        out.push('<p>' + inline(line) + '</p>');
+      });
+      if (inList) out.push('</ul>');
+      return out.join('');
+    }
+
+    function renderPreview() {
+      var src = editor.value;
+      preview.innerHTML = (typeof marked !== 'undefined' && marked.parse) ? marked.parse(src) : miniMd(src);
+    }
+
+    el('tabDiff').addEventListener('click', function () {
+      el('tabDiff').className = 'tab on';
+      el('tabPreview').className = 'tab';
+      diffView.style.display = '';
+      preview.style.display = 'none';
+    });
+    el('tabPreview').addEventListener('click', function () {
+      el('tabPreview').className = 'tab on';
+      el('tabDiff').className = 'tab';
+      diffView.style.display = 'none';
+      preview.style.display = '';
+      renderPreview();
+    });
+
+    /* ---------- 初始化 ---------- */
+    fillSelect(verSelect);
+    var list = versions();
+    fillSelect(cmpA, list[1] || list[0]);
+    fillSelect(cmpB, list[0]);
+    var cur = null;
+    try { cur = localStorage.getItem(KEY_CUR); } catch (e) {}
+    switchTo(cur && data[cur] ? cur : list[0]);
+
+    /* 「云端设置 / 生成口令哈希」默认隐藏，避免把 Worker 地址暴露给普通访客；
+       自己要改配置时，用 ...md-maintain.html?setup=1 打开本页即可看到 */
+    (function () {
+      var show = location.search.indexOf('setup=1') > -1 || location.hash.indexOf('setup=1') > -1;
+      if (!show) {
+        var s = el('setupBtn'), h = el('hashBtn');
+        if (s) s.style.display = 'none';
+        if (h) h.style.display = 'none';
+      }
+    })();
+
+    try { adminHash = sessionStorage.getItem(KEY_ADMIN) || ''; } catch (e) {}
+    setAdminUI();
+    cloudPull();
+    status.textContent = '共 ' + list.length + ' 个版本';
+  </script>
+
+</body>
+</html>

@@ -134,6 +134,7 @@
         <li><a href="examples/md.html">文档变可分享网页</a><span>上传 .md / .docx / .pdf 即可渲染成带目录的网页</span></li>
         <li><a href="examples/vite.html">Vite + React 构建产物示例</a><span>dist 打包后发布的实际效果</span></li>
         <li><a href="examples/ai.html">AI 生成页面示例</a><span>一句话生成的落地页长什么样</span></li>
+        <li><a href="examples/md-maintain.html">MD 文档维护工作台</a><span>按版本写维护文档，并对比两个版本的差异</span></li>
         <li><a href="tutorial.html">完整使用教程</a><span>从安装到启动的分步说明</span></li>
         <li><a href="about.html">关于此软件</a><span>项目动机与说明</span></li>
         <li><a href="#download">下载安装包</a><span>Windows 10 / 11 · x64</span></li>
@@ -169,6 +170,16 @@
           <a class="card-link" href="examples/ai.html">打开示例</a>
         </article>
       </div>
+    </div>
+  </section>
+
+  <!-- 运行维护入口：页面底部的向下箭头，只有「运行维护」四个字，点击直接进维护页 -->
+  <section class="mm-entry" id="maintain">
+    <div class="container">
+      <a class="mm-arrow" href="examples/md-maintain.html">
+        <span class="mm-arrow-title">运行维护</span>
+        <span class="mm-chev" aria-hidden="true"><span></span><span></span></span>
+      </a>
     </div>
   </section>
 
@@ -212,6 +223,7 @@
         <a href="features.html">功能</a>
         <a href="tutorial.html">教程</a>
         <a href="docs.html">文档</a>
+        <a href="examples/md-maintain.html">运行维护</a>
         <a href="about.html">关于</a>
       </nav>
       <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
@@ -313,6 +325,40 @@
           bySelection();
         }
       });
+    })();
+  </script>
+
+  <script>
+    // 滚轮滑动时，箭头随滚动轻微向下位移（视差），滑动过程中能看出它在往下走
+    (function () {
+      var sec = document.querySelector('.mm-entry');
+      var arrow = document.querySelector('.mm-arrow');
+      if (!sec || !arrow) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var ticking = false;
+      var RANGE = 48;
+
+      function update() {
+        ticking = false;
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        var r = sec.getBoundingClientRect();
+        var p = (vh - r.top) / (vh + r.height);
+        if (p < 0) p = 0; else if (p > 1) p = 1;
+        var y = (p - 0.5) * RANGE;
+        arrow.style.transform = 'translateY(' + y.toFixed(1) + 'px)';
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(update);
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      update();
     })();
   </script>
 

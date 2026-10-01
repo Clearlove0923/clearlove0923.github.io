@@ -4,8 +4,13 @@
  * 给静态站（GitHub Pages）提供一个读写维护文档的接口：
  *   GET  /api/docs   任何人可读（访客看到最新内容）
  *   PUT  /api/docs   需要管理员口令（口令只以 SHA-256 哈希形式校验，明文不落任何地方）
- *   GET  /api/verify 只校验口令对不对，不读不写数据（维护页用它决定要不要显示管理界面）
+ *   GET  /api/site   任何人可读：首页/全站文案（管理员在页面上直接改的那份）
+ *   PUT  /api/site   需要管理员口令，写入首页文案
+ *   GET  /api/verify 只校验口令对不对，不读不写数据（维护页/首页用它决定要不要进编辑模式）
  *   GET  /api/health 自检
+ *
+ * /api/docs 与 /api/site 共用同一个 KV 命名空间（DOCS_KV），落在两个不同的键上
+ * （docs / site），互不影响。
  *
  * 部署步骤：
  * 1. Cloudflare 控制台 → Workers 和 Pages → 创建 Worker → 粘贴本文件 → 部署
@@ -90,6 +95,59 @@ export default {
       var vGot = (request.headers.get('X-Admin-Hash') || '').toLowerCase();
       if (!safeEqual(vGot, vExpected)) return json({ ok: false, error: '口令不正确' }, 401, origin);
       return json({ ok: true }, 200, origin);
+    }
+
+    // 首页/全站文案：访客读，管理员写。结构 { content: { key: '文字', ... }, updatedAt }
+    if (url.pathname === '/api/site') {
+      if (request.method === 'GET') {
+        var sraw = null;
+        try { sraw = await env.DOCS_KV.get('site'); } catch (e) {
+          return json({ error: 'KV 读取失败，检查 DOCS_KV 绑定', content: {}, updatedAt: null }, 500, origin);
+        }
+        if (!sraw) return json({ content: {}, updatedAt: null }, 200, origin);
+        return new Response(sraw, {
+          status: 200,
+          headers: Object.assign({ 'Content-Type': 'application/json; charset=utf-8' }, corsHeaders(origin))
+        });
+      }
+
+      if (request.method === 'PUT') {
+        var sExpected = (env && env.ADMIN_HASH) ? String(env.ADMIN_HASH).toLowerCase() : '';
+        if (!sExpected) return json({ error: 'Worker 未配置 ADMIN_HASH' }, 500, origin);
+
+        var sGot = (request.headers.get('X-Admin-Hash') || '').toLowerCase();
+        if (!safeEqual(sGot, sExpected)) return json({ error: '口令不正确' }, 401, origin);
+
+        var stext = await request.text();
+        if (stext.length > 400000) return json({ error: '内容过大（超过 400KB）' }, 413, origin);
+
+        var sparsed;
+        try { sparsed = JSON.parse(stext); } catch (e) {
+          return json({ error: 'JSON 格式错误' }, 400, origin);
+        }
+        if (!sparsed || typeof sparsed.content !== 'object' || sparsed.content === null || Array.isArray(sparsed.content)) {
+          return json({ error: '缺少 content 字段' }, 400, origin);
+        }
+        // 只接受「字符串 → 字符串」，避免把任意结构塞进 KV
+        var clean = {};
+        Object.keys(sparsed.content).forEach(function (k) {
+          var v = sparsed.content[k];
+          if (typeof v === 'string' && v.length <= 8000) clean[k] = v;
+        });
+
+        var spayload = JSON.stringify({ content: clean, updatedAt: new Date().toISOString() });
+        try {
+          await env.DOCS_KV.put('site', spayload);
+        } catch (e) {
+          return json({ error: 'KV 写入失败，检查 DOCS_KV 绑定' }, 500, origin);
+        }
+        return new Response(spayload, {
+          status: 200,
+          headers: Object.assign({ 'Content-Type': 'application/json; charset=utf-8' }, corsHeaders(origin))
+        });
+      }
+
+      return json({ error: 'method not allowed' }, 405, origin);
     }
 
     if (url.pathname === '/api/docs') {

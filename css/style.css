@@ -3,13 +3,14 @@
   --bg-alt: #f6f7f9;
   --card: #ffffff;
   --text: #1f2328;
-  /* 整页底图上线后，正文区的次级文字压在半透明照片上，
-     #6b7280 最不利处只有 2.3:1，故调深为 #4b5563（照片上 ≥4.1:1，纯白卡片上 7.5:1） */
-  --muted: #4b5563;
+  /* 整页底图上线后，次级文字是直接压在照片上的，颜色必须按「最暗那 5% 的背景」
+     来定：原来的 #6b7280 在那块区域只有 2.3:1，所以一路调到 #39404b。
+     雾化 0.66 下实测最低 4.76:1，纯白卡片上是 10.4:1。 */
+  --muted: #39404b;
   --line: #e5e7eb;
   --accent: #185fa5;
-  /* 压在照片上的文字链接：品牌蓝 #185fa5 在浅底图上仅 3.5:1，用加深版保证 ≥4.5:1 */
-  --accent-ink: #12497f;
+  /* 压在照片上的文字链接：实测最低 4.89:1（品牌蓝 #185fa5 在这层底图上只有 3.5:1） */
+  --accent-ink: #0f3f6e;
   --accent-soft: #e6f1fb;
   --radius: 12px;
 
@@ -17,8 +18,9 @@
   --accent-2: #0ea5a4;
   --accent-3: #2b8fd6;
   --grad: linear-gradient(115deg, #185fa5 0%, #2b8fd6 48%, #0ea5a4 100%);
-  /* 压在半透明底图上的渐变字：整条渐变都要够深，否则最亮的青端会掉到 3:1 以下 */
-  --grad-ink: linear-gradient(115deg, #12497f 0%, #1a5a8a 46%, #0d6f6d 100%);
+  /* 压在半透明底图上的渐变字：整条渐变都要够深。
+     雾化 0.66 下实测三个端点最低 4.59 / 4.77 / 4.59，最亮的青端最容易掉，别再调亮。 */
+  --grad-ink: linear-gradient(115deg, #0f3f6e 0%, #11445c 46%, #0a4a48 100%);
   --grad-text: linear-gradient(100deg, #7dd3fc, #5eead4);
   --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04), 0 6px 18px rgba(16, 24, 40, 0.05);
   --shadow-md: 0 12px 32px rgba(16, 24, 40, 0.10);
@@ -44,9 +46,12 @@ body {
 }
 
 /* ---------- 整页固定底图：不只顶部 Hero，滚动到哪都是这张图 ----------
-   思路与 Hero 一致：先把画面的暖绿压成品牌青蓝，再用一层冷调「雾化提亮」
-   把它拉成浅色底，保证深色文字的对比度（最不利处正文仍 ≥8:1）。
-   层序自上而下 = 青色点缀 → 蓝色点缀 → 雾化提亮 → 青色罩 → 蓝色罩 → 底图。
+   6 层叠层，自上而下 = 青色点缀 → 蓝色点缀 → 雾化提亮 → 青色罩 → 蓝色罩 → 底图。
+   最下面那层「雾化提亮」的 alpha 就是「图片有多明显」的总旋钮：
+     0.82 = 很淡（几乎看不出是照片）  ← 旧值
+     0.66 = 看得出是照片，文字仍全部达标  ← 当前值
+     0.55 = 照片更抢眼，但正文就压不住 7:1 了
+   调这个数字时，--muted / --accent-ink / --grad-ink 三组颜色要一起复核。
    位置固定，所以页面滚动时底图不动，形成轻微视差错觉。 */
 body::before {
   content: '';
@@ -58,7 +63,7 @@ body::before {
   background-image:
     linear-gradient(rgba(14, 165, 164, 0.06), rgba(14, 165, 164, 0.06)),
     linear-gradient(rgba(24, 95, 165, 0.10), rgba(24, 95, 165, 0.10)),
-    linear-gradient(rgba(232, 239, 246, 0.82), rgba(232, 239, 246, 0.82)),
+    linear-gradient(rgba(232, 239, 246, 0.66), rgba(232, 239, 246, 0.66)),
     linear-gradient(rgba(14, 165, 164, 0.14), rgba(14, 165, 164, 0.14)),
     linear-gradient(rgba(24, 95, 165, 0.28), rgba(24, 95, 165, 0.28)),
     url("../assets/hero-bg.jpg?v=3") center 46% / cover no-repeat;
@@ -585,7 +590,8 @@ a:hover { text-decoration: underline; }
 }
 
 .link-list a { font-size: 15px; font-weight: 500; }
-.link-list span {
+/* 只命中「链接下面那行说明」，不要波及 <a> 里为了就地编辑而包的 span */
+.link-list li > span {
   display: block;
   color: var(--muted);
   font-size: 13px;
@@ -694,6 +700,140 @@ a:hover { text-decoration: underline; }
 @keyframes mmFloat {
   0%, 100% { transform: rotate(-45deg) translate(0, 0); }
   50%      { transform: rotate(-45deg) translate(2px, 2px); }
+}
+
+/* 吸底条内部的布局：让「运行维护」保持视觉居中，右侧挂一个低调的管理入口 */
+.mm-entry-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+
+.mm-edit-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+}
+.mm-edit-btn:hover,
+.mm-edit-btn:focus-visible {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.mm-edit-ico { font-size: 13px; line-height: 1; }
+
+/* 编辑模式下换成工具条，吸底条让位 */
+body.is-editing .mm-entry { display: none; }
+
+/* ---------- 管理员就地编辑：工具条 ---------- */
+.edit-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+  background: rgba(255, 255, 255, 0.94);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.10);
+}
+.edit-bar[hidden] { display: none; }
+.edit-bar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 2px;
+  background: var(--grad);
+}
+
+.edit-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.edit-bar-lead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--muted);
+}
+.edit-bar-lead b { color: var(--accent-ink); }
+.edit-bar-state { font-size: 12.5px; }
+.edit-bar-state.ok { color: #0d6f6d; font-weight: 600; }
+.edit-bar-state.warn { color: #b45309; }
+
+.edit-bar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-sm { padding: 6px 13px; font-size: 13px; }
+
+/* 可编辑元素的提示框 */
+.is-editable {
+  outline: 1px dashed rgba(24, 95, 165, 0.42);
+  outline-offset: 3px;
+  border-radius: 3px;
+  cursor: text;
+  transition: outline-color 0.18s ease, background-color 0.18s ease;
+}
+.is-editable:hover {
+  outline-color: var(--accent);
+  background-color: rgba(24, 95, 165, 0.07);
+}
+.is-editable:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  background-color: rgba(255, 255, 255, 0.66);
+}
+/* 编辑态下正文尽量别被底层动效干扰 */
+body.is-editing .hero { --mx: 50%; --my: 28%; }
+
+/* 轻提示 */
+.edit-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 88px;
+  z-index: 90;
+  max-width: min(520px, 88vw);
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: rgba(17, 24, 39, 0.92);
+  color: #fff;
+  font-size: 13.5px;
+  line-height: 1.5;
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.edit-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 640px) {
+  .mm-edit-btn { padding: 6px 9px; }
+  .mm-edit-txt { display: none; }
+  .edit-bar-lead span:not(.edit-bar-state) { display: none; }
 }
 
 /* ---------- 底部 CTA ---------- */

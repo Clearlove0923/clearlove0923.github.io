@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MD 文档维护工作台 · 示例</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20261002004415">
+  <link rel="stylesheet" href="../css/style.css?v=20261002005503">
   <style>
     .demo-bar {
       display: flex;
@@ -544,10 +544,11 @@
 
           var t = j.updatedAt ? new Date(j.updatedAt) : null;
           var hhmm = t ? ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2) : '刚刚';
+          // 注意：这里刻意不提示「云端停留在 vX.Y.Z」之类的版本落后信息 ——
+          // stale 只用来决定「渲染哪份数据」（云端旧就用内置），状态区保持中性文案。
           if (stale) {
-            setCloudState('云端停留在 ' + cloudNewest + '，已改用内置 ' + seedNewest, 'warn');
-            status.textContent = '云端内容比内置的旧，已自动改用内置 ' + seedNewest +
-              '；点「同步内置最新版到云端」可把云端一并更新。';
+            setCloudState('已连接云端 · ' + hhmm, 'ok');
+            status.textContent = '已加载 ' + list.length + ' 个版本';
           } else {
             setCloudState('云端已同步 · ' + hhmm, 'ok');
             status.textContent = '已读取云端 ' + list.length + ' 个版本';

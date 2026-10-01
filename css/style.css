@@ -581,17 +581,23 @@ a:hover { text-decoration: underline; }
 
 .mm-arrow-title {
   display: block;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   letter-spacing: 5px;
   text-indent: 5px;
-  line-height: 1.5;
-  color: var(--muted);
-  transition: color 0.18s ease;
+  line-height: 1.45;
+  /* 兜底色：不支持 background-clip:text 的浏览器退化为品牌蓝 */
+  color: var(--accent);
+  /* 主品牌渐变（深蓝 → 青），白底上对比足够，用来突出重点 */
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: filter 0.18s ease;
 }
 
 .mm-arrow:hover .mm-arrow-title,
-.mm-arrow:focus-visible .mm-arrow-title { color: var(--accent); }
+.mm-arrow:focus-visible .mm-arrow-title { filter: saturate(1.18) brightness(1.06); }
 
 /* 文字下面的两个小勾（⌄⌄） */
 .mm-chev {
@@ -707,7 +713,7 @@ a:hover { text-decoration: underline; }
   .hero h1 { font-size: 27px; }
   .section { padding: 52px 0; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
-  .mm-arrow-title { font-size: 14px; }
+  .mm-arrow-title { font-size: 16px; }
 
   /* 数据带在窄屏排成 2×2 */
   .hero-stats { display: grid; grid-template-columns: 1fr 1fr; }

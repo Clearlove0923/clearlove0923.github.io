@@ -20,6 +20,18 @@ if [ ! -d .git ]; then
   echo "已初始化仓库并绑定: $REPO"
 fi
 
+# ---------- 自动缓存戳 ----------
+# 页面里写的是 css/style.css?v=__BUILD__，这里统一换成部署时间戳。
+# 每次部署资源地址都会变，浏览器和加速节点就没法再把旧 CSS 拿给你，
+# 以后改完样式就不用每次手动 Ctrl+Shift+R 了。
+BUILD_STAMP=$(date +%Y%m%d%H%M%S)
+PAGES="index.html 404.html about.html docs.html features.html tutorial.html docs/learning-guide.html examples/md-maintain.html examples/md.html"
+for f in $PAGES; do
+  [ -f "$f" ] || continue
+  sed -i 's#css/style\.css?v=[^"]*#css/style.css?v='"$BUILD_STAMP"'#g' "$f"
+done
+echo "静态资源缓存戳：$BUILD_STAMP"
+
 git add -A
 if git diff --cached --quiet; then
   echo "没有需要发布的改动，跳过提交"
@@ -27,6 +39,8 @@ else
   MSG="${1:-deploy: $(date '+%Y-%m-%d %H:%M')}"
   git commit -m "$MSG"
 fi
-
 git push -u origin main
-echo "已推送。1-2 分钟后 Pages 自动更新，访问你的 github.io 网址即可查看。"
+echo "已推送（资源缓存戳：$BUILD_STAMP）。"
+echo "1-2 分钟后 Pages 构建完成。"
+echo "提示：HTML 本身在 GitHub 那边有约 10 分钟缓存，本次验证建议按一次 Ctrl+Shift+R；"
+echo "      之后因为资源地址带了新缓存戳，刷新就能看到最新样式，不用再强刷。"

@@ -175,6 +175,14 @@
       margin-bottom: 12px; padding: 8px 12px; border-radius: 8px;
       background: #fdf3e3; border: 1px solid #f0dfc0; color: #8a5a12; font-size: 13px;
     }
+    /* 云端内容比页面内置的还旧时，告诉访客「你看到的是内置最新版」 */
+    .v-stale {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin-bottom: 12px; padding: 9px 12px; border-radius: 8px;
+      background: #eaf3fd; border: 1px solid #cfe0f3; color: #22537f; font-size: 13px;
+      line-height: 1.65;
+    }
+    .v-stale b { font-weight: 600; }
     .v-body { max-height: none; }
     .v-body > :first-child { margin-top: 0; }
 
@@ -214,6 +222,11 @@
       正在查看历史版本 <strong id="vWarnVer"></strong> —— <a href="#" id="vBackLatest">回到最新</a>
     </div>
 
+    <!-- 云端数据比页面内置的还旧时出现（例如云端压着 v2.6.1、内置已是 v3.1.5） -->
+    <div class="v-stale" id="vStale" hidden>
+      <span id="vStaleTxt"></span>
+    </div>
+
     <article class="preview v-body" id="vBody"></article>
     <p class="tip">文档由管理员维护，内容随云端更新自动变化；普通访客无需口令即可阅读。</p>
     <p class="status" id="vState"></p>
@@ -235,6 +248,7 @@
     <button class="btn btn-outline" id="setupBtn">云端设置</button>
     <button class="btn btn-outline" id="hashBtn">生成口令哈希</button>
     <button class="btn btn-outline" id="reseedBtn" type="button">重置为内置文档</button>
+    <button class="btn btn-outline" id="syncSeedBtn" type="button">同步内置最新版到云端</button>
     <span class="grow"></span>
     <span class="cloud-state" id="cloudState">本机模式</span>
     <span class="status" id="status"></span>
@@ -399,10 +413,13 @@
     var vBadge = el('vBadge'), vVer = el('vVer'), vMeta = el('vMeta');
     var vPick = el('vPick'), vBody = el('vBody'), vWarn = el('vWarn');
     var vWarnVer = el('vWarnVer'), vState = el('vState');
+    var vStale = el('vStale'), vStaleTxt = el('vStaleTxt');
 
     var data = load();
     var current = null;
     var adminHash = '';   // 空 = 未解锁
+    var cloudStaleVer = '';   // 非空 = 云端最新版比内置的旧，这个值是云端那一版（页面上已改用内置）
+    var cloudRaw = null;      // 云端返回的原始数据，供「同步内置最新版」时与内置合并
 
     /* ---------- 本地存储 ---------- */
     function load() {
@@ -410,7 +427,16 @@
         var raw = localStorage.getItem(KEY);
         if (raw) {
           var o = JSON.parse(raw);
-          if (o && typeof o === 'object' && Object.keys(o).length) return o;
+          if (o && typeof o === 'object' && Object.keys(o).length) {
+            // 本机副本可能还是上次从旧云端拉下来的老内容（例如 v2.6.1）：
+            // 只要它比页面内置的旧，就以内置为准，保证打开就是最新版。
+            var seedNewest = Object.keys(SEED).sort(cmpVer)[0] || '';
+            var localNewest = Object.keys(o).sort(cmpVer)[0] || '';
+            if (!seedNewest || !localNewest || cmpVer(localNewest, seedNewest) > 0) {
+              return JSON.parse(JSON.stringify(SEED));
+            }
+            return o;
+          }
         }
       } catch (e) {}
       localStorage.setItem(KEY, JSON.stringify(SEED));
@@ -491,14 +517,32 @@
         .then(function (r) { return r.json(); })
         .then(function (j) {
           if (!j || !j.versions || !Object.keys(j.versions).length) {
+            cloudRaw = null;
+            cloudStaleVer = '';
             setCloudState('云端为空', 'warn');
+            renderStaleNote();
             if (adminHash && window.confirm('云端还没有内容，要把本机的 ' + versions().length + ' 个版本上传吗？')) {
               cloudPush();
             }
             return;
           }
-          data = j.versions;
+          cloudRaw = j.versions;
+
+          // 云端比页面内置的还旧时（例如云端压着 v2.6.1、而内置已经是 v3.1.5）：
+          // 不能让旧内容把新版盖回去 —— 直接用内置最新文档渲染，并提示管理员去同步。
+          var seedNewest = Object.keys(SEED).sort(cmpVer)[0] || '';
+          var cloudNewest = Object.keys(j.versions).sort(cmpVer)[0] || '';
+          var stale = !!(seedNewest && cloudNewest && cmpVer(cloudNewest, seedNewest) > 0);
+
+          if (stale) {
+            cloudStaleVer = cloudNewest;
+            data = JSON.parse(JSON.stringify(SEED));
+          } else {
+            cloudStaleVer = '';
+            data = j.versions;
+          }
           persist();
+
           var list = versions();
           var keep = (current && data[current]) ? current : list[0];
           fillSelect(verSelect, keep);
@@ -506,9 +550,18 @@
           fillSelect(cmpB, list[0]);
           switchTo(keep);
           renderVisitor();
+          renderStaleNote();
+
           var t = j.updatedAt ? new Date(j.updatedAt) : null;
-          setCloudState('云端已同步 · ' + (t ? ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2) : '刚刚'), 'ok');
-          status.textContent = '已读取云端 ' + list.length + ' 个版本';
+          var hhmm = t ? ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2) : '刚刚';
+          if (stale) {
+            setCloudState('云端停留在 ' + cloudNewest + '，已改用内置 ' + seedNewest, 'warn');
+            status.textContent = '云端内容比内置的旧，已自动改用内置 ' + seedNewest +
+              '；点「同步内置最新版到云端」可把云端一并更新。';
+          } else {
+            setCloudState('云端已同步 · ' + hhmm, 'ok');
+            status.textContent = '已读取云端 ' + list.length + ' 个版本';
+          }
         })
         .catch(function () {
           setCloudState('云端连接失败（用本机副本）', 'warn');
@@ -538,6 +591,8 @@
           var t = j.updatedAt ? new Date(j.updatedAt) : new Date();
           setCloudState('云端已同步 · ' + ('0' + t.getHours()).slice(-2) + ':' + ('0' + t.getMinutes()).slice(-2), 'ok');
           status.textContent = '已写入云端，访客刷新即可看到';
+          cloudRaw = JSON.parse(JSON.stringify(data));
+          if (cloudStaleVer) { cloudStaleVer = ''; renderStaleNote(); }
         });
       }).catch(function () {
         setCloudState('云端连接失败（已存本机）', 'warn');
@@ -597,6 +652,26 @@
       vWarn.hidden = (ver === latest);
       vWarnVer.textContent = ver;
       vState.textContent = '共 ' + list.length + ' 个版本';
+    }
+
+    /* 云端内容落后于内置时的一行提示（访客视图顶部 + 状态行） */
+    function renderStaleNote() {
+      if (!vStale) return;
+      if (cloudStaleVer) {
+        var seedNewest = Object.keys(SEED).sort(cmpVer)[0] || '';
+        vStaleTxt.innerHTML = '';
+        var b = document.createElement('b');
+        b.textContent = '云端维护文档还停留在 ' + cloudStaleVer + '。';
+        vStaleTxt.appendChild(b);
+        vStaleTxt.appendChild(document.createTextNode(
+          '本页已自动改为展示内置的最新版 ' + seedNewest +
+          '；管理员点右上「管理员」解锁后，用工具栏里的「同步内置最新版到云端」可把云端一并更新。'));
+        vStale.hidden = false;
+        if (vState) vState.textContent = '提示：云端停留于 ' + cloudStaleVer + '，当前展示的是内置 ' + seedNewest + '。';
+      } else {
+        vStale.hidden = true;
+        vStaleTxt.textContent = '';
+      }
     }
 
     vPick.addEventListener('change', function () { renderVisitor(vPick.value); });
@@ -757,6 +832,37 @@
       switchTo(keys[0]);
       renderVisitor();
       status.textContent = '已载入内置文档 ' + list.join(' / ') + '，正在写入云端…';
+      cloudPush();
+    });
+
+    /* 把「内置的最新版」合并进云端：云端已有的其它版本原样保留，
+       同版本号一律以内置内容为准 —— 用于云端还压着 v2.6.1 这类老数据的情况，
+       不删历史版本，只把新的补上去。 */
+    el('syncSeedBtn').addEventListener('click', function () {
+      if (!adminHash) { status.textContent = '请先解锁管理员'; return; }
+      if (!apiBase()) { status.textContent = '当前是本机模式，未配置云端，无需同步'; return; }
+      var seeds = Object.keys(SEED).sort(cmpVer);
+      var cloudKeys = cloudRaw ? Object.keys(cloudRaw).sort(cmpVer) : [];
+      var added = seeds.filter(function (k) { return cloudKeys.indexOf(k) < 0; });
+      var kept = cloudKeys.filter(function (k) { return seeds.indexOf(k) < 0; });
+      if (!window.confirm('把内置文档写进云端：\n\n' +
+          '　写入 / 覆盖：' + seeds.join(' / ') + '\n' +
+          '　保留云端其它版本：' + (kept.length ? kept.join(' / ') : '（无）') + '\n' +
+          (added.length ? '　新增版本：' + added.join(' / ') + '\n' : '') +
+          '\n访客刷新后就能看到最新的 ' + seeds[0] + '。确定继续吗？')) return;
+
+      var merged = {};
+      cloudKeys.forEach(function (k) { merged[k] = cloudRaw[k]; });
+      seeds.forEach(function (k) { merged[k] = JSON.parse(JSON.stringify(SEED[k])); });
+      data = merged;
+      persist();
+      var keys = versions();
+      fillSelect(verSelect, keys[0]);
+      fillSelect(cmpA, keys[1] || keys[0]);
+      fillSelect(cmpB, keys[0]);
+      switchTo(keys[0]);
+      renderVisitor();
+      status.textContent = '正在把内置最新版写入云端…';
       cloudPush();
     });
 

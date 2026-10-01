@@ -66,12 +66,12 @@ https://github.com/Clearlove0923/clearlove0923.github.io.git
 
 ```json
 {
-  "version": "v2.6.1",
-  "date": "2026-09-11",
-  "size": "65 MB",
+  "version": "v3.1.5",
+  "date": "2026-09-30",
+  "size": "133 MB",
   "repo": "Clearlove0923/SteamCN-GameLauncher",
   "autoLatest": true,
-  "windows": { "label": "下载安装包（65 MB）", "url": "https://github.com/<仓库>/releases/download/v2.6.1/....exe" },
+  "windows": { "label": "下载安装包（133 MB）", "url": "https://github.com/<仓库>/releases/download/v3.1.5/....exe" },
   "mirror":  { "label": "备用下载（国内加速）", "url": "https://...", "pwd": "e2me" },
   "changelog": "https://github.com/<仓库>/releases"
 }
@@ -137,7 +137,7 @@ SteamCN-GameLauncher-Setup.exe
 
 - 上传到 GitHub Release 后可使用永久有效的
   `releases/latest/download/SteamCN-GameLauncher-Setup.exe`，**更新版本不用改网页**
-- 访客下载到的文件名干净，不会出现 `...v2.6.1-win-x64-setup.exe` 这种长串
+- 访客下载到的文件名干净，不会出现 `...v3.1.5-win-x64-setup.exe` 这种长串
 
 如果暂时还用带版本号的附件名，页面上的 `autoLatest` 会自动读取最新 Release 的 exe 地址兜底，链接同样不会失效。
 

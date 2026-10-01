@@ -3,16 +3,18 @@
 # 发布新版本：更新版本号、日期，并同步主下载直链（version.json + index.html 兜底地址）
 #
 # 用法（Release 为主分发渠道）：
-#   bash update-release.sh v2.6.2                       只更新版本号与日期（链接靠 autoLatest 自动跟随）
-#   bash update-release.sh v2.6.2 --auto                按 version.json 的 urlPattern 拼装该版本的直链（推荐）
-#   bash update-release.sh v2.6.2 --fixed               主下载改为固定名 latest 直链（需 Release 附件已改名为固定名）
-#   bash update-release.sh v2.6.2 https://直链.exe      手动指定主下载直链
-#   bash update-release.sh v2.6.2 https://直链.exe https://备用链接   同时更新备用下载
-#   bash update-release.sh v2.6.2 ./新包.exe [https://备用链接]       只更新本地备份（downloads/ 已被 .gitignore 忽略）
+#   bash update-release.sh v3.1.6                       只更新版本号与日期（链接靠 autoLatest 自动跟随）
+#   bash update-release.sh v3.1.6 --auto                按 version.json 的 urlPattern 拼装该版本的直链（推荐）
+#   bash update-release.sh v3.1.6 --fixed               主下载改为固定名 latest 直链（需 Release 附件已改名为固定名）
+#   bash update-release.sh v3.1.6 https://直链.exe      手动指定主下载直链
+#   bash update-release.sh v3.1.6 https://直链.exe https://备用链接   同时更新备用下载
+#   bash update-release.sh v3.1.6 ./新包.exe [https://备用链接]       只更新本地备份（downloads/ 已被 .gitignore 忽略）
 #
 # 说明：
 #   - 文件名带版本号时，每次发版链接都会变，所以本脚本会同时改 version.json 和 index.html 里写死的兜底地址，
 #     保证访问不到 api.github.com 的访客也能拿到当前版本。
+#   - 同时会把 index.html 的「当前版本 vX.Y.Z」文案一起改掉。
+#   - 安装包体积变化时，需要手动更新 version.json 与 index.html 里的「下载安装包（xx MB）」文案。
 #   - Release 附件改名为 SteamCN-GameLauncher-Setup.exe 后用 --fixed，链接永久不变，以后只改版本号即可。
 
 set -e
@@ -21,6 +23,13 @@ cd "$(dirname "$0")"
 VER="$1"
 ARG2="$2"
 ARG3="$3"
+
+# 版本号统一带 v 前缀（允许传 3.1.5 这种写法）
+case "$VER" in
+  ""|v*) ;;
+  *) VER="v$VER" ;;
+esac
+
 FILE="version.json"
 PAGE="index.html"
 FIXED_NAME="SteamCN-GameLauncher-Setup.exe"
@@ -98,6 +107,12 @@ if [ -n "$MAIN_URL" ]; then
   fi
 fi
 
+# 同步 index.html 里写死的版本号文案（无论有没有指定直链都要改，否则断网访客看到旧版本号）
+if [ -f "$PAGE" ]; then
+  sed -i "s|当前版本 v[0-9][0-9.]*|当前版本 $VER|" "$PAGE"
+  echo "已同步 $PAGE 中的版本文案：当前版本 $VER"
+fi
+
 if [ -n "$MIRROR" ]; then
   # 第二处 url 是备用下载（mirror）
   LINE=$(grep -n '"url"' "$FILE" | sed -n '2p' | cut -d: -f1)
@@ -116,4 +131,6 @@ if [ -z "$MAIN_URL" ]; then
   echo ""
 fi
 
+echo "提示：安装包体积若变化，请同步更新 $FILE 与 $PAGE 里的「下载安装包（xx MB）」文案。"
+echo ""
 echo "确认无误后执行：  bash deploy.sh \"更新到 $VER\""

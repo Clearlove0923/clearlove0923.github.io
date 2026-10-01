@@ -190,8 +190,8 @@
       <div class="hero-actions" style="margin-bottom:0;">
         <!-- 写死的是当版本的 GitHub Release 直链；页面加载后会用 version.json + GitHub API 更新为最新版 -->
         <a class="btn btn-primary btn-lg" id="downloadBtn"
-           href="https://github.com/Clearlove0923/SteamCN-GameLauncher/releases/download/v2.6.1/SteamCN-GameLauncher-v2.6.1-win-x64-setup.exe">
-          下载安装包（65 MB）
+           href="https://github.com/Clearlove0923/SteamCN-GameLauncher/releases/download/v3.1.5/SteamCN-GameLauncher-v3.1.5-win-x64-setup.exe">
+          下载安装包（133 MB）
         </a>
         <a class="btn btn-outline btn-lg" id="downloadMirrorBtn"
            href="https://wwaqe.lanzouq.com/iN0aT4a36t9c">
@@ -199,7 +199,7 @@
         </a>
       </div>
       <p class="muted" style="margin-top:14px;font-size:13px;">
-        <span id="versionInfo">当前版本 v2.6.1</span> · Windows 10 / 11 · x64 · 安装包已包含 .NET 与 Windows App SDK 运行库
+        <span id="versionInfo">当前版本 v3.1.5</span> · Windows 10 / 11 · x64 · 安装包已包含 .NET 与 Windows App SDK 运行库
       </p>
       <p class="muted" id="mirrorPwdLine" style="margin-top:8px;font-size:13px;">
         点备用下载后会要求输入密码，点此复制：
@@ -282,7 +282,11 @@
         })
         .then(function (data) {
           if (!data || !data.assets) return;
-          var exe = data.assets.filter(function (a) { return /\.exe$/i.test(a.name); })[0];
+          // 优先取安装包（setup.exe），避免把同版本的 Update 更新包当成安装包给访客
+          var exes = data.assets.filter(function (a) { return /\.exe$/i.test(a.name); });
+          var exe = exes.filter(function (a) { return /setup\.exe$/i.test(a.name); })[0]
+                 || exes.filter(function (a) { return !/update/i.test(a.name); })[0]
+                 || exes[0];
           if (!exe) return;
           btn.setAttribute('href', exe.browser_download_url);
           var d = data.published_at ? new Date(data.published_at) : null;

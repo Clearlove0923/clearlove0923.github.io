@@ -4,7 +4,7 @@
 > 仓库用途：`clearlove0923.github.io` —— SteamCN-GameLauncher 的产品展示与下载官网，纯静态站点，托管在 GitHub Pages。
 > 软件源码仓库另有其处，**发布流程与版本规则统一以本文件为准**，不在两边各写一份，避免规则分散冲突。
 
-最后更新：2026-09-27 · 适用于 v2.6.1 及之后的所有维护工作
+最后更新：2026-10-01 · 适用于 v3.1.5 及之后的所有维护工作
 
 ---
 
@@ -114,13 +114,13 @@ bash rollback.sh                  # 列出最近 10 次提交，输入序号即�
 
 ```json
 {
-  "version": "v2.6.1",
-  "date": "2026-09-11",
-  "size": "65 MB",
+  "version": "v3.1.5",
+  "date": "2026-09-30",
+  "size": "133 MB",
   "repo": "Clearlove0923/SteamCN-GameLauncher",
   "autoLatest": true,
   "urlPattern": "https://github.com/{repo}/releases/download/{ver}/SteamCN-GameLauncher-{ver}-win-x64-setup.exe",
-  "windows": { "label": "下载安装包（65 MB）", "url": "..." },
+  "windows": { "label": "下载安装包（133 MB）", "url": "..." },
   "mirror":  { "label": "备用下载（国内加速）", "url": "https://...", "pwd": "" },
   "changelog": "https://github.com/Clearlove0923/SteamCN-GameLauncher/releases"
 }

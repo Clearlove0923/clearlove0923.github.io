@@ -12,7 +12,7 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="index.html">SteamCN-GameLauncher</a>
+      <a class="logo" href="index.html"><span class="logo-mark" aria-hidden="true">S</span>SteamCN-GameLauncher</a>
       <nav class="nav-links">
         <a href="features.html">功能</a>
         <a href="tutorial.html">教程</a>
@@ -29,7 +29,8 @@
 
   <section class="hero">
     <div class="container">
-      <h1>国服二游，也能在 Steam 里统一管理</h1>
+      <p class="hero-pill"><span class="pill-dot" aria-hidden="true"></span>Windows 10 / 11 · x64 · 免费使用</p>
+      <h1>国服二游，也能在 <em class="hl">Steam</em> 里统一管理</h1>
       <p class="hero-sub">
         不用下载国际服，不用繁琐的配置流程，只需几步即可在 Steam 游玩国服二游，
         并且享受 Steam 的时长记录、游戏内覆盖与好友状态。
@@ -37,6 +38,14 @@
       <div class="hero-actions">
         <a class="btn btn-primary btn-lg" href="#download">下载安装包</a>
         <a class="btn btn-outline btn-lg" href="tutorial.html">看使用教程</a>
+      </div>
+
+      <!-- 版本与体积由 version.json + GitHub API 自动同步（见页面底部脚本） -->
+      <div class="hero-stats">
+        <span><b id="statVer">v3.1.5</b><small>当前版本</small></span>
+        <span><b id="statSize">133 MB</b><small>安装包体积</small></span>
+        <span><b>3 步</b><small>完成接入</small></span>
+        <span><b>多款</b><small>国服二游</small></span>
       </div>
 
       <div class="terminal">
@@ -55,6 +64,7 @@
 
   <section class="section" id="steps">
     <div class="container">
+      <p class="section-eyebrow">How it works</p>
       <h2 class="section-title">三步把国服游戏放进 Steam</h2>
       <p class="section-desc">不需要重装国际服，不需要手动改配置文件，全程图形界面操作。</p>
 
@@ -83,6 +93,7 @@
 
   <section class="section section-alt" id="features">
     <div class="container">
+      <p class="section-eyebrow">Core Features</p>
       <h2 class="section-title">核心功能</h2>
       <p class="section-desc">解决「国服启动器一大堆、Steam 里又看不到时长」的实际痛点。</p>
 
@@ -123,6 +134,7 @@
 
   <section class="section" id="links">
     <div class="container">
+      <p class="section-eyebrow">Docs &amp; Guides</p>
       <h2 class="section-title">按需求查看文档</h2>
       <p class="section-desc">常见问题、配置细节和限制说明都写在文档页里。</p>
       <ul class="link-list">
@@ -144,6 +156,7 @@
 
   <section class="section section-alt" id="examples">
     <div class="container">
+      <p class="section-eyebrow">Live Demos</p>
       <h2 class="section-title">几分钟看完三个示例</h2>
       <p class="section-desc">点开就能看到实际效果，从打包产物到 AI 生成页面，再到文档转网页。</p>
 
@@ -267,6 +280,11 @@
           if (o.size) t += ' · ' + o.size;
           info.textContent = t;
         }
+        // Hero 数据带同步
+        var statVer = document.getElementById('statVer');
+        var statSize = document.getElementById('statSize');
+        if (statVer && o.version) statVer.textContent = o.version;
+        if (statSize && o.size) statSize.textContent = o.size;
       }
 
       fetch('version.json', { cache: 'no-store' })
@@ -297,6 +315,9 @@
             if (cfg && cfg.size) t += ' · ' + cfg.size;
             info.textContent = t;
           }
+          // Hero 数据带跟随最新 Release 的 tag
+          var statVerEl = document.getElementById('statVer');
+          if (statVerEl && data.tag_name) statVerEl.textContent = data.tag_name;
         })
         .catch(function () { /* 保持 version.json 或页面写死的地址 */ });
     })();
@@ -345,6 +366,73 @@
           setTimeout(type, 90);
         }
       })();
+    })();
+  </script>
+
+  <script>
+    // 视觉增强：吸顶导航阴影 / Hero 跟随柔光 / 滚动进场
+    // 系统开启「减少动画」时整体跳过，保持安静
+    (function () {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // 1) 顶部导航：滚动后加深阴影与毛玻璃
+      var header = document.querySelector('.site-header');
+      if (header) {
+        var ticking = false;
+        var syncHeader = function () {
+          ticking = false;
+          header.classList.toggle('is-scrolled', window.pageYOffset > 8);
+        };
+        window.addEventListener('scroll', function () {
+          if (!ticking) { ticking = true; window.requestAnimationFrame(syncHeader); }
+        }, { passive: true });
+        syncHeader();
+      }
+
+      // 2) Hero 柔光跟随鼠标：只改 CSS 变量，位移幅度很小
+      var hero = document.querySelector('.hero');
+      if (hero && !reduce) {
+        var raf = 0;
+        hero.addEventListener('pointermove', function (e) {
+          if (raf) return;
+          raf = window.requestAnimationFrame(function () {
+            raf = 0;
+            var r = hero.getBoundingClientRect();
+            if (!r.width || !r.height) return;
+            hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(2) + '%');
+            hero.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(2) + '%');
+          });
+        }, { passive: true });
+      }
+
+      // 3) 滚动进场：.reveal 由脚本添加（关掉 JS 时内容照常显示）
+      //    进场过渡结束后移除这两个类，把 transition 控制权还给卡片自身的悬停效果
+      if (!reduce && 'IntersectionObserver' in window) {
+        var sel = '.section-eyebrow, .section-title, .section-desc, .card, .link-list li, .cta h2, .cta p';
+        var nodes = Array.prototype.slice.call(document.querySelectorAll(sel));
+
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            var t = en.target;
+            var delay = parseInt(t.getAttribute('data-reveal-delay') || '0', 10);
+            t.classList.add('is-in');
+            io.unobserve(t);
+            setTimeout(function () {
+              t.classList.remove('reveal', 'is-in');
+              t.style.transitionDelay = '';
+            }, 640 + delay);
+          });
+        }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+
+        nodes.forEach(function (n, i) {
+          var delay = (i % 4) * 70;
+          n.setAttribute('data-reveal-delay', String(delay));
+          n.style.transitionDelay = delay + 'ms';
+          n.classList.add('reveal');
+          io.observe(n);
+        });
+      }
     })();
   </script>
 

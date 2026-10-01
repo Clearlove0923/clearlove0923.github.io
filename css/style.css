@@ -8,6 +8,15 @@
   --accent: #185fa5;
   --accent-soft: #e6f1fb;
   --radius: 12px;
+
+  /* ---------- 品牌视觉：Steam 蓝 → 电竞青 双色渐变 ---------- */
+  --accent-2: #0ea5a4;
+  --accent-3: #2b8fd6;
+  --grad: linear-gradient(115deg, #185fa5 0%, #2b8fd6 48%, #0ea5a4 100%);
+  --grad-text: linear-gradient(100deg, #7dd3fc, #5eead4);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04), 0 6px 18px rgba(16, 24, 40, 0.05);
+  --shadow-md: 0 12px 32px rgba(16, 24, 40, 0.10);
+  --glow: rgba(43, 143, 214, 0.28);
 }
 
 * { box-sizing: border-box; }
@@ -40,6 +49,27 @@ a:hover { text-decoration: underline; }
   background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(6px);
+  transition: box-shadow 0.25s ease, background 0.25s ease;
+}
+
+/* 顶部一条渐变细线：全站统一的视觉起笔 */
+.site-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--grad);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.site-header.is-scrolled {
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 26px rgba(16, 24, 40, 0.07);
 }
 
 .header-inner {
@@ -50,11 +80,30 @@ a:hover { text-decoration: underline; }
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   font-size: 17px;
   font-weight: 600;
   color: var(--text);
 }
 .logo:hover { text-decoration: none; }
+
+/* 品牌标记：渐变小方块 */
+.logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 7px;
+  background: var(--grad);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(24, 95, 165, 0.30);
+}
 
 .nav-links {
   display: flex;
@@ -62,8 +111,28 @@ a:hover { text-decoration: underline; }
   margin-left: auto;
   margin-right: 24px;
 }
-.nav-links a { color: var(--muted); font-size: 14px; }
+.nav-links a {
+  position: relative;
+  padding-bottom: 2px;
+  color: var(--muted);
+  font-size: 14px;
+  transition: color 0.18s ease;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grad);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s ease;
+}
 .nav-links a:hover { color: var(--text); text-decoration: none; }
+.nav-links a:hover::after { transform: scaleX(1); }
 
 .header-actions { display: flex; gap: 10px; align-items: center; }
 
@@ -88,12 +157,71 @@ a:hover { text-decoration: underline; }
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
-  padding: 130px 0 96px;
+  padding: 124px 0 92px;
   text-align: center;
   color: #fff;
+  overflow: hidden;
+  isolation: isolate;
+  --mx: 50%;
+  --my: 28%;
   background:
-    linear-gradient(180deg, rgba(15, 20, 30, 0.40) 0%, rgba(15, 20, 30, 0.62) 70%, rgba(246, 247, 249, 1) 100%),
+    linear-gradient(180deg, rgba(11, 17, 28, 0.52) 0%, rgba(11, 17, 28, 0.70) 68%, rgba(246, 247, 249, 1) 100%),
     url("../assets/hero-bg.jpg") center 35% / cover no-repeat;
+}
+
+/* 科技网格：中间清晰、四周淡出，只做质感，不抢内容 */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(120% 78% at 50% 26%, #000 34%, transparent 76%);
+  mask-image: radial-gradient(120% 78% at 50% 26%, #000 34%, transparent 76%);
+  pointer-events: none;
+}
+
+/* 跟随鼠标的柔光（幅度很小，不喧宾夺主） */
+.hero::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: var(--mx);
+  top: var(--my);
+  width: 720px;
+  height: 720px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(43, 143, 214, 0.30), rgba(14, 165, 164, 0.13) 46%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero > .container { position: relative; z-index: 2; }
+
+/* 顶部小标签 */
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto 22px;
+  padding: 5px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.10);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+.hero-pill .pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5eead4;
+  box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.22);
 }
 
 .hero h1 {
@@ -104,6 +232,17 @@ a:hover { text-decoration: underline; }
   font-weight: 600;
   letter-spacing: -0.5px;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+/* 关键词渐变高亮 */
+.hero h1 .hl {
+  font-style: normal;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: none;
 }
 
 .hero-sub {
@@ -118,7 +257,7 @@ a:hover { text-decoration: underline; }
   display: flex;
   gap: 14px;
   justify-content: center;
-  margin-bottom: 56px;
+  margin-bottom: 34px;
   flex-wrap: wrap;
 }
 
@@ -128,6 +267,39 @@ a:hover { text-decoration: underline; }
   color: #fff;
 }
 .hero .btn-outline:hover { background: rgba(255, 255, 255, 0.22); }
+
+/* Hero 数据带：版本 / 体积 / 步骤 / 支持范围 */
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto 44px;
+  max-width: 700px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  background: rgba(11, 17, 28, 0.34);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+.hero-stats > span {
+  flex: 1 1 0;
+  min-width: 132px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.hero-stats > span + span { border-left: 1px solid rgba(255, 255, 255, 0.14); }
+.hero-stats b {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.2px;
+}
+.hero-stats small {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.64);
+}
 
 /* ---------- 终端演示 ---------- */
 .terminal {
@@ -189,6 +361,30 @@ a:hover { text-decoration: underline; }
 .section { padding: 76px 0; }
 .section-alt { background: var(--bg-alt); }
 
+/* 区块上方的小英文标签 + 渐变短线 */
+.section-eyebrow {
+  margin: 0 0 14px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.section-eyebrow::after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 2px;
+  margin: 9px auto 0;
+  border-radius: 2px;
+  background: var(--grad);
+}
+
 .section-title {
   margin: 0 0 10px;
   font-size: 28px;
@@ -208,10 +404,36 @@ a:hover { text-decoration: underline; }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 
 .card {
+  position: relative;
   padding: 26px;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+/* 卡片顶部一条渐变光带，悬停时从左展开 */
+.card::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: -1px;
+  height: 2px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--grad);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(24, 95, 165, 0.22);
+    box-shadow: var(--shadow-md);
+  }
+  .card:hover::before { transform: scaleX(1); }
 }
 
 .card h3 {
@@ -233,11 +455,12 @@ a:hover { text-decoration: underline; }
   width: 30px;
   height: 30px;
   margin-bottom: 14px;
-  border-radius: 8px;
-  background: var(--accent-soft);
-  color: var(--accent);
+  border-radius: 9px;
+  background: var(--grad);
+  color: #fff;
   font-size: 14px;
   font-weight: 600;
+  box-shadow: 0 4px 12px rgba(24, 95, 165, 0.26);
 }
 
 .tags {
@@ -405,10 +628,26 @@ a:hover { text-decoration: underline; }
 
 /* ---------- 底部 CTA ---------- */
 .cta {
+  position: relative;
   padding: 88px 0;
   text-align: center;
-  background: var(--bg-alt);
+  background:
+    radial-gradient(760px 320px at 50% 0%, rgba(24, 95, 165, 0.10), transparent 72%),
+    var(--bg-alt);
   border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(560px, 78%);
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: var(--grad);
 }
 .cta h2 { margin: 0 0 10px; font-size: 30px; font-weight: 600; }
 .cta p { margin: 0 auto 28px; max-width: 520px; color: var(--muted); }
@@ -436,10 +675,28 @@ a:hover { text-decoration: underline; }
 .footer-links a { color: var(--muted); font-size: 14px; }
 .muted { color: var(--muted); }
 
+/* ---------- 滚动进场（.reveal 由 JS 添加，禁用 JS 时内容正常显示） ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hero::after { display: none; }
+  .mm-chev > span { animation: none; }
+}
+
 /* ---------- 响应式 ---------- */
 @media (max-width: 880px) {
   .grid-3 { grid-template-columns: 1fr 1fr; }
   .hero h1 { font-size: 32px; }
+  .hero-stats { max-width: 560px; }
 }
 
 @media (max-width: 640px) {
@@ -451,6 +708,13 @@ a:hover { text-decoration: underline; }
   .section { padding: 52px 0; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
   .mm-arrow-title { font-size: 14px; }
+
+  /* 数据带在窄屏排成 2×2 */
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr; }
+  .hero-stats > span { min-width: 0; }
+  .hero-stats > span + span { border-left: none; }
+  .hero-stats > span:nth-child(even) { border-left: 1px solid rgba(255, 255, 255, 0.14); }
+  .hero-stats > span:nth-child(n + 3) { border-top: 1px solid rgba(255, 255, 255, 0.14); }
 }
 
 /* ---------- 关于页 ---------- */

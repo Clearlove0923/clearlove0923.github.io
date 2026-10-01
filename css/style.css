@@ -254,7 +254,10 @@ a:hover { text-decoration: underline; }
       rgba(11, 32, 50, 0.44) 72%, rgba(11, 32, 50, 0.20) 86%, rgba(11, 32, 50, 0) 100%),
     linear-gradient(rgba(14, 165, 164, 0.14), rgba(14, 165, 164, 0.14)),
     linear-gradient(rgba(24, 95, 165, 0.28), rgba(24, 95, 165, 0.28)),
-    url("../assets/hero-bg.jpg?v=3") center 46% / cover no-repeat;
+    /* fixed：让这层底图和 body::before 那张整页底图以「同一个视口」为基准取景。
+       不加 fixed 的话，这里是按 .hero 自身高度铺（图缩得小）、整页底图按视口高度铺
+       （图放得大），同一张图在两处的缩放与取景都不一样 —— 看起来像两张不同的图。 */
+    url("../assets/hero-bg.jpg?v=3") center 46% / cover no-repeat fixed;
   /* 下沿 16% 淡出：让「原力度 Hero」过渡到「雾化的整页底图」 */
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0) 100%);
   mask-image: linear-gradient(180deg, #000 0%, #000 84%, rgba(0, 0, 0, 0) 100%);
@@ -812,6 +815,8 @@ body.is-editing .btn-edit { display: none; }
 @media (max-width: 640px) {
   /* 没有图标了，这里只能收窄内边距与字号，绝不能隐藏文字（否则按钮会空掉） */
   .btn-edit { padding: 7px 8px; font-size: 13px; }
+  /* iOS Safari 不认 background-attachment: fixed，会退化成滚动，索性显式退回按元素铺 */
+  .hero-bg { background-attachment: scroll; }
   .edit-bar-lead span:not(.edit-bar-state) { display: none; }
 }
 

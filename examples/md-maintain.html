@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MD 文档维护工作台 · 示例</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20261002002619">
+  <link rel="stylesheet" href="../css/style.css?v=20261002004415">
   <style>
     .demo-bar {
       display: flex;
@@ -62,9 +62,12 @@
       grid-template-columns: 1fr 1fr;
       gap: 0;
       min-height: calc(100vh - 100px);
+      /* 故意不铺任何底色：让整页底图（body::before）在左右两栏同样透出来。
+         原来左栏用了不透明的 --bg-alt，才出现「右边有图、左边全白」的不一致。
+         内容本身自带白卡片（输入框 / 编辑器 / 预览卡），不靠这层底色保证可读性。 */
     }
     .pane { padding: 18px 22px; overflow: auto; }
-    .pane.left { background: var(--bg-alt); border-right: 1px solid var(--line); }
+    .pane.left { border-right: 1px solid var(--line); }
     .pane-title {
       display: flex; align-items: center; justify-content: space-between;
       gap: 10px; margin-bottom: 10px; font-size: 14px; font-weight: 600;
@@ -175,14 +178,6 @@
       margin-bottom: 12px; padding: 8px 12px; border-radius: 8px;
       background: #fdf3e3; border: 1px solid #f0dfc0; color: #8a5a12; font-size: 13px;
     }
-    /* 云端内容比页面内置的还旧时，告诉访客「你看到的是内置最新版」 */
-    .v-stale {
-      display: flex; align-items: flex-start; gap: 8px;
-      margin-bottom: 12px; padding: 9px 12px; border-radius: 8px;
-      background: #eaf3fd; border: 1px solid #cfe0f3; color: #22537f; font-size: 13px;
-      line-height: 1.65;
-    }
-    .v-stale b { font-weight: 600; }
     .v-body { max-height: none; }
     .v-body > :first-child { margin-top: 0; }
 
@@ -220,11 +215,6 @@
 
     <div class="v-warn" id="vWarn" hidden>
       正在查看历史版本 <strong id="vWarnVer"></strong> —— <a href="#" id="vBackLatest">回到最新</a>
-    </div>
-
-    <!-- 云端数据比页面内置的还旧时出现（例如云端压着 v2.6.1、内置已是 v3.1.5） -->
-    <div class="v-stale" id="vStale" hidden>
-      <span id="vStaleTxt"></span>
     </div>
 
     <article class="preview v-body" id="vBody"></article>
@@ -413,7 +403,7 @@
     var vBadge = el('vBadge'), vVer = el('vVer'), vMeta = el('vMeta');
     var vPick = el('vPick'), vBody = el('vBody'), vWarn = el('vWarn');
     var vWarnVer = el('vWarnVer'), vState = el('vState');
-    var vStale = el('vStale'), vStaleTxt = el('vStaleTxt');
+    /* 访客视图不再有「云端落后」提示块（渲染函数见 renderStaleNote） */
 
     var data = load();
     var current = null;
@@ -654,25 +644,12 @@
       vState.textContent = '共 ' + list.length + ' 个版本';
     }
 
-    /* 云端内容落后于内置时的一行提示（访客视图顶部 + 状态行） */
-    function renderStaleNote() {
-      if (!vStale) return;
-      if (cloudStaleVer) {
-        var seedNewest = Object.keys(SEED).sort(cmpVer)[0] || '';
-        vStaleTxt.innerHTML = '';
-        var b = document.createElement('b');
-        b.textContent = '云端维护文档还停留在 ' + cloudStaleVer + '。';
-        vStaleTxt.appendChild(b);
-        vStaleTxt.appendChild(document.createTextNode(
-          '本页已自动改为展示内置的最新版 ' + seedNewest +
-          '；管理员点右上「管理员」解锁后，用工具栏里的「同步内置最新版到云端」可把云端一并更新。'));
-        vStale.hidden = false;
-        if (vState) vState.textContent = '提示：云端停留于 ' + cloudStaleVer + '，当前展示的是内置 ' + seedNewest + '。';
-      } else {
-        vStale.hidden = true;
-        vStaleTxt.textContent = '';
-      }
-    }
+    /* 云端内容落后于内置时，访客视图什么都不显示：
+       访客只看最新的维护文档，「云端还停在哪个版本」属于内部细节，不该占用访客视线，
+       否则每换一版都要盯着这行提示。管理员解锁后由工具栏状态行提示（见 cloudPull 的 stale 分支），
+       并能用「同步内置最新版到云端」一键把云端补齐。
+       保留这个空函数，是为了不改动 cloudPull / cloudPush 里的调用点。 */
+    function renderStaleNote() {}
 
     vPick.addEventListener('change', function () { renderVisitor(vPick.value); });
     el('vBackLatest').addEventListener('click', function (e) {

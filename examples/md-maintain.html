@@ -234,6 +234,7 @@
     <span class="sep"></span>
     <button class="btn btn-outline" id="setupBtn">云端设置</button>
     <button class="btn btn-outline" id="hashBtn">生成口令哈希</button>
+    <button class="btn btn-outline" id="reseedBtn" type="button">重置为内置文档</button>
     <span class="grow"></span>
     <span class="cloud-state" id="cloudState">本机模式</span>
     <span class="status" id="status"></span>
@@ -738,6 +739,25 @@
       renderVisitor();
       status.textContent = '已删除版本';
       if (adminHash && apiBase()) cloudPush();
+    });
+
+    /* 用「页面内置的默认文档」覆盖本机与云端 —— 用于把云端压着的老版本换成内置的最新版 */
+    el('reseedBtn').addEventListener('click', function () {
+      if (!adminHash) { status.textContent = '请先解锁管理员'; return; }
+      var list = Object.keys(SEED).sort(cmpVer);
+      if (!window.confirm('将用内置默认文档覆盖当前内容：\n\n　' + list.join(' / ') +
+          '\n\n本机与云端都会被替换，云端原有的其它版本会一并消失，且无法撤销。\n确定继续吗？')) return;
+      data = JSON.parse(JSON.stringify(SEED));
+      persist();
+      current = null;
+      var keys = versions();
+      fillSelect(verSelect, keys[0]);
+      fillSelect(cmpA, keys[1] || keys[0]);
+      fillSelect(cmpB, keys[0]);
+      switchTo(keys[0]);
+      renderVisitor();
+      status.textContent = '已载入内置文档 ' + list.join(' / ') + '，正在写入云端…';
+      cloudPush();
     });
 
     el('importBtn').addEventListener('click', function () { el('importInput').click(); });

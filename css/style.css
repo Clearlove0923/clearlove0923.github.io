@@ -164,9 +164,20 @@ a:hover { text-decoration: underline; }
   isolation: isolate;
   --mx: 50%;
   --my: 28%;
+  /* 背景分两层思路：先把画面的暖绿压成品牌青蓝，再用手写叠层把文字区稳住。
+     层次自上而下 = 内层聚焦 → 柔光背板 → 竖向压暗/接底 → 青色罩 → 蓝色罩 → 底图 */
   background:
-    linear-gradient(180deg, rgba(11, 17, 28, 0.52) 0%, rgba(11, 17, 28, 0.70) 68%, rgba(246, 247, 249, 1) 100%),
-    url("../assets/hero-bg.jpg") center 35% / cover no-repeat;
+    radial-gradient(36% 28% at 50% 30%,
+      rgba(6, 16, 28, 0.22) 0%, rgba(6, 16, 28, 0.22) 50%, rgba(6, 16, 28, 0) 100%),
+    radial-gradient(66% 78% at 50% 36%,
+      rgba(6, 16, 28, 0.27) 0%, rgba(6, 16, 28, 0.27) 58%,
+      rgba(6, 16, 28, 0.17) 82%, rgba(6, 16, 28, 0.07) 92%, rgba(6, 16, 28, 0) 100%),
+    linear-gradient(180deg,
+      rgba(8, 19, 33, 0.62) 0%, rgba(9, 24, 40, 0.34) 38%,
+      rgba(11, 32, 50, 0.44) 72%, rgba(246, 247, 249, 1) 97%),
+    linear-gradient(rgba(14, 165, 164, 0.14), rgba(14, 165, 164, 0.14)),
+    linear-gradient(rgba(24, 95, 165, 0.28), rgba(24, 95, 165, 0.28)),
+    url("../assets/hero-bg.jpg?v=2") center 46% / cover no-repeat;
 }
 
 /* 科技网格：中间清晰、四周淡出，只做质感，不抢内容 */

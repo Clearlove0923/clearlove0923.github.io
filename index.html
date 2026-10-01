@@ -6,7 +6,7 @@
   <meta name="description" content="SteamCN-GameLauncher：不用下载国际服，不用繁琐的配置流程，只需几步即可在 Steam 游玩国服二游，并享受 Steam 的时长记录、游戏内覆盖等功能。">
   <title>SteamCN-GameLauncher | 国服游戏，也能在 Steam 里统一管理</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20261001234517">
+  <link rel="stylesheet" href="css/style.css?v=20261002002619">
 </head>
 <body>
 
@@ -22,11 +22,9 @@
       </nav>
       <div class="header-actions">
         <a class="btn btn-ghost" href="docs.html#requirements">系统要求</a>
-        <!-- 管理员入口：和「下载」并排；访客点了会要求输入口令，输错只会停在原页 -->
-        <button class="btn btn-edit" id="editToggleBtn" type="button" title="管理员：直接修改本页文字">
-          <span class="mm-edit-ico" aria-hidden="true">✎</span><span class="mm-edit-txt">编辑文案</span>
-        </button>
         <a class="btn btn-primary" href="#download">下载</a>
+        <!-- 管理员入口：在「下载」右侧；访客点了会要求输入口令，输错只会停在原页 -->
+        <button class="btn btn-edit" id="editToggleBtn" type="button" title="管理员入口：输入口令后可直接修改本页文字">管理员</button>
       </div>
     </div>
   </header>
@@ -190,7 +188,7 @@
   </section>
 
   <!-- 运行维护入口：常驻屏幕底部的细条，里面是「运行维护」四个字 + 两个朝下小勾，点击直接进维护页。
-       管理员的「编辑文案」入口已挪到顶部导航、紧挨「下载」按钮。 -->
+       管理员的「管理员」入口在顶部导航最右侧（「下载」按钮的右边）。 -->
   <section class="mm-entry" id="maintain">
     <div class="container mm-entry-inner">
       <a class="mm-arrow" href="examples/md-maintain.html">
@@ -447,7 +445,7 @@
          ② 仓库根目录 content.json  —— 管理员「导出文案」后放进项目并推送，等于把线上文案存进 Git
          ③ 云端 KV（/api/site）     —— 「保存并发布」写的那份，线上实时生效
        访客：读三层并合成一份文案，再把带 data-edit 的元素刷成它（读到云端就缓存到 localStorage，下次秒开）。
-       管理员：点顶部「编辑文案」→ 输口令 → 页面上直接改 → 「保存并发布」写云端 / 「导出文案」存进仓库。
+       管理员：点顶部「管理员」（「下载」右边）→ 输口令 → 页面上直接改 → 「保存并发布」写云端 / 「导出文案」存进仓库。
        可改的位置 = HTML 上带 data-edit="key" 的元素；key 就是文案的字段名。
        带 data-edit-hl 的元素支持用 { } 圈出高亮词（首页大标题就是这样）。 */
     (function () {

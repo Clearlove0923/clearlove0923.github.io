@@ -204,12 +204,9 @@ a:hover { text-decoration: underline; }
 .btn-outline:hover { border-color: var(--muted); }
 .btn-ghost { color: var(--muted); }
 
-/* 顶部导航里的「编辑文案」：紧挨「下载」，样式低调（灰字 + 悬停才上品牌色），
-   只有管理员会点；访客点了会要求输入口令。 */
+/* 顶部导航里的「管理员」入口：在「下载」右侧，样式低调（灰字 + 悬停才上品牌色），
+   只有管理员会点；访客点了会要求输入口令。纯文字，不带图标。 */
 .btn-edit {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   padding: 7px 12px;
   font-family: inherit;
   background: none;
@@ -223,7 +220,6 @@ a:hover { text-decoration: underline; }
   border-color: var(--accent);
   background: var(--accent-soft);
 }
-.mm-edit-ico { font-size: 13px; line-height: 1; }
 .btn-ghost:hover { color: var(--text); }
 .btn-lg { padding: 11px 26px; font-size: 15px; }
 
@@ -814,8 +810,8 @@ body.is-editing .btn-edit { display: none; }
 .edit-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 
 @media (max-width: 640px) {
-  .btn-edit { padding: 7px 9px; }
-  .mm-edit-txt { display: none; }
+  /* 没有图标了，这里只能收窄内边距与字号，绝不能隐藏文字（否则按钮会空掉） */
+  .btn-edit { padding: 7px 8px; font-size: 13px; }
   .edit-bar-lead span:not(.edit-bar-state) { display: none; }
 }
 

@@ -22,6 +22,10 @@
       </nav>
       <div class="header-actions">
         <a class="btn btn-ghost" href="docs.html#requirements">系统要求</a>
+        <!-- 管理员入口：和「下载」并排；访客点了会要求输入口令，输错只会停在原页 -->
+        <button class="btn btn-edit" id="editToggleBtn" type="button" title="管理员：直接修改本页文字">
+          <span class="mm-edit-ico" aria-hidden="true">✎</span><span class="mm-edit-txt">编辑文案</span>
+        </button>
         <a class="btn btn-primary" href="#download">下载</a>
       </div>
     </div>
@@ -185,17 +189,14 @@
     </div>
   </section>
 
-  <!-- 运行维护入口：常驻屏幕底部的细条，左侧是「运行维护」四个字 + 两个朝下小勾，点击直接进维护页；
-       右侧是管理员「编辑文案」入口——访客点开也只会要求口令，改不了东西。 -->
+  <!-- 运行维护入口：常驻屏幕底部的细条，里面是「运行维护」四个字 + 两个朝下小勾，点击直接进维护页。
+       管理员的「编辑文案」入口已挪到顶部导航、紧挨「下载」按钮。 -->
   <section class="mm-entry" id="maintain">
     <div class="container mm-entry-inner">
       <a class="mm-arrow" href="examples/md-maintain.html">
         <span class="mm-arrow-title">运行维护</span>
         <span class="mm-chev" aria-hidden="true"><span></span><span></span></span>
       </a>
-      <button class="mm-edit-btn" id="editToggleBtn" type="button" title="管理员：直接修改本页文字">
-        <span class="mm-edit-ico" aria-hidden="true">✎</span><span class="mm-edit-txt">编辑文案</span>
-      </button>
     </div>
   </section>
 

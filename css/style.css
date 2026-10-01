@@ -197,6 +197,27 @@ a:hover { text-decoration: underline; }
 .btn-outline { border-color: var(--line); color: var(--text); background: #fff; }
 .btn-outline:hover { border-color: var(--muted); }
 .btn-ghost { color: var(--muted); }
+
+/* 顶部导航里的「编辑文案」：紧挨「下载」，样式低调（灰字 + 悬停才上品牌色），
+   只有管理员会点；访客点了会要求输入口令。 */
+.btn-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  font-family: inherit;
+  background: none;
+  border-color: transparent;
+  color: var(--muted);
+  transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+}
+.btn-edit:hover,
+.btn-edit:focus-visible {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.mm-edit-ico { font-size: 13px; line-height: 1; }
 .btn-ghost:hover { color: var(--text); }
 .btn-lg { padding: 11px 26px; font-size: 15px; }
 
@@ -686,7 +707,7 @@ a:hover { text-decoration: underline; }
   50%      { transform: rotate(-45deg) translate(2px, 2px); }
 }
 
-/* 吸底条内部的布局：让「运行维护」保持视觉居中，右侧挂一个低调的管理入口 */
+/* 吸底条内部的布局：「运行维护」视觉居中 */
 .mm-entry-inner {
   position: relative;
   display: flex;
@@ -695,34 +716,9 @@ a:hover { text-decoration: underline; }
   min-height: 44px;
 }
 
-.mm-edit-btn {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 11px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 12.5px;
-  cursor: pointer;
-  transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
-}
-.mm-edit-btn:hover,
-.mm-edit-btn:focus-visible {
-  color: var(--accent-ink);
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.mm-edit-ico { font-size: 13px; line-height: 1; }
-
-/* 编辑模式下换成工具条，吸底条让位 */
+/* 编辑模式下换成底部工具条：吸底条和顶部那个入口都让位 */
 body.is-editing .mm-entry { display: none; }
+body.is-editing .btn-edit { display: none; }
 
 /* ---------- 管理员就地编辑：工具条 ---------- */
 .edit-bar {
@@ -812,7 +808,7 @@ body.is-editing .mm-entry { display: none; }
 .edit-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 
 @media (max-width: 640px) {
-  .mm-edit-btn { padding: 6px 9px; }
+  .btn-edit { padding: 7px 9px; }
   .mm-edit-txt { display: none; }
   .edit-bar-lead span:not(.edit-bar-state) { display: none; }
 }

@@ -6,7 +6,7 @@
   <meta name="description" content="SteamCN-GameLauncher：不用下载国际服，不用繁琐的配置流程，只需几步即可在 Steam 游玩国服二游，并享受 Steam 的时长记录、游戏内覆盖等功能。">
   <title>SteamCN-GameLauncher | 国服游戏，也能在 Steam 里统一管理</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20261002005503">
+  <link rel="stylesheet" href="css/style.css?v=20261002111453">
 </head>
 <body>
 
@@ -261,6 +261,34 @@
       <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
     </div>
   </footer>
+
+  <!-- 右侧抽屉「二游官网 / 其他」：默认收起，只在屏幕右缘留一条透明把手（两个字 + 箭头），
+       不铺底色、不加边框，直接压在整页底图上；展开后从右侧滑出，宽度约占视口的 1/3。
+       把手会跟着面板一起左移，始终贴在面板左沿，所以同一个按钮就能展开 / 收起。
+       图标取自各游戏的官方应用商店图标（assets/games/，仅用于跳转官网）；
+       要增删游戏，只改页面底部脚本里的 GAMES 清单（全站唯一一份）。 -->
+  <div class="side-dock" id="sideDock">
+    <button class="dock-handle" id="dockHandle" type="button"
+            aria-expanded="false" aria-controls="dockPanel" title="展开 / 收起">
+      <span class="dock-handle-label">二游官网</span>
+      <span class="dock-handle-label dock-handle-label--sub">其他</span>
+      <span class="dock-chev" aria-hidden="true"></span>
+    </button>
+
+    <aside class="dock-panel" id="dockPanel" aria-label="二游官网与其他">
+      <section class="dock-sec">
+        <h2 class="dock-sec-title">二游官网</h2>
+        <p class="dock-sec-hint">点图标打开官方网站</p>
+        <div class="dock-grid" id="dockGrid"></div>
+      </section>
+
+      <section class="dock-sec">
+        <h2 class="dock-sec-title">其他</h2>
+        <p class="dock-sec-hint">这块先空着，以后往这里加新功能。</p>
+        <div class="dock-slot" id="dockOther">待添加</div>
+      </section>
+    </aside>
+  </div>
 
   <script>
     // 下载信息统一由 version.json 控制；取不到时再回退到 GitHub API；都失败就保留页面写死的地址
@@ -854,6 +882,89 @@
       //    所以谁先谁后都不会算错（合成时云端天然压在 baked 上面，优先级是对的）。
       loadBaked();
       pull();
+    })();
+  </script>
+
+  <script>
+    // 右侧抽屉：点把手展开 / 收起，Esc 或点抽屉以外的页面区域也能收起。
+    (function () {
+      var dock = document.getElementById('sideDock');
+      var handle = document.getElementById('dockHandle');
+      var grid = document.getElementById('dockGrid');
+      if (!dock || !handle || !grid) return;
+
+      /* ===== 二游官网清单：想增删游戏，只改这里（全站唯一一份） =====
+         n    图标下面显示的名字（短名，太长会挤）
+         f    鼠标悬停时的完整名（跟 n 一样就不用写）
+         img  官方图标路径（assets/games/ 下，取自各游戏官方应用商店的图标）
+         k / bg / fg   兜底用：图片加载失败时退回「浅底 + 深色首字」
+         u    游戏官方网站 */
+      var GAMES = [
+        { n: '原神',       img: 'assets/games/ys.webp',       k: '原', bg: '#e4eff9', fg: '#1c5f95', u: 'https://ys.mihoyo.com/' },
+        { n: '崩坏3',      img: 'assets/games/bh3.webp',      k: '崩', bg: '#ece7f9', fg: '#6a4fb0', u: 'https://bh3.mihoyo.com/' },
+        { n: '绝区零',     img: 'assets/games/zzz.webp',      k: '绝', bg: '#f7f0dc', fg: '#8a6d1f', u: 'https://zzz.mihoyo.com/' },
+        { n: '鸣潮',       img: 'assets/games/mc.webp',       k: '鸣', bg: '#e2f0f5', fg: '#1f6f8b', u: 'https://mc.kurogames.com/' },
+        { n: '无限暖暖',   img: 'assets/games/nikki.webp',    k: '暖', bg: '#fbe8f0', fg: '#b0527f', u: 'https://infinitynikki.nuanpaper.com/' },
+        { n: '燕云十六声', img: 'assets/games/yy.webp',       k: '燕', bg: '#e4f1ec', fg: '#2f6f5e', u: 'https://www.wherewindsmeetgame.com/' },
+        { n: '终末地', f: '明日方舟：终末地', img: 'assets/games/endfield.webp', k: '终', bg: '#ebedf0', fg: '#4a5560', u: 'https://endfield.hypergryph.com/' },
+        { n: '异环',       img: 'assets/games/nte.webp',      k: '异', bg: '#e8e9fa', fg: '#4f57b5', u: 'https://nte.perfectworld.com/cn/' }
+      ];
+
+      GAMES.forEach(function (g) {
+        var a = document.createElement('a');
+        a.className = 'dock-game';
+        a.href = g.u;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.title = (g.f || g.n) + ' 官方网站';
+
+        var ico = document.createElement('span');
+        ico.className = 'dock-icon';
+        ico.style.setProperty('--bg', g.bg);
+        ico.style.setProperty('--fg', g.fg);
+
+        // 优先用官方图标；万一图挂了（离线 / 文件缺失），自动退回首字方块
+        if (g.img) {
+          var im = document.createElement('img');
+          im.src = g.img;
+          im.alt = '';
+          im.decoding = 'async';
+          im.addEventListener('error', function () {
+            if (im.parentNode) im.parentNode.removeChild(im);
+            ico.textContent = g.k;
+          });
+          ico.appendChild(im);
+        } else {
+          ico.textContent = g.k;
+        }
+
+        var nm = document.createElement('span');
+        nm.className = 'dock-name';
+        nm.textContent = g.n;
+
+        a.appendChild(ico);
+        a.appendChild(nm);
+        grid.appendChild(a);
+      });
+
+      function isOpen() { return document.body.classList.contains('dock-open'); }
+      function setOpen(open) {
+        document.body.classList.toggle('dock-open', open);
+        handle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      handle.addEventListener('click', function () { setOpen(!isOpen()); });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && isOpen()) setOpen(false);
+      });
+
+      // 点抽屉以外的页面区域也收起（点面板内部不会触发）
+      document.addEventListener('click', function (e) {
+        if (!isOpen()) return;
+        if (dock.contains(e.target)) return;
+        setOpen(false);
+      });
     })();
   </script>
 

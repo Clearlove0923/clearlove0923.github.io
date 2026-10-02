@@ -887,6 +887,229 @@ body.is-editing .btn-edit { display: none; }
   .mm-chev > span { animation: none; }
 }
 
+/* ---------- 右侧抽屉：二游官网 / 其他 ----------
+   收起时只在屏幕右缘留一条「与背景融为一体」的把手（两个字 + 箭头，不铺底色、不加边框、不加阴影），
+   展开后从右侧滑出，宽度约占视口 1/3。把手用 right 位移跟着面板一起走，所以始终贴在面板左沿 ——
+   同一个按钮就能展开 / 收起，不用再额外放关闭按钮。 */
+.dock-handle {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 66;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 12px 10px 12px 16px;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: right;
+  -webkit-tap-highlight-color: transparent;
+  transition: right 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* 字色用品牌墨色（和吸底条「运行维护」同一支），但首屏那段底图是 Hero 的深色林子，
+   深色字直接压上去几乎看不清 —— 所以加一圈贴合笔画的浅色光。
+   注意：这不是白底块（用户明确不要「运行维护」那种白条），只是一圈描边光，
+   滚到页面下半段的浅色底图上时基本看不出来，不破坏「与背景融为一体」。
+   另外这里不能用「深色渐变字 + background-clip:text」：渐变字一旦叠 text-shadow
+   会被光晕糊成一团白，实测很难看，所以这里用纯色。 */
+.dock-handle-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  white-space: nowrap;
+  color: var(--accent-ink);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95), 0 0 8px rgba(255, 255, 255, 0.9);
+  transition: color 0.18s ease;
+}
+
+.dock-handle-label--sub { opacity: 0.82; }
+
+.dock-handle:hover .dock-handle-label,
+.dock-handle:focus-visible .dock-handle-label { color: var(--accent); }
+
+/* 箭头：收起时朝左（表示往左展开），展开后翻 180° 朝右（表示收回去）。
+   同样是深色笔触，叠一层 drop-shadow 的浅色光，才压得住首屏的深色底图。 */
+.dock-chev {
+  display: block;
+  width: 11px;
+  height: 11px;
+  margin: 5px 3px 0 0;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  border-radius: 0 0 0 2px;
+  color: var(--accent-ink);
+  transform: rotate(45deg);
+  filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
+  transition: transform 0.28s ease, color 0.18s ease;
+}
+
+.dock-handle:hover .dock-chev,
+.dock-handle:focus-visible .dock-chev { color: var(--accent); }
+
+body.dock-open .dock-chev { transform: rotate(-135deg); }
+
+/* 面板本体：贴着右缘、占满视口高度；收起时整体挪到屏幕外，并用 visibility 退出 Tab 焦点链 */
+.dock-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 65;
+  width: min(33vw, 380px);
+  height: 100%;
+  padding: 20px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(255, 255, 255, 0.84);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  backdrop-filter: blur(14px) saturate(1.05);
+  border-left: 1px solid var(--line);
+  box-shadow: -14px 0 34px rgba(15, 23, 42, 0.10);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0.28s;
+}
+
+body.dock-open .dock-panel { transform: none; visibility: visible; }
+body.dock-open .dock-handle { right: min(33vw, 380px); }
+
+.dock-sec + .dock-sec {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.dock-sec-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent-ink);
+}
+
+.dock-sec-hint {
+  margin: 3px 0 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.dock-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.dock-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 4px 7px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color 0.18s ease;
+}
+
+.dock-game:hover { background: rgba(24, 95, 165, 0.08); }
+.dock-game:hover .dock-name { color: var(--accent-ink); }
+
+/* 游戏图标：各游戏官方 App 图标（assets/games/*.webp，方形圆角）。
+   --bg / --fg 是兜底配色，由脚本里的 GAMES 清单传入 —— 图片加载失败时
+   会退回「浅底 + 深色首字」，不会出现破图。 */
+.dock-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--fg, var(--accent-ink));
+  background: var(--bg, var(--accent-soft));
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+  transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+}
+
+.dock-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 描边画在图片之上（inset 阴影会被 img 盖住，所以单独用一层伪元素） */
+.dock-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.10);
+  pointer-events: none;
+}
+
+.dock-game:hover .dock-icon {
+  transform: translateY(-2px);
+  filter: saturate(1.12);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
+}
+
+.dock-name {
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--muted);
+  transition: color 0.18s ease;
+}
+
+/* 「其他」先留一个虚线占位框，以后往里塞新功能 */
+.dock-slot {
+  padding: 18px 12px;
+  border: 1px dashed rgba(24, 95, 165, 0.3);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* 编辑模式下让位（和吸底条、顶部「管理员」入口保持一致） */
+body.is-editing .dock-panel { transform: translateX(100%); visibility: hidden; }
+body.is-editing .dock-handle { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dock-handle, .dock-panel, .dock-chev, .dock-icon { transition: none; }
+}
+
+/* 窄屏：面板不铺满，左侧留一条 84px 的缝给把手，把手改成竖排文字（占宽更小） */
+@media (max-width: 880px) {
+  .dock-panel { width: calc(100% - 84px); }
+  body.dock-open .dock-handle { right: calc(100% - 84px); }
+  .dock-handle { align-items: center; padding: 12px 6px; }
+  .dock-handle-label {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 3px;
+    line-height: 1.2;
+  }
+  .dock-chev { margin: 7px 0 0; }
+}
+
+@media (max-width: 640px) {
+  .dock-grid { gap: 6px; }
+  .dock-icon { width: 42px; height: 42px; font-size: 19px; border-radius: 12px; }
+  .dock-name { font-size: 11px; }
+}
+
 /* ---------- 响应式 ---------- */
 @media (max-width: 880px) {
   .grid-3 { grid-template-columns: 1fr 1fr; }

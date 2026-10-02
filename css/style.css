@@ -220,6 +220,13 @@ a:hover { text-decoration: underline; }
   border-color: var(--accent);
   background: var(--accent-soft);
 }
+/* 已登录管理员：入口一直亮着，提示「现在点就能改」。
+   登录态是全站共用的，所以在任何页面看到它亮着 = 都不用再输口令。 */
+.btn-edit.is-admin {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
 .btn-ghost:hover { color: var(--text); }
 .btn-lg { padding: 11px 26px; font-size: 15px; }
 

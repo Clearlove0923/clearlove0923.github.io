@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SteamCN-GameLauncher 文档：系统要求、一键更新策略、AppID 自动填充字段说明、已知限制与注意事项。">
+  <meta name="description" content="SteamCN-GameLauncher 文档：系统要求、安装迁移、启动方式、软件更新、游戏配置更新、截图与首页内容说明。">
   <title>文档 | SteamCN-GameLauncher</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20261002205943">
@@ -29,7 +29,7 @@
   <section class="page-head">
     <div class="container">
       <h1>文档</h1>
-      <p>运行环境要求、更新与自动填充的实现策略，以及当前版本的已知限制。</p>
+      <p>运行环境、安装迁移、三种启动方式、两类更新流程，以及当前版本的边界说明。</p>
     </div>
   </section>
 
@@ -39,8 +39,13 @@
       <strong>本页内容</strong>
       <ol>
         <li><a href="#requirements">系统要求</a></li>
-        <li><a href="#one-click-update">一键更新是怎么工作的</a></li>
+        <li><a href="#migration">v3.0.0 老用户迁移</a></li>
+        <li><a href="#launch-modes">三种启动方式</a></li>
+        <li><a href="#software-update">软件自身更新</a></li>
+        <li><a href="#one-click-update">游戏配置一键更新</a></li>
         <li><a href="#auto-fill">根据 AppID 自动填充</a></li>
+        <li><a href="#home-content">首页内容与缓存</a></li>
+        <li><a href="#screenshots">截图管理</a></li>
         <li><a href="#limits">已知限制与注意事项</a></li>
       </ol>
     </div>
@@ -49,12 +54,35 @@
     <table class="spec-table">
       <tr><th>操作系统</th><td>Windows 10 / 11，基于 x64</td></tr>
       <tr><th>运行库</th><td>官方安装包已包含 .NET 与 Windows App SDK 运行库，无需单独安装</td></tr>
-      <tr><th>Steam 客户端</th><td>需已安装并可正常登录</td></tr>
-      <tr><th>游戏库</th><td>Steam 游戏库内需已入库对应游戏</td></tr>
+      <tr><th>Steam 客户端</th><td>使用两种 Steam 启动方式时，需已安装并可正常登录</td></tr>
+      <tr><th>游戏库</th><td>使用 Steam 启动方式时，游戏库内需已入库对应游戏</td></tr>
       <tr><th>游戏本体</th><td>本地已安装国服游戏本体（无需国际服）</td></tr>
     </table>
 
-    <h2 id="one-click-update">一键更新是怎么工作的</h2>
+    <h2 id="migration">v3.0.0 老用户迁移</h2>
+    <div class="note">
+      <p><strong>仅针对仍安装在 Program Files 的旧版本：</strong>请先从 Windows「已安装的应用」卸载旧版本，再安装新版。新版默认安装到当前用户目录，游戏配置与自定义 Manifest 等设置独立保存，不会随旧程序卸载而丢失。</p>
+    </div>
+
+    <h2 id="launch-modes">三种启动方式</h2>
+    <p>每款游戏都可独立选择启动方式，并从首页切换：</p>
+    <ul>
+      <li><strong>国服：</strong>直接启动配置中的真实游戏 EXE。</li>
+      <li><strong>Steam 玩国服：</strong>通过 Steam AppID 与启动选项进入国服。</li>
+      <li><strong>Steam 玩国际服：</strong>沿用 Steam 原始国际服启动路径。</li>
+    </ul>
+    <p>真实 EXE、工作目录和启动参数随游戏配置保存。使用特殊桥接程序的游戏，应按软件仓库中的游戏特殊设置文档填写。</p>
+
+    <h2 id="software-update">软件自身更新</h2>
+    <p>软件默认使用 CNB 检查与下载正式更新，GitHub 为备用来源；可在设置页切换来源并决定是否接收测试版。</p>
+    <ul>
+      <li>发现新版本后先展示完整说明，只有确认后才开始更新。</li>
+      <li>CNB 来源顺序下载完整更新包，并根据同一 Release 的 <code>SHA256SUMS.txt</code> 校验。</li>
+      <li>GitHub 来源继续使用更新器支持的更新流程。</li>
+      <li>更新时保留 <code>Backgrounds</code>、<code>backups</code>、<code>GameTime</code>、<code>HomeCache</code> 与 <code>logs</code>。</li>
+    </ul>
+
+    <h2 id="one-click-update">游戏配置一键更新是怎么工作的</h2>
     <p>已有配置可在预设区域点击「一键更新」，助手会重新获取元数据。</p>
 
     <h3>候选沿用与切换</h3>
@@ -97,6 +125,24 @@
       <li>获取操作<strong>不会直接写入 Steam 文件</strong>；配置保存继续沿用现有按钮，以及离开页面时的自动保存流程。</li>
     </ul>
 
+    <h2 id="home-content">首页内容与缓存</h2>
+    <p>首页背景视频、海报、轮播图与资讯来自游戏官方站点或本地官方启动器资源。页面会先展示可用缓存，再在后台检查更新。</p>
+    <ul>
+      <li>本地官方启动器资源有效时，可优先于旧的远程缓存。</li>
+      <li>远程来源暂时不可用时，继续使用最近成功缓存或静态回退。</li>
+      <li>首次下载或首次转码的速度受网络和设备解码性能影响。</li>
+      <li>活动链接只接受经过校验的 HTTPS 地址。</li>
+    </ul>
+
+    <h2 id="screenshots">截图管理</h2>
+    <p>v3.1.6 起，侧边栏“截图”页面可为每个游戏保存独立截图目录，并按日期管理图片。</p>
+    <ul>
+      <li>支持 PNG、JPG、JPEG、BMP、GIF 与 WebP。</li>
+      <li>支持最新优先、最早优先、日期分组和日历跳转。</li>
+      <li>缩略图和大图均可在资源管理器中定位文件。</li>
+      <li>删除操作会将文件移入 Windows 回收站，而不是直接永久删除。</li>
+    </ul>
+
     <h2 id="limits">已知限制与注意事项</h2>
     <div class="note">
       <p><strong>多 Depot 限制：</strong>当前 ACF 仍只支持一个 Depot。多个 Depot 可能需要共同使用，请核对后再选择。</p>
@@ -105,15 +151,17 @@
       <li>自动填充功能<strong>不保证生成完整的安装配置</strong>，生成后请自行核对关键字段。</li>
       <li>DepotID / Manifest 等元数据以 steamcmd.net 的公开数据为准，官方调整后需要重新获取或一键更新。</li>
       <li>本工具不提供游戏本体下载，也不改动国服客户端的更新机制。</li>
+      <li>Steam 覆盖、好友状态等能力取决于所选启动方式以及具体游戏兼容性。</li>
       <li>请在遵守游戏与平台相关用户协议的前提下使用。</li>
     </ul>
 
     <h2>相关页面</h2>
     <ul>
-      <li><a href="learning-guide.html">学习与二次开发指南</a>（项目原理、学习路线、二次开发任务、排错方法）</li>
+      <li><a href="docs/learning-guide.html">学习与二次开发指南</a>（项目原理、学习路线、二次开发任务、排错方法）</li>
       <li><a href="tutorial.html">完整使用教程</a></li>
       <li><a href="features.html">功能展示</a></li>
       <li><a href="about.html">关于此软件</a></li>
+      <li><a href="https://github.com/Clearlove0923/SteamCN-GameLauncher">软件源码与问题反馈</a></li>
     </ul>
 
   </main>

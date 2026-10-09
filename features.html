@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SteamCN-GameLauncher 功能展示：统一管理、时长记录、Steam 覆盖、单份本体、多游戏配置、一键更新与 AppID 自动填充。">
+  <meta name="description" content="SteamCN-GameLauncher 功能展示：三种启动方式、官方资讯与动态背景、时长统计、截图管理、外观设置及安全更新。">
   <title>功能展示 | SteamCN-GameLauncher</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20261002205943">
@@ -29,7 +29,7 @@
   <section class="page-head">
     <div class="container">
       <h1>功能展示</h1>
-      <p>把国服二游接进 Steam 之后，具体能获得哪些能力，以及助手为你做了哪些自动化处理。</p>
+      <p>从统一启动、官方内容到时长与截图管理，了解当前正式版已经提供的能力。</p>
     </div>
   </section>
 
@@ -40,10 +40,15 @@
       <ol>
         <li><a href="#unify">一个 Steam 统一管理</a></li>
         <li><a href="#playtime">时长记录</a></li>
+        <li><a href="#home-content">官方资讯与动态背景</a></li>
+        <li><a href="#launch-modes">三种启动方式</a></li>
+        <li><a href="#screenshots">截图管理</a></li>
+        <li><a href="#appearance">外观设置</a></li>
         <li><a href="#overlay">Steam 游戏内覆盖</a></li>
         <li><a href="#single-copy">只需一份国服本体</a></li>
         <li><a href="#multi-config">支持多个游戏配置</a></li>
         <li><a href="#one-click">一键更新</a></li>
+        <li><a href="#software-update">软件自动更新</a></li>
         <li><a href="#auto-fill">根据 AppID 自动填充</a></li>
       </ol>
     </div>
@@ -67,14 +72,74 @@
     <div class="feature-block" id="playtime">
       <div>
         <h3>时长记录</h3>
-        <p class="lead">知道自己的时间到底花到了哪里。</p>
+        <p class="lead">无论从哪条链路启动，都能查看自己的游戏时间。</p>
       </div>
       <div>
-        <p>一般二游都没有时长记录功能，而这一点对于想了解自己游戏时间分布的人来说很关键——不然永远觉得「打游戏的时间总是不够」。</p>
+        <p>助手根据真实游戏进程记录会话，关闭助手后重新打开，也能接续仍在运行的游戏。</p>
         <ul>
-          <li>由 Steam 负责计时，数据进入你的个人游戏时长统计</li>
-          <li>与其他 Steam 游戏并列展示，方便横向对比</li>
-          <li>无需额外安装统计插件</li>
+          <li>汇总国服与 Steam 启动记录，同一游戏的多个配置共享统计</li>
+          <li>展示总时长、平均每日时长、连续游玩天数、最长单次与最长单日</li>
+          <li>提供趋势图和年度热力图；v3.1.6 按时长区间显示灰、绿、黄、红状态</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="home-content">
+      <div>
+        <h3>官方资讯与动态背景</h3>
+        <p class="lead">每款游戏都有自己的首页内容。</p>
+      </div>
+      <div>
+        <p>助手从游戏官方站点与本地官方启动器读取背景视频、海报、轮播图和资讯，并在首页统一展示。</p>
+        <ul>
+          <li>支持米哈游、库洛、鹰角、完美世界、叠纸与网易等多类内容来源</li>
+          <li>优先显示可用缓存并在后台刷新，来源暂时不可用时使用静态回退</li>
+          <li>本地启动器资源可优先于旧远程缓存，避免过期动画覆盖新内容</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="launch-modes">
+      <div>
+        <h3>三种启动方式</h3>
+        <p class="lead">每款游戏独立选择，随时从首页切换。</p>
+      </div>
+      <div>
+        <ul>
+          <li><strong>国服：</strong>直接启动真实游戏 EXE</li>
+          <li><strong>Steam 玩国服：</strong>通过 Steam AppID 与启动选项进入国服</li>
+          <li><strong>Steam 玩国际服：</strong>使用 Steam 原始国际服启动路径</li>
+        </ul>
+        <p>真实 EXE、工作目录和启动参数随各自游戏配置保存。部分游戏需要桥接程序或特殊启动参数，请以项目文档为准。</p>
+      </div>
+    </div>
+
+    <div class="feature-block" id="screenshots">
+      <div>
+        <h3>截图管理</h3>
+        <p class="lead">v3.1.6 正式启用按游戏管理的截图页面。</p>
+      </div>
+      <div>
+        <ul>
+          <li>每个游戏可独立选择截图目录，路径自动保存</li>
+          <li>支持 PNG、JPG、JPEG、BMP、GIF 与 WebP</li>
+          <li>按日期分组并支持最新或最早优先，可从日历跳到有截图的日期</li>
+          <li>支持大图预览、在资源管理器中定位，以及移入 Windows 回收站</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="appearance">
+      <div>
+        <h3>外观设置</h3>
+        <p class="lead">统一配置，也可以按页面单独调整。</p>
+      </div>
+      <div>
+        <ul>
+          <li>导入、裁切、切换与删除自定义背景图片</li>
+          <li>调整图片、遮罩、内容卡片与侧边栏透明度</li>
+          <li>分别控制首页动画和资讯显示</li>
+          <li>窗口关闭后可留在系统托盘，随时恢复或完全退出</li>
         </ul>
       </div>
     </div>
@@ -88,7 +153,7 @@
         <ul>
           <li>可使用 Steam 快捷键截图，并直接分享到 Steam 社区</li>
           <li>Steam 好友可以看到你正在游玩某某游戏</li>
-          <li>覆盖层（Overlay）在游戏中正常呼出</li>
+          <li>覆盖层是否可用取决于所选 Steam 启动方式及具体游戏兼容性</li>
         </ul>
       </div>
     </div>
@@ -136,6 +201,21 @@
           <li>内容变化时，原 ACF 会备份到软件安装目录的 <code>backups\&lt;AppID&gt;</code></li>
           <li>每个 AppID 最多保留最近 2 份备份，最长保留 30 天，内容相同则不产生新备份</li>
           <li>安装器会为该备份目录设置普通用户写入权限</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-block" id="software-update">
+      <div>
+        <h3>软件自动更新</h3>
+        <p class="lead">国内默认走 CNB，GitHub 作为备用源。</p>
+      </div>
+      <div>
+        <ul>
+          <li>发现新版本后先展示完整更新说明，由你确认后才开始下载</li>
+          <li>CNB 下载完整更新包并校验同一 Release 的 SHA-256，校验通过后才执行</li>
+          <li>可在设置中切换 CNB / GitHub，并选择是否接收测试版</li>
+          <li>更新过程保护背景、备份、时长、首页缓存和日志等用户数据</li>
         </ul>
       </div>
     </div>

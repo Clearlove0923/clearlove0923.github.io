@@ -1,18 +1,18 @@
 {
-  "version": "v3.1.5",
-  "date": "2026-09-30",
+  "version": "v3.1.6",
+  "date": "2026-10-06",
   "size": "133 MB",
   "repo": "Clearlove0923/SteamCN-GameLauncher",
   "urlPattern": "https://github.com/{repo}/releases/download/{ver}/SteamCN-GameLauncher-{ver}-win-x64-setup.exe",
   "autoLatest": true,
   "windows": {
     "label": "下载安装包（133 MB）",
-    "url": "https://github.com/Clearlove0923/SteamCN-GameLauncher/releases/download/v3.1.5/SteamCN-GameLauncher-v3.1.5-win-x64-setup.exe"
+    "url": "https://github.com/Clearlove0923/SteamCN-GameLauncher/releases/download/v3.1.6/SteamCN-GameLauncher-v3.1.6-win-x64-setup.exe"
   },
   "mirror": {
-    "label": "备用下载（国内加速）",
-    "url": "https://wwaqe.lanzouq.com/iN0aT4a36t9c",
-    "pwd": "e2me",
+    "label": "国内下载（CNB）",
+    "url": "https://cnb.cool/SteamCN-GameLauncher/SteamCN-GameLauncher/-/releases/latest",
+    "pwd": "",
     "hide": false
   },
   "changelog": "https://github.com/Clearlove0923/SteamCN-GameLauncher/releases"

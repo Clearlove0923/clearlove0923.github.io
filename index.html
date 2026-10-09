@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SteamCN-GameLauncher：不用下载国际服，不用繁琐的配置流程，只需几步即可在 Steam 游玩国服二游，并享受 Steam 的时长记录、游戏内覆盖等功能。">
+  <meta name="description" content="SteamCN-GameLauncher：统一管理国服二游，支持三种启动方式、游戏时长统计、截图管理、官方资讯与动态背景。">
   <title>SteamCN-GameLauncher | 国服游戏，也能在 Steam 里统一管理</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20261002205943">
@@ -35,7 +35,7 @@
     <div class="container">
       <p class="hero-pill"><span class="pill-dot" aria-hidden="true"></span><span data-edit="hero.pill">Windows 10 / 11 · x64 · 免费使用</span></p>
       <h1 data-edit="hero.title" data-edit-hl>国服二游，也能在 <em class="hl">Steam</em> 里统一管理</h1>
-      <p class="hero-sub" data-edit="hero.sub">不用下载国际服，几步就能在 Steam 里玩国服二游。</p>
+      <p class="hero-sub" data-edit="hero.sub">一份国服游戏本体，统一启动、记录时长、管理截图与查看官方资讯。</p>
       <div class="hero-actions">
         <a class="btn btn-primary btn-lg" href="#download">下载安装包</a>
         <a class="btn btn-outline btn-lg" href="tutorial.html">看使用教程</a>
@@ -43,7 +43,7 @@
 
       <!-- 版本与体积由 version.json + GitHub API 自动同步（见页面底部脚本） -->
       <div class="hero-stats">
-        <span><b id="statVer">v3.1.5</b><small>当前版本</small></span>
+        <span><b id="statVer">v3.1.6</b><small>当前版本</small></span>
         <span><b id="statSize">133 MB</b><small>安装包体积</small></span>
         <span><b>3 步</b><small>完成接入</small></span>
         <span><b>多款</b><small>国服二游</small></span>
@@ -81,9 +81,9 @@
         </article>
         <article class="card">
           <div class="step-num">3</div>
-          <h3 data-edit="steps.3.title">打开 Steam 启动</h3>
-          <p data-edit="steps.3.text">回 Steam 库，像普通游戏一样启动。</p>
-          <ul class="tags"><li>时长记录</li><li>覆盖与截图</li></ul>
+          <h3 data-edit="steps.3.title">选择方式并启动</h3>
+          <p data-edit="steps.3.text">按游戏选择国服、Steam 玩国服或 Steam 玩国际服。</p>
+          <ul class="tags"><li>首页直接启动</li><li>时长记录</li></ul>
         </article>
       </div>
     </div>
@@ -103,8 +103,8 @@
         </article>
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></svg></span>
-          <h3 data-edit="features.2.title">时长记录</h3>
-          <p data-edit="features.2.text">每款游戏玩了多久，一目了然。</p>
+          <h3 data-edit="features.2.title">完整时长统计</h3>
+          <p data-edit="features.2.text">趋势、连续游玩与年度热力图一目了然。</p>
           <a class="card-link" href="features.html#playtime">了解详情</a>
         </article>
         <article class="card card-icon">
@@ -130,6 +130,24 @@
           <h3 data-edit="features.6.title">一键更新与自动填充</h3>
           <p data-edit="features.6.text">填 AppID 自动带出全部字段。</p>
           <a class="card-link" href="features.html#auto-fill">了解详情</a>
+        </article>
+        <article class="card card-icon">
+          <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17.5 8.5 12l3.5 3.5 3-3 6 6"/><path d="M3 5.5h18v13H3z"/><circle cx="16.5" cy="9" r="1.5"/></svg></span>
+          <h3 data-edit="features.7.title">官方资讯与动态背景</h3>
+          <p data-edit="features.7.text">按游戏展示官方动画、轮播图与资讯。</p>
+          <a class="card-link" href="features.html#home-content">了解详情</a>
+        </article>
+        <article class="card card-icon">
+          <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z"/><path d="M4 4v16"/></svg></span>
+          <h3 data-edit="features.8.title">三种启动方式</h3>
+          <p data-edit="features.8.text">每款游戏独立选择国服或 Steam 启动链路。</p>
+          <a class="card-link" href="features.html#launch-modes">了解详情</a>
+        </article>
+        <article class="card card-icon">
+          <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M8 5l1-2h6l1 2"/></svg></span>
+          <h3 data-edit="features.9.title">截图管理</h3>
+          <p data-edit="features.9.text">按游戏和日期浏览、预览、定位与回收截图。</p>
+          <a class="card-link" href="features.html#screenshots">了解详情</a>
         </article>
       </div>
     </div>
@@ -244,21 +262,21 @@
       <div class="hero-actions" style="margin-bottom:0;">
         <!-- 写死的是当版本的 GitHub Release 直链；页面加载后会用 version.json + GitHub API 更新为最新版 -->
         <a class="btn btn-primary btn-lg" id="downloadBtn"
-           href="https://github.com/Clearlove0923/SteamCN-GameLauncher/releases/download/v3.1.5/SteamCN-GameLauncher-v3.1.5-win-x64-setup.exe">
+           href="https://github.com/Clearlove0923/SteamCN-GameLauncher/releases/download/v3.1.6/SteamCN-GameLauncher-v3.1.6-win-x64-setup.exe">
           下载安装包（133 MB）
         </a>
         <a class="btn btn-outline btn-lg" id="downloadMirrorBtn"
-           href="https://wwaqe.lanzouq.com/iN0aT4a36t9c">
-          备用下载（国内加速）
+           href="https://cnb.cool/SteamCN-GameLauncher/SteamCN-GameLauncher/-/releases/latest">
+          国内下载（CNB）
         </a>
       </div>
       <p class="cta-meta">
-        <span id="versionInfo">当前版本 v3.1.5</span> · Windows 10 / 11 · x64 ·
+        <span id="versionInfo">当前版本 v3.1.6 · 更新于 2026-10-06</span> · Windows 10 / 11 · x64 ·
         <a href="https://github.com/Clearlove0923/SteamCN-GameLauncher/releases" id="changelogLink">更新日志</a>
       </p>
-      <p class="cta-meta" id="mirrorPwdLine">
+      <p class="cta-meta" id="mirrorPwdLine" style="display:none">
         备用下载提取码
-        <code id="mirrorPwd" title="点击复制">e2me</code>
+        <code id="mirrorPwd" title="点击复制"></code>
       </p>
     </div>
   </section>

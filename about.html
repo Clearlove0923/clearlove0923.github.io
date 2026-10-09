@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="关于 SteamCN-GameLauncher：做这个工具的起因、它解决的问题以及使用声明。">
+  <meta name="description" content="关于 SteamCN-GameLauncher：统一管理国服游戏、官方内容、启动方式、时长与截图的 Windows 开源启动助手。">
   <title>关于此软件 | SteamCN-GameLauncher</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20261002205943">
@@ -37,9 +37,9 @@
 
     <h2>它是什么</h2>
     <p>
-      SteamCN-GameLauncher 是一个 Windows 上的配置助手，用来把已经安装在本地的国服二游接入 Steam。
-      它读取 Steam 库与公开元数据，生成对应的占位 EXE 与 ACF 配置，让游戏出现在 Steam 库中，
-      从而可以使用 Steam 的时长记录、游戏内覆盖、截图分享与好友可见状态。
+      SteamCN-GameLauncher 是一个 Windows 上的开源游戏启动助手，用来统一管理已经安装在本地的国服游戏。
+      它既能生成 Steam 所需的安装记录与启动配置，也能直接启动国服或国际服，并在首页展示官方动画与资讯，
+      同时提供独立的游戏时长统计、截图管理和外观设置。
     </p>
 
     <h2>为什么要做它</h2>
@@ -48,6 +48,7 @@
       <li><strong>没有时长记录。</strong>多数二游本身不提供时长统计，很难知道时间花在了哪里。</li>
       <li><strong>覆盖功能用不上。</strong>无法用 Steam 快捷键截图并分享，好友也看不到你在玩什么。</li>
       <li><strong>以往方案太重。</strong>以鸣潮为例，过去要实现同样效果，需要同时下载国服和国际服两份本体，更新时两份都要更新。</li>
+      <li><strong>信息与记录分散。</strong>启动器资讯、游玩时长和截图分别散落在不同位置，难以统一查看。</li>
     </ul>
 
     <h2>它不做什么</h2>
@@ -65,7 +66,7 @@
     <table class="spec-table">
       <tr><th>操作系统</th><td>Windows 10 / 11，基于 x64</td></tr>
       <tr><th>运行库</th><td>官方安装包包含 .NET 与 Windows App SDK 运行库</td></tr>
-      <tr><th>依赖</th><td>已安装 Steam 客户端，且 Steam 游戏库内已入库对应游戏</td></tr>
+      <tr><th>Steam</th><td>使用“Steam 玩国服”或“Steam 玩国际服”时，需安装、登录并入库对应游戏</td></tr>
     </table>
 
     <h2>下一步</h2>
@@ -73,6 +74,7 @@
       <li><a href="index.html#download">下载安装包</a></li>
       <li><a href="tutorial.html">阅读使用教程</a></li>
       <li><a href="docs.html">查看文档与已知限制</a></li>
+      <li><a href="https://github.com/Clearlove0923/SteamCN-GameLauncher">查看源码、Release 与 Issue</a></li>
     </ul>
 
   </main>

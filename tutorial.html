@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SteamCN-GameLauncher 使用教程：安装、选择游戏、自动填充、保存配置、一键更新与在 Steam 中启动。">
+  <meta name="description" content="SteamCN-GameLauncher 使用教程：安装、添加游戏、选择启动方式、保存配置、管理截图与更新软件。">
   <title>使用教程 | SteamCN-GameLauncher</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20261002205943">
@@ -29,7 +29,7 @@
   <section class="page-head">
     <div class="container">
       <h1>使用教程</h1>
-      <p>从下载安装到在 Steam 里启动国服游戏，按顺序走一遍即可。</p>
+      <p>从下载安装到选择启动方式，再到时长与截图管理，按顺序走一遍即可。</p>
     </div>
   </section>
 
@@ -41,7 +41,8 @@
         <li><a href="#prepare">准备工作</a></li>
         <li><a href="#install">安装助手</a></li>
         <li><a href="#add">添加游戏（两种方式）</a></li>
-        <li><a href="#save">保存并启动</a></li>
+        <li><a href="#save">保存并选择启动方式</a></li>
+        <li><a href="#screenshots">管理截图</a></li>
         <li><a href="#update">后续一键更新</a></li>
       </ol>
     </div>
@@ -50,8 +51,8 @@
     <p>开始前请确认以下几项已就绪：</p>
     <ul>
       <li>Windows 10 / 11（x64）操作系统</li>
-      <li>已安装 Steam 客户端并正常登录</li>
-      <li>Steam 游戏库内已入库对应游戏</li>
+      <li>如需使用 Steam 启动方式，已安装 Steam 客户端并正常登录</li>
+      <li>如需使用 Steam 启动方式，游戏库内已入库对应游戏</li>
       <li>国服游戏本体已安装在本地</li>
     </ul>
     <div class="note">
@@ -64,6 +65,9 @@
       <li><strong>运行安装程序</strong>双击安装包，按向导提示完成安装。</li>
       <li><strong>打开助手</strong>首次打开时建议保持 Steam 处于运行状态，便于读取库信息。</li>
     </ol>
+    <div class="note">
+      <p>仍安装在 <code>Program Files</code> 的 v3.0.0 以前用户，请先卸载旧版再安装新版；游戏配置与自定义 Manifest 等设置文件会保留。</p>
+    </div>
 
     <h2 id="add">三、添加游戏（两种方式）</h2>
 
@@ -86,15 +90,25 @@
       <p>当前 ACF 只支持一个 Depot。若出现多个 Depot，请核对后选择，必要时参考文档中的<a href="docs.html#limits">已知限制</a>。</p>
     </div>
 
-    <h2 id="save">四、保存并启动</h2>
+    <h2 id="save">四、保存并选择启动方式</h2>
     <ol class="steps-list">
       <li><strong>保存配置</strong>点击保存按钮；离开页面时也会自动保存。</li>
-      <li><strong>回到 Steam</strong>在 Steam 库中可以看到刚配置好的游戏。</li>
-      <li><strong>点击启动</strong>像普通 Steam 游戏一样启动，时长与好友可见状态同步生效。</li>
-      <li><strong>验证覆盖层</strong>进入游戏后按 Steam 快捷键，确认截图与分享可用。</li>
+      <li><strong>选择启动方式</strong>为当前游戏选择“国服”“Steam 玩国服”或“Steam 玩国际服”。</li>
+      <li><strong>从首页启动</strong>助手会按保存的方式启动；Steam 模式也可回到 Steam 库启动。</li>
+      <li><strong>验证运行状态</strong>确认真实游戏进程启动，并在统计页面查看本次会话。</li>
+      <li><strong>验证 Steam 功能</strong>使用 Steam 模式时，进入游戏后检查覆盖层与好友状态；实际可用性取决于游戏兼容性。</li>
     </ol>
 
-    <h2 id="update">五、后续一键更新</h2>
+    <h2 id="screenshots">五、管理截图</h2>
+    <ol class="steps-list">
+      <li><strong>打开“截图”页面</strong>从侧边栏进入截图管理。</li>
+      <li><strong>选择当前游戏的目录</strong>每款游戏的路径会独立保存。</li>
+      <li><strong>浏览与筛选</strong>按日期分组或通过日历跳转，可切换最新或最早优先。</li>
+      <li><strong>管理文件</strong>右键缩略图或大图，可在资源管理器中定位，或将图片移入 Windows 回收站。</li>
+    </ol>
+
+    <h2 id="update">六、后续更新</h2>
+    <h3>更新游戏配置</h3>
     <p>游戏本体或 Steam 侧数据变化后，可在预设区域点击「一键更新」：</p>
     <ul>
       <li>助手重新获取元数据，优先沿用当前仍有效的 Depot 和占位 EXE</li>
@@ -103,6 +117,9 @@
       <li>内容变化时原 ACF 备份到安装目录下的 <code>backups\&lt;AppID&gt;</code></li>
     </ul>
     <p>更详细的策略说明见 <a href="docs.html#one-click-update">文档：一键更新是怎么工作的</a>。</p>
+
+    <h3>更新软件</h3>
+    <p>发现新版本时，助手会先展示更新说明。确认后可使用默认 CNB 来源下载，也可在设置中切换到 GitHub；下载与校验完成前不会执行更新包。</p>
 
     <div class="note">
       <p>遇到问题？先查看 <a href="docs.html">文档</a> 中的系统要求与已知限制，多数异常都能在那里找到答案。</p>

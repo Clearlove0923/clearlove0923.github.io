@@ -2,47 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://clearlove0923.github.io/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-10</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://clearlove0923.github.io/features.html</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-10</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://clearlove0923.github.io/tutorial.html</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-10</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://clearlove0923.github.io/docs.html</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-10</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://clearlove0923.github.io/about.html</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-10</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://clearlove0923.github.io/docs/learning-guide.html</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-10</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://clearlove0923.github.io/examples/md.html</loc>
-    <lastmod>2026-09-27</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://clearlove0923.github.io/examples/vite.html</loc>
-    <lastmod>2026-09-27</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://clearlove0923.github.io/examples/ai.html</loc>
-    <lastmod>2026-09-27</lastmod>
-    <priority>0.5</priority>
+    <loc>https://clearlove0923.github.io/game-guide.html</loc>
+    <lastmod>2026-10-10</lastmod>
+    <priority>0.8</priority>
   </url>
 </urlset>

@@ -30,7 +30,7 @@
 
 ## 2. 称呼与隐私
 
-1. 用户称呼为 **白黎**，正文与提交说明均不使用系统账户名。
+1. 不主动使用未经用户确认的称呼，正文与提交说明均不使用系统账户名。
 2. 仓库内的文档、注释、配置文件中**禁止出现**：
    - Windows 系统账户路径（如 `C:\Users\...`）
    - 个人邮箱、token、密码、访问密钥
@@ -46,14 +46,12 @@
 F:\my-site\
 ├─ index.html                 首页（落地页，含下载区 #download）
 ├─ features.html              功能展示
+├─ game-guide.html            游戏适配与特殊启动设置
 ├─ tutorial.html              使用教程
 ├─ docs.html                  文档（系统要求 / 一键更新 / AppID 自动填充 / 已知限制）
 ├─ about.html                 关于此软件
 ├─ 404.html                   404 页（GitHub Pages 自动使用）
 ├─ docs/learning-guide.html   学习与二次开发指南（由 LEARNING_GUIDE.md 转换）
-├─ examples/md.html           文档转网页（真功能，支持 .md/.docx/.pdf）
-├─ examples/vite.html         Vite + React 构建产物示例（展示用）
-├─ examples/ai.html           AI 生成页面示例（展示用）
 ├─ css/style.css              全站样式（主题色改 :root 的 --accent）
 ├─ assets/hero-bg.jpg         首页背景图
 ├─ assets/favicon.svg         站点图标
@@ -181,9 +179,9 @@ bash deploy.sh "更新到 v2.6.3"
 
 ## 8. 文档写作
 
-1. 新增 Markdown 文档如需公开分享，转换为网页放在 `docs/` 或 `examples/`，并在首页/文档页加入口。
+1. 新增 Markdown 文档如需公开分享，转换为网页放在 `docs/`，并在首页或文档页加入口。
 2. 转换时保留原有技术细节，同时按第 2 节做措辞中性化。
-3. `examples/md.html` 支持 `.md` / `.docx` / `.pdf` 浏览器内解析，纯前端运行，文件不上传服务器；新增格式支持时同步更新首页示例卡文案。
+3. 官网只保留与 SteamCN-GameLauncher 直接相关的产品、使用、适配与开发内容，不新增通用前端演示或文档转换工具。
 
 ---
 

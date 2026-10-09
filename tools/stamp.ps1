@@ -1,5 +1,5 @@
 # Refresh the cache-busting stamp on the site pages.
-# Replaces  css/style.css?v=...  and  js/site-edit.js?v=...  with  ?v=<current timestamp>.
+# Replaces css/style.css?v=... with ?v=<current timestamp>.
 # Idempotent: running it twice only updates the stamp, it never stacks up.
 # This is the PowerShell twin of the sed block inside deploy.sh, so that
 # push.bat can do the same job without needing bash.
@@ -18,10 +18,9 @@ $pages = @(
   'about.html',
   'docs.html',
   'features.html',
+  'game-guide.html',
   'tutorial.html',
-  'docs/learning-guide.html',
-  'examples/md-maintain.html',
-  'examples/md.html'
+  'docs/learning-guide.html'
 )
 
 $utf8 = New-Object -TypeName System.Text.UTF8Encoding -ArgumentList $false
@@ -32,7 +31,7 @@ foreach ($rel in $pages) {
   if (-not (Test-Path -LiteralPath $full)) { continue }
 
   $text = [System.IO.File]::ReadAllText($full, [System.Text.Encoding]::UTF8)
-  $new  = [regex]::Replace($text, '(css/style\.css|js/site-edit\.js)\?v=[^"]*', ('$1?v=' + $stamp))
+  $new  = [regex]::Replace($text, 'css/style\.css\?v=[^"]*', ('css/style.css?v=' + $stamp))
 
   if ($new -ne $text) {
     [System.IO.File]::WriteAllText($full, $new, $utf8)

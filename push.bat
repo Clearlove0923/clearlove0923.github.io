@@ -5,9 +5,6 @@ cd /d "%~dp0"
 echo ==============================================
 echo   SteamCN site  -  push to GitHub Pages
 echo ==============================================
-echo   (export content.json into this folder first, if you have one)
-echo.
-
 where git >nul 2>nul
 if errorlevel 1 (
   echo [FAIL] git not found in PATH. Install Git for Windows first.

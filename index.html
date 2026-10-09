@@ -6,7 +6,7 @@
   <meta name="description" content="SteamCN-GameLauncher：统一管理国服二游，支持三种启动方式、游戏时长统计、截图管理、官方资讯与动态背景。">
   <title>SteamCN-GameLauncher | 国服游戏，也能在 Steam 里统一管理</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20261002205943">
+  <link rel="stylesheet" href="css/style.css?v=20261010012139">
 </head>
 <body>
 
@@ -15,16 +15,14 @@
       <a class="logo" href="index.html"><span class="logo-mark" aria-hidden="true">S</span>SteamCN-GameLauncher</a>
       <nav class="nav-links">
         <a href="features.html">功能</a>
+        <a href="game-guide.html">游戏适配</a>
         <a href="tutorial.html">教程</a>
         <a href="docs.html">文档</a>
-        <a href="#examples">示例</a>
         <a href="about.html">关于此软件</a>
       </nav>
       <div class="header-actions">
         <a class="btn btn-ghost" href="docs.html#requirements">系统要求</a>
         <a class="btn btn-primary" href="#download">下载</a>
-        <!-- 管理员入口（在「下载」右侧）与底部编辑工具条，统一由 js/site-edit.js 注入，
-             全站所有正文页面共用同一套，改一处就全站生效 -->
       </div>
     </div>
   </header>
@@ -33,9 +31,9 @@
     <!-- Hero 底图单独一层（带下沿淡出遮罩），下沿会无缝融进整页固定底图 -->
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="container">
-      <p class="hero-pill"><span class="pill-dot" aria-hidden="true"></span><span data-edit="hero.pill">Windows 10 / 11 · x64 · 免费使用</span></p>
-      <h1 data-edit="hero.title" data-edit-hl>国服二游，也能在 <em class="hl">Steam</em> 里统一管理</h1>
-      <p class="hero-sub" data-edit="hero.sub">一份国服游戏本体，统一启动、记录时长、管理截图与查看官方资讯。</p>
+      <p class="hero-pill"><span class="pill-dot" aria-hidden="true"></span><span>Windows 10 / 11 · x64 · 免费使用</span></p>
+      <h1>国服二游，也能在 <em class="hl">Steam</em> 里统一管理</h1>
+      <p class="hero-sub">一份国服游戏本体，统一启动、记录时长、管理截图与查看官方资讯。</p>
       <div class="hero-actions">
         <a class="btn btn-primary btn-lg" href="#download">下载安装包</a>
         <a class="btn btn-outline btn-lg" href="tutorial.html">看使用教程</a>
@@ -63,26 +61,26 @@
 
   <section class="section" id="steps">
     <div class="container">
-      <h2 class="section-title" data-edit="steps.title">三步把国服游戏放进 Steam</h2>
-      <p class="section-desc" data-edit="steps.desc">全程图形界面，不用改配置文件。</p>
+      <h2 class="section-title">三步把国服游戏放进 Steam</h2>
+      <p class="section-desc">全程图形界面，不用改配置文件。</p>
 
       <div class="grid grid-3">
         <article class="card">
           <div class="step-num">1</div>
-          <h3 data-edit="steps.1.title">安装并打开助手</h3>
-          <p data-edit="steps.1.text">运行库已内置，打开即用。</p>
+          <h3>安装并打开助手</h3>
+          <p>运行库已内置，打开即用。</p>
           <ul class="tags"><li>Windows 10 / 11</li><li>x64</li></ul>
         </article>
         <article class="card">
           <div class="step-num">2</div>
-          <h3 data-edit="steps.2.title">选择或自动填充游戏</h3>
-          <p data-edit="steps.2.text">点选预设游戏，或填 AppID 自动获取。</p>
+          <h3>选择或自动填充游戏</h3>
+          <p>点选预设游戏，或填 AppID 自动获取。</p>
           <ul class="tags"><li>预设一键配置</li><li>AppID 自动填充</li></ul>
         </article>
         <article class="card">
           <div class="step-num">3</div>
-          <h3 data-edit="steps.3.title">选择方式并启动</h3>
-          <p data-edit="steps.3.text">按游戏选择国服、Steam 玩国服或 Steam 玩国际服。</p>
+          <h3>选择方式并启动</h3>
+          <p>按游戏选择国服、Steam 玩国服或 Steam 玩国际服。</p>
           <ul class="tags"><li>首页直接启动</li><li>时长记录</li></ul>
         </article>
       </div>
@@ -91,183 +89,182 @@
 
   <section class="section section-alt" id="features">
     <div class="container">
-      <h2 class="section-title" data-edit="features.title">核心功能</h2>
-      <p class="section-desc" data-edit="features.desc">国服能玩，Steam 也认得。</p>
+      <h2 class="section-title">核心功能</h2>
+      <p class="section-desc">国服能玩，Steam 也认得。</p>
 
       <div class="grid grid-3">
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1.8"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.8"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.8"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.8"/></svg></span>
-          <h3 data-edit="features.1.title">一个 Steam 统一管理</h3>
-          <p data-edit="features.1.text">多个启动器，收进同一个库。</p>
+          <h3>一个 Steam 统一管理</h3>
+          <p>多个启动器，收进同一个库。</p>
           <a class="card-link" href="features.html#unify">了解详情</a>
         </article>
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></svg></span>
-          <h3 data-edit="features.2.title">完整时长统计</h3>
-          <p data-edit="features.2.text">趋势、连续游玩与年度热力图一目了然。</p>
+          <h3>完整时长统计</h3>
+          <p>趋势、连续游玩与年度热力图一目了然。</p>
           <a class="card-link" href="features.html#playtime">了解详情</a>
         </article>
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 2.8 7.6 12 12.4l9.2-4.8z"/><path d="M2.8 12.6 12 17.4l9.2-4.8"/><path d="M2.8 17.2 12 22l9.2-4.8"/></svg></span>
-          <h3 data-edit="features.3.title">Steam 游戏内覆盖</h3>
-          <p data-edit="features.3.text">快捷键截图分享，好友可见。</p>
+          <h3>Steam 游戏内覆盖</h3>
+          <p>快捷键截图分享，好友可见。</p>
           <a class="card-link" href="features.html#overlay">了解详情</a>
         </article>
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.66 3.58 3 8 3s8-1.34 8-3V6"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></span>
-          <h3 data-edit="features.4.title">只需一份游戏本体</h3>
-          <p data-edit="features.4.text">不用同时装国服与国际服两份。</p>
+          <h3>只需一份游戏本体</h3>
+          <p>不用同时装国服与国际服两份。</p>
           <a class="card-link" href="features.html#single-copy">了解详情</a>
         </article>
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5h9M18.5 7.5H20M4 16.5h5M13.5 16.5H20"/><circle cx="15.5" cy="7.5" r="2.2"/><circle cx="11" cy="16.5" r="2.2"/></svg></span>
-          <h3 data-edit="features.5.title">支持多个游戏配置</h3>
-          <p data-edit="features.5.text">各存一份配置，互不干扰。</p>
+          <h3>支持多个游戏配置</h3>
+          <p>各存一份配置，互不干扰。</p>
           <a class="card-link" href="features.html#multi-config">了解详情</a>
         </article>
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5 15 9"/><path d="M16.4 3.2l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/><path d="M6 5.6l.5 1.3 1.3.5-1.3.5L6 9.2l-.5-1.3L4.2 7.4l1.3-.5z"/></svg></span>
-          <h3 data-edit="features.6.title">一键更新与自动填充</h3>
-          <p data-edit="features.6.text">填 AppID 自动带出全部字段。</p>
+          <h3>一键更新与自动填充</h3>
+          <p>填 AppID 自动带出全部字段。</p>
           <a class="card-link" href="features.html#auto-fill">了解详情</a>
         </article>
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17.5 8.5 12l3.5 3.5 3-3 6 6"/><path d="M3 5.5h18v13H3z"/><circle cx="16.5" cy="9" r="1.5"/></svg></span>
-          <h3 data-edit="features.7.title">官方资讯与动态背景</h3>
-          <p data-edit="features.7.text">按游戏展示官方动画、轮播图与资讯。</p>
+          <h3>官方资讯与动态背景</h3>
+          <p>按游戏展示官方动画、轮播图与资讯。</p>
           <a class="card-link" href="features.html#home-content">了解详情</a>
         </article>
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z"/><path d="M4 4v16"/></svg></span>
-          <h3 data-edit="features.8.title">三种启动方式</h3>
-          <p data-edit="features.8.text">每款游戏独立选择国服或 Steam 启动链路。</p>
+          <h3>三种启动方式</h3>
+          <p>每款游戏独立选择国服或 Steam 启动链路。</p>
           <a class="card-link" href="features.html#launch-modes">了解详情</a>
         </article>
         <article class="card card-icon">
           <span class="card-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M8 5l1-2h6l1 2"/></svg></span>
-          <h3 data-edit="features.9.title">截图管理</h3>
-          <p data-edit="features.9.text">按游戏和日期浏览、预览、定位与回收截图。</p>
+          <h3>截图管理</h3>
+          <p>按游戏和日期浏览、预览、定位与回收截图。</p>
           <a class="card-link" href="features.html#screenshots">了解详情</a>
         </article>
       </div>
     </div>
   </section>
 
+  <section class="section" id="release">
+    <div class="container">
+      <h2 class="section-title">v3.1.6 版本亮点</h2>
+      <p class="section-desc">围绕截图、时长和首页内容可靠性继续完善。</p>
+      <div class="grid grid-3">
+        <article class="card">
+          <span class="badge">截图管理</span>
+          <h3>按游戏整理截图</h3>
+          <p>支持六种图片格式、日期分组、日历跳转、大图预览、资源管理器定位与回收站删除。</p>
+          <a class="card-link" href="features.html#screenshots">查看截图功能</a>
+        </article>
+        <article class="card">
+          <span class="badge">时长统计</span>
+          <h3>年度热力图更直观</h3>
+          <p>无记录、小于 1 小时、1 至 3 小时和 3 小时以上使用不同颜色区分。</p>
+          <a class="card-link" href="features.html#playtime">查看时长统计</a>
+        </article>
+        <article class="card">
+          <span class="badge">首页媒体</span>
+          <h3>缓存与本地资源更可靠</h3>
+          <p>优先显示可用缓存并后台刷新，本地有效动画不会再被旧远程缓存覆盖。</p>
+          <a class="card-link" href="docs.html#home-content">了解刷新机制</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="games">
+    <div class="container">
+      <h2 class="section-title">已验证的游戏内容来源</h2>
+      <p class="section-desc">当前正式版已接入多家厂商的官网或官方启动器内容，并提供静态回退。</p>
+      <div class="grid grid-3">
+        <article class="card"><h3>绝区零 / 崩坏 3</h3><p>接入 HoYoPlay 官方内容来源，展示背景、轮播与公告资讯。</p></article>
+        <article class="card"><h3>鸣潮</h3><p>接入库洛国服启动器内容，并兼容高规格背景视频的转码与回退。</p></article>
+        <article class="card"><h3>明日方舟：终末地</h3><p>接入鹰角批量内容来源，统一转换为首页展示模型。</p></article>
+        <article class="card"><h3>异环</h3><p>接入完美世界内容来源，并优先读取有效的本地启动器动画与海报。</p></article>
+        <article class="card"><h3>无限暖暖</h3><p>接入叠纸官网数据，同时保留本地启动器资源回退能力。</p></article>
+        <article class="card"><h3>燕云十六声</h3><p>接入网易官网资讯与当前可用的官方启动器媒体资源。</p></article>
+      </div>
+      <p class="section-desc" style="margin-top:24px;"><a href="game-guide.html">查看各游戏启动参数与桥接说明 →</a></p>
+    </div>
+  </section>
+
   <section class="section" id="links">
     <div class="container">
-      <h2 class="section-title" data-edit="links.title">按需求查看文档</h2>
+      <h2 class="section-title">使用与帮助</h2>
+      <p class="section-desc">从安装、配置到更新与故障排查，快速找到需要的内容。</p>
 
       <div class="doc-grid">
         <a class="doc-cell" href="docs.html#requirements">
           <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4" width="18.4" height="12.6" rx="2"/><path d="M8.4 20.4h7.2M12 16.6v3.8"/></svg></span>
-          <span class="doc-name" data-edit="links.1.a">系统要求</span>
+          <span class="doc-name">系统要求</span>
         </a>
-        <a class="doc-cell" href="docs/learning-guide.html">
+        <a class="doc-cell" href="docs.html#launch-modes">
           <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.2A2.4 2.4 0 0 1 6.4 16.8H20"/><path d="M6.4 2.8H20v18.4H6.4A2.4 2.4 0 0 1 4 18.8V5.2a2.4 2.4 0 0 1 2.4-2.4z"/></svg></span>
-          <span class="doc-name" data-edit="links.2.a">学习与二次开发</span>
+          <span class="doc-name">三种启动方式</span>
+        </a>
+        <a class="doc-cell" href="docs.html#software-update">
+          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 12a8.6 8.6 0 1 1-2.5-6.1"/><path d="M20.8 3.6v5h-5"/></svg></span>
+          <span class="doc-name">软件自动更新</span>
         </a>
         <a class="doc-cell" href="docs.html#one-click-update">
-          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 12a8.6 8.6 0 1 1-2.5-6.1"/><path d="M20.8 3.6v5h-5"/></svg></span>
-          <span class="doc-name" data-edit="links.3.a">一键更新原理</span>
+          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13.2 2.4 4.8 13.4h6.1L10 21.6l8.4-11h-6.2z"/></svg></span>
+          <span class="doc-name">游戏配置更新</span>
         </a>
         <a class="doc-cell" href="docs.html#auto-fill">
-          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13.2 2.4 4.8 13.4h6.1L10 21.6l8.4-11h-6.2z"/></svg></span>
-          <span class="doc-name" data-edit="links.4.a">AppID 自动填充</span>
+          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 2.6 20h18.8z"/><path d="M12 9.6v4.6M12 17.4v.4"/></svg></span>
+          <span class="doc-name">AppID 自动填充</span>
+        </a>
+        <a class="doc-cell" href="docs.html#home-content">
+          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2.8H7.2a2 2 0 0 0-2 2v14.4a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2V7.6z"/><path d="M14 2.8v4.8h4.8"/><path d="M9 13.4h6M9 17h4"/></svg></span>
+          <span class="doc-name">首页内容与缓存</span>
+        </a>
+        <a class="doc-cell" href="docs.html#screenshots">
+          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.6 3 7.4v9.2L12 21.4l9-4.8V7.4z"/><path d="M3 7.4 12 12.2l9-4.8M12 12.2v9.2"/></svg></span>
+          <span class="doc-name">截图管理</span>
         </a>
         <a class="doc-cell" href="docs.html#limits">
-          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 2.6 20h18.8z"/><path d="M12 9.6v4.6M12 17.4v.4"/></svg></span>
-          <span class="doc-name" data-edit="links.5.a">已知限制</span>
-        </a>
-        <a class="doc-cell" href="examples/md.html">
-          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2.8H7.2a2 2 0 0 0-2 2v14.4a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2V7.6z"/><path d="M14 2.8v4.8h4.8"/><path d="M9 13.4h6M9 17h4"/></svg></span>
-          <span class="doc-name" data-edit="links.6.a">文档变网页</span>
-        </a>
-        <a class="doc-cell" href="examples/vite.html">
-          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.6 3 7.4v9.2L12 21.4l9-4.8V7.4z"/><path d="M3 7.4 12 12.2l9-4.8M12 12.2v9.2"/></svg></span>
-          <span class="doc-name" data-edit="links.7.a">Vite 构建产物</span>
-        </a>
-        <a class="doc-cell" href="examples/ai.html">
           <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11.2 3.2 13 8l4.8 1.8L13 11.6 11.2 16.4 9.4 11.6 4.6 9.8 9.4 8z"/><path d="M18.6 15.4l.9 2.2 2.2.9-2.2.9-.9 2.2-.9-2.2-2.2-.9 2.2-.9z"/></svg></span>
-          <span class="doc-name" data-edit="links.8.a">AI 生成页面</span>
-        </a>
-        <a class="doc-cell" href="examples/md-maintain.html">
-          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.4" width="18" height="17.2" rx="2.2"/><path d="M3 9.4h18M9.4 20.6V9.4"/></svg></span>
-          <span class="doc-name" data-edit="links.9.a">文档维护台</span>
+          <span class="doc-name">已知限制与排查</span>
         </a>
         <a class="doc-cell" href="tutorial.html">
-          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10.2 8.4 16 12l-5.8 3.6z"/></svg></span>
-          <span class="doc-name" data-edit="links.10.a">完整使用教程</span>
+          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.4" width="18" height="17.2" rx="2.2"/><path d="M3 9.4h18M9.4 20.6V9.4"/></svg></span>
+          <span class="doc-name">完整使用教程</span>
         </a>
-        <a class="doc-cell" href="about.html">
+        <a class="doc-cell" href="features.html">
+          <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10.2 8.4 16 12l-5.8 3.6z"/></svg></span>
+          <span class="doc-name">完整功能介绍</span>
+        </a>
+        <a class="doc-cell" href="https://github.com/Clearlove0923/SteamCN-GameLauncher" target="_blank" rel="noopener noreferrer">
           <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 10.8v5.4M12 7.6v.4"/></svg></span>
-          <span class="doc-name" data-edit="links.11.a">关于此软件</span>
+          <span class="doc-name">源码与问题反馈</span>
         </a>
         <a class="doc-cell doc-cell--go" href="#download">
           <span class="doc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4v11.2"/><path d="M7.4 10.4 12 15l4.6-4.6"/><path d="M4.4 20.6h15.2"/></svg></span>
-          <span class="doc-name" data-edit="links.12.a">下载安装包</span>
+          <span class="doc-name">下载安装包</span>
         </a>
       </div>
     </div>
   </section>
-
-  <section class="section section-alt" id="examples">
-    <div class="container">
-      <h2 class="section-title" data-edit="examples.title">几分钟看完三个示例</h2>
-      <p class="section-desc" data-edit="examples.desc">三个都能直接点开看。</p>
-
-      <div class="grid grid-3">
-        <article class="card">
-          <span class="badge" data-edit="examples.1.badge">前端项目</span>
-          <h3 data-edit="examples.1.title">Vite + React 构建产物</h3>
-          <p data-edit="examples.1.text">构建产物直接发布成链接。</p>
-          <pre class="code-block"><code>cd my-app &amp;&amp; npm run build</code></pre>
-          <a class="card-link" href="examples/vite.html">打开示例</a>
-        </article>
-        <article class="card">
-          <span class="badge" data-edit="examples.2.badge">文档转网页</span>
-          <h3 data-edit="examples.2.title">Markdown 变可分享网页</h3>
-          <p data-edit="examples.2.text">拖入文档，自动变成带目录的网页。</p>
-          <pre class="code-block"><code>拖入文档即可预览</code></pre>
-          <a class="card-link" href="examples/md.html">打开示例</a>
-        </article>
-        <article class="card">
-          <span class="badge" data-edit="examples.3.badge">AI 发布页面</span>
-          <h3 data-edit="examples.3.title">AI 生成页面一键发布</h3>
-          <p data-edit="examples.3.text">生成的页面直接发布成公网链接。</p>
-          <pre class="code-block"><code>deploy ./ai-generated.html</code></pre>
-          <a class="card-link" href="examples/ai.html">打开示例</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- 运行维护入口：常驻屏幕底部的细条，里面是「运行维护」四个字 + 两个朝下小勾，点击直接进维护页。
-       管理员的「管理员」入口在顶部导航最右侧（「下载」按钮的右边）。 -->
-  <section class="mm-entry" id="maintain">
-    <div class="container mm-entry-inner">
-      <a class="mm-arrow" href="examples/md-maintain.html">
-        <span class="mm-arrow-title">运行维护</span>
-        <span class="mm-chev" aria-hidden="true"><span></span><span></span></span>
-      </a>
-    </div>
-  </section>
-
-  <!-- 编辑模式工具条（#editBar）由 js/site-edit.js 注入：只有管理员解锁后才出现，
-       出现时吸底条会自动隐藏 -->
 
   <section class="cta" id="download">
     <div class="container">
-      <h2 data-edit="cta.title">准备好开始了吗？</h2>
-      <p data-edit="cta.text">下载安装包，几分钟就能开始。</p>
+      <h2>准备好开始了吗？</h2>
+      <p>下载安装包，几分钟就能开始。</p>
       <div class="hero-actions" style="margin-bottom:0;">
-        <!-- 写死的是当版本的 GitHub Release 直链；页面加载后会用 version.json + GitHub API 更新为最新版 -->
-        <a class="btn btn-primary btn-lg" id="downloadBtn"
-           href="https://github.com/Clearlove0923/SteamCN-GameLauncher/releases/download/v3.1.6/SteamCN-GameLauncher-v3.1.6-win-x64-setup.exe">
-          下载安装包（133 MB）
-        </a>
-        <a class="btn btn-outline btn-lg" id="downloadMirrorBtn"
+        <!-- 左侧主按钮使用 CNB 国内下载；右侧按钮使用 GitHub Release。页面加载后由 version.json 同步链接与文案。 -->
+        <a class="btn btn-primary btn-lg" id="downloadMirrorBtn"
            href="https://cnb.cool/SteamCN-GameLauncher/SteamCN-GameLauncher/-/releases/latest">
           国内下载（CNB）
+        </a>
+        <a class="btn btn-outline btn-lg" id="downloadBtn"
+           href="https://github.com/Clearlove0923/SteamCN-GameLauncher/releases/download/v3.1.6/SteamCN-GameLauncher-v3.1.6-win-x64-setup.exe">
+          下载安装包（133 MB）
         </a>
       </div>
       <p class="cta-meta">
@@ -281,7 +278,7 @@
     </div>
   </section>
 
-  <footer class="site-footer mm-space">
+  <footer class="site-footer">
     <div class="container footer-inner">
       <div>
         <strong>SteamCN-GameLauncher</strong>
@@ -290,16 +287,17 @@
       <nav class="footer-links">
         <a href="index.html">首页</a>
         <a href="features.html">功能</a>
+        <a href="game-guide.html">游戏适配</a>
         <a href="tutorial.html">教程</a>
         <a href="docs.html">文档</a>
-        <a href="examples/md-maintain.html">运行维护</a>
+        <a href="https://github.com/Clearlove0923/SteamCN-GameLauncher" target="_blank" rel="noopener noreferrer">源码</a>
         <a href="about.html">关于</a>
       </nav>
       <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
     </div>
   </footer>
 
-  <!-- 右侧抽屉「二游官网 / 其他」：默认收起，只在屏幕右缘留一条透明把手（两个字 + 箭头），
+  <!-- 右侧「二游官网」抽屉：默认收起，只在屏幕右缘留一条透明把手（两个字 + 箭头），
        不铺底色、不加边框，直接压在整页底图上；展开后从右侧滑出，宽度约占视口的 1/3。
        把手会跟着面板一起左移，始终贴在面板左沿，所以同一个按钮就能展开 / 收起。
        图标取自各游戏的官方应用商店图标（assets/games/，仅用于跳转官网）；
@@ -308,21 +306,14 @@
     <button class="dock-handle" id="dockHandle" type="button"
             aria-expanded="false" aria-controls="dockPanel" title="展开 / 收起">
       <span class="dock-handle-label">二游官网</span>
-      <span class="dock-handle-label dock-handle-label--sub">其他</span>
       <span class="dock-chev" aria-hidden="true"></span>
     </button>
 
-    <aside class="dock-panel" id="dockPanel" aria-label="二游官网与其他">
+    <aside class="dock-panel" id="dockPanel" aria-label="二游官网">
       <section class="dock-sec">
         <h2 class="dock-sec-title">二游官网</h2>
         <p class="dock-sec-hint">点图标打开官方网站</p>
         <div class="dock-grid" id="dockGrid"></div>
-      </section>
-
-      <section class="dock-sec">
-        <h2 class="dock-sec-title">其他</h2>
-        <p class="dock-sec-hint">这块先空着，以后往这里加新功能。</p>
-        <div class="dock-slot" id="dockOther">待添加</div>
       </section>
     </aside>
   </div>
@@ -503,9 +494,6 @@
       }
     })();
   </script>
-  <!-- 全站共用的「文案三层 + 管理员就地编辑」脚本：页头的管理员按钮与底部工具条也由它注入 -->
-  <script src="js/site-edit.js?v=20261002205943"></script>
-
   <script>
     // 右侧抽屉：点把手展开 / 收起，Esc 或点抽屉以外的页面区域也能收起。
     (function () {

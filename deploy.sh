@@ -21,14 +21,14 @@ if [ ! -d .git ]; then
 fi
 
 # ---------- 自动缓存戳 ----------
-# 页面里写的是 css/style.css?v=__BUILD__ 与 js/site-edit.js?v=__BUILD__，这里统一换成部署时间戳。
-# 每次部署资源地址都会变，浏览器和加速节点就没法再把旧 CSS/JS 拿给你，
+# 页面里写的是 css/style.css?v=__BUILD__，这里统一换成部署时间戳。
+# 每次部署资源地址都会变，浏览器和加速节点就不会继续使用旧 CSS，
 # 以后改完样式或脚本就不用每次手动 Ctrl+Shift+R 了。
 BUILD_STAMP=$(date +%Y%m%d%H%M%S)
-PAGES="index.html 404.html about.html docs.html features.html tutorial.html docs/learning-guide.html examples/md-maintain.html examples/md.html"
+PAGES="index.html 404.html about.html docs.html features.html game-guide.html tutorial.html docs/learning-guide.html"
 for f in $PAGES; do
   [ -f "$f" ] || continue
-  sed -i -E 's#(css/style\.css|js/site-edit\.js)\?v=[^"]*#\1?v='"$BUILD_STAMP"'#g' "$f"
+  sed -i -E 's#css/style\.css\?v=[^"]*#css/style.css?v='"$BUILD_STAMP"'#g' "$f"
 done
 echo "静态资源缓存戳：$BUILD_STAMP"
 

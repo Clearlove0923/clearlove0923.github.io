@@ -14,15 +14,12 @@
 .
 ├─ index.html              首页（入口，文件名不可改）
 ├─ features.html           功能展示
+├─ game-guide.html         游戏适配与特殊启动设置
 ├─ tutorial.html           使用教程
 ├─ docs.html               文档
 ├─ about.html              关于此软件
 ├─ docs/
 │  └─ learning-guide.html  学习与二次开发指南
-├─ examples/
-│  ├─ md.html              文档转网页（可实际使用）
-│  ├─ vite.html            前端构建产物示例
-│  └─ ai.html              AI 生成页面示例（成品展示）
 ├─ 404.html                404 页面（GitHub Pages 会自动使用）
 ├─ assets/
 │  ├─ hero-bg.jpg          首页背景图
@@ -148,7 +145,7 @@ SteamCN-GameLauncher-Setup.exe
 ## 改内容时注意
 
 - **入口文件必须叫 `index.html`**，放在仓库根目录。
-- **所有引用路径用相对路径**（如 `css/style.css`、`examples/md.html`），不要写成 `/css/style.css` 这类以斜杠开头的绝对路径，否则子目录部署时会 404。
+- **所有引用路径用相对路径**（如 `css/style.css`、`game-guide.html`），不要写成 `/css/style.css` 这类以斜杠开头的绝对路径，否则子目录部署时会 404。
 - 改主题色只需改 `css/style.css` 顶部 `:root` 里的 `--accent`。
 - 首页各区块里有 `<!-- 改这里 -->` 注释，搜索即可定位待替换文案。
 
@@ -166,18 +163,6 @@ bash rollback.sh
 回滚采用「生成一次新的反向提交」的方式，不改写 git 历史，随时可以再滚回来。
 
 注意：回滚后，该版本之后**新增的文件不会自动消失**，如有多余文件需手动删除。
-
----页的性质
-
-| 页面 | 性质 |
-|---|---|
-| `examples/md.html` | 真能用的功能：上传 Markdown / Word(.docx) / PDF，浏览器内解析并渲染成带目录的网页，文件不上传服务器 |
-| `examples/vite.html` | 前端项目构建产物的展示，页面内的计数器与任务清单是真实交互 |
-| `examples/ai.html` | 成品展示页，仅用于呈现「AI 生成并发布后的页面」长什么样，本身不含生成能力 |
-
-在线实时生成页面需要后端与大模型接口，纯静态站点无法实现。
-
----
 
 ## 其他
 

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SteamCN-GameLauncher 游戏适配指南：绝区零、鸣潮、异环、燕云十六声与无限暖暖的特殊启动参数和桥接说明。">
+  <title>游戏适配指南 | SteamCN-GameLauncher</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css?v=20261010012139">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html"><span class="logo-mark" aria-hidden="true">S</span>SteamCN-GameLauncher</a>
+      <nav class="nav-links">
+        <a href="features.html">功能</a>
+        <a href="game-guide.html">游戏适配</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于此软件</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="docs.html#requirements">系统要求</a>
+        <a class="btn btn-primary" href="index.html#download">下载</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-head">
+    <div class="container">
+      <h1>游戏适配指南</h1>
+      <p>按软件仓库当前文档整理的特殊启动参数、桥接程序用法与更新后复查事项。</p>
+    </div>
+  </section>
+
+  <main class="container doc-body">
+    <div class="toc">
+      <strong>本页内容</strong>
+      <ol>
+        <li><a href="#zzz">绝区零</a></li>
+        <li><a href="#wuthering-waves">鸣潮</a></li>
+        <li><a href="#nte">异环</a></li>
+        <li><a href="#where-winds-meet">燕云十六声</a></li>
+        <li><a href="#infinity-nikki">无限暖暖</a></li>
+        <li><a href="#after-update">游戏更新后的检查</a></li>
+      </ol>
+    </div>
+
+    <div class="note">
+      <p>普通游戏可直接使用助手提供的三种启动方式。只有官方启动链较特殊时，才需要本页参数或桥接程序；实际文件路径请以本机安装目录为准。</p>
+    </div>
+
+    <h2 id="zzz">绝区零</h2>
+    <p>如需启用 DirectX 12，可在对应游戏配置的启动参数中填写：</p>
+    <pre class="code-block"><code>-use-d3d12</code></pre>
+
+    <h2 id="wuthering-waves">鸣潮</h2>
+    <p>可按需要组合以下参数：</p>
+    <table class="spec-table">
+      <tr><th><code>-d3d11</code></th><td>强制使用 DirectX 11</td></tr>
+      <tr><th><code>-SkipSplash</code></th><td>跳过库洛图标等开场展示</td></tr>
+    </table>
+
+    <h2 id="nte">异环</h2>
+    <p>如需让官方启动器静默运行并自动启动游戏，可尝试：</p>
+    <pre class="code-block"><code>/autoplay</code></pre>
+    <p>启动器版本更新后，该参数是否仍有效需要重新验证。</p>
+
+    <h2 id="where-winds-meet">燕云十六声</h2>
+    <p>将 <code>WhereWindsMeetDirect.exe</code> 放到游戏安装根目录，也就是与 <code>yysls_medium</code>、<code>Win32</code> 同级的位置。不要覆盖官方的 <code>launcher.exe</code> 或 <code>yysls.exe</code>。</p>
+    <ul>
+      <li>默认会查找 <code>Win64r</code> 或 <code>Win64rh</code> 下的真实游戏进程，并在游戏退出后再结束桥接进程。</li>
+      <li><code>--attach-only</code>：只跟踪已经启动或随后由官方启动器启动的游戏，不主动启动本体。</li>
+      <li><code>--dry-run</code>：只输出识别到的目录和启动命令，不启动游戏，适合先检查配置。</li>
+      <li><code>--no-dialog</code>：出错时不弹窗，诊断信息仍写入日志。</li>
+    </ul>
+    <p>完整参数见软件源码仓库中的 <a href="https://github.com/Clearlove0923/SteamCN-GameLauncher/blob/master_preview/docs/GameSpecialSetting.md">游戏特殊启动设置</a>。</p>
+
+    <h2 id="infinity-nikki">无限暖暖</h2>
+    <p>将 <code>InfinityNikkiLaunchBridge.exe</code> 放在游戏安装目录，桥接程序会启动 <code>xstarter.exe -skiplauncher</code>，等待真实游戏进程出现，并在游戏退出后再结束自身。</p>
+    <pre class="code-block"><code>-skiplauncher</code></pre>
+    <p>桥接程序不改变 Steam 在线状态；它通过保持稳定的启动生命周期，让 Steam 能持续跟踪对应 AppID 的运行状态与时长。</p>
+
+    <h2 id="after-update">游戏更新后的检查</h2>
+    <ol class="steps-list">
+      <li><strong>先用官方启动器更新并启动一次</strong>确认游戏本体和登录流程正常。</li>
+      <li><strong>检查路径与文件名</strong>确认真实 EXE、工作目录和桥接程序仍在原位。</li>
+      <li><strong>重新验证参数</strong>官方启动器可能改变命令行、环境变量、登录令牌或反作弊初始化流程。</li>
+      <li><strong>验证 Steam 跟踪</strong>进入游戏后检查运行状态、时长与覆盖层；自动化检查不能替代真实启动验证。</li>
+    </ol>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>SteamCN-GameLauncher</strong>
+        <p class="muted">国服二游接入 Steam 的配置助手。</p>
+      </div>
+      <nav class="footer-links">
+        <a href="index.html">首页</a>
+        <a href="features.html">功能</a>
+        <a href="game-guide.html">游戏适配</a>
+        <a href="tutorial.html">教程</a>
+        <a href="docs.html">文档</a>
+        <a href="about.html">关于</a>
+      </nav>
+      <p class="muted">© 2026 SteamCN-GameLauncher. 保留所有权利。</p>
+    </div>
+  </footer>
+</body>
+</html>

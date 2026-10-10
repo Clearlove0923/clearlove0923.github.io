@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SteamCN-GameLauncher 游戏适配指南：绝区零、鸣潮、异环、燕云十六声与无限暖暖的特殊启动参数和桥接说明。">
+  <meta name="description" content="SteamCN-GameLauncher 游戏适配指南：绝区零、鸣潮、异环、燕云十六声、无限暖暖与卡拉彼丘的特殊启动参数和桥接说明。">
   <title>游戏适配指南 | SteamCN-GameLauncher</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20261010012139">
@@ -42,6 +42,7 @@
         <li><a href="#nte">异环</a></li>
         <li><a href="#where-winds-meet">燕云十六声</a></li>
         <li><a href="#infinity-nikki">无限暖暖</a></li>
+        <li><a href="#calabiyau">卡拉彼丘</a></li>
         <li><a href="#after-update">游戏更新后的检查</a></li>
       </ol>
     </div>
@@ -80,6 +81,16 @@
     <p>将 <code>InfinityNikkiLaunchBridge.exe</code> 放在游戏安装目录，桥接程序会启动 <code>xstarter.exe -skiplauncher</code>，等待真实游戏进程出现，并在游戏退出后再结束自身。</p>
     <pre class="code-block"><code>-skiplauncher</code></pre>
     <p>桥接程序不改变 Steam 在线状态；它通过保持稳定的启动生命周期，让 Steam 能持续跟踪对应 AppID 的运行状态与时长。</p>
+
+    <h2 id="calabiyau">卡拉彼丘</h2>
+    <p>首次使用前，至少通过官方启动器成功进入游戏一次。下载 <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/Calabiyau-v1.0">CalabiyauLaunchBridge v1.0</a>，将 <code>CalabiyauLaunchBridge.exe</code> 放到官方 <code>CalabiYau.exe</code> 所在的安装根目录。</p>
+    <ul>
+      <li>运行时可能出现一次 UAC 提示；桥接器会在后台初始化官方 SDK，然后直接启动游戏，无需点击“开始游戏”。</li>
+      <li>官方启动器主窗口会持续隐藏，右下角托盘图标会保留；游戏本体连续退出 3 秒后，桥接器会关闭由它启动的官方入口并退出。</li>
+      <li>Steam 启动选项可填写 <code>"完整路径\CalabiyauLaunchBridge.exe" %command%</code>。</li>
+      <li>日志位于桥接器同级的 <code>CalabiyauLaunchBridge-log</code> 文件夹。</li>
+    </ul>
+    <p>标准版已完成真实启动与退出生命周期验证；腾讯版已覆盖目录发现测试，真实登录、反作弊初始化和完整生命周期仍需验证。官方启动链发生变化时，应先用官方启动器更新并成功进入一次，再重新测试桥接器。</p>
 
     <h2 id="after-update">游戏更新后的检查</h2>
     <ol class="steps-list">

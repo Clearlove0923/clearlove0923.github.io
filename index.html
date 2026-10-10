@@ -180,8 +180,8 @@
 
   <section class="section section-alt" id="games">
     <div class="container">
-      <h2 class="section-title">已验证的游戏内容来源</h2>
-      <p class="section-desc">当前正式版已接入多家厂商的官网或官方启动器内容，并提供静态回退。</p>
+      <h2 class="section-title">已验证的游戏内容与启动适配</h2>
+      <p class="section-desc">当前正式版已接入多家厂商的官网或官方启动器内容，并为特殊启动链提供经过实机验证的桥接方案。</p>
       <div class="grid grid-3">
         <article class="card"><h3>绝区零 / 崩坏 3</h3><p>接入 HoYoPlay 官方内容来源，展示背景、轮播与公告资讯。</p></article>
         <article class="card"><h3>鸣潮</h3><p>接入库洛国服启动器内容，并兼容高规格背景视频的转码与回退。</p></article>
@@ -189,6 +189,7 @@
         <article class="card"><h3>异环</h3><p>接入完美世界内容来源，并优先读取有效的本地启动器动画与海报。</p></article>
         <article class="card"><h3>无限暖暖</h3><p>接入叠纸官网数据，同时保留本地启动器资源回退能力。</p></article>
         <article class="card"><h3>燕云十六声</h3><p>接入网易官网资讯与当前可用的官方启动器媒体资源。</p></article>
+        <article class="card"><h3>卡拉彼丘</h3><p>通过独立桥接器在后台初始化官方 SDK 后直接进入游戏，并在游戏退出后清理官方启动器。</p></article>
       </div>
       <p class="section-desc" style="margin-top:24px;"><a href="game-guide.html">查看各游戏启动参数与桥接说明 →</a></p>
     </div>
@@ -516,7 +517,8 @@
         { n: '无限暖暖',   img: 'assets/games/nikki.webp',    k: '暖', bg: '#fbe8f0', fg: '#b0527f', u: 'https://infinitynikki.nuanpaper.com/' },
         { n: '燕云十六声', img: 'assets/games/yy.webp',       k: '燕', bg: '#e4f1ec', fg: '#2f6f5e', u: 'https://www.wherewindsmeetgame.com/' },
         { n: '终末地', f: '明日方舟：终末地', img: 'assets/games/endfield.webp', k: '终', bg: '#ebedf0', fg: '#4a5560', u: 'https://endfield.hypergryph.com/' },
-        { n: '异环',       img: 'assets/games/nte.webp',      k: '异', bg: '#e8e9fa', fg: '#4f57b5', u: 'https://nte.perfectworld.com/cn/' }
+        { n: '异环',       img: 'assets/games/nte.webp',      k: '异', bg: '#e8e9fa', fg: '#4f57b5', u: 'https://nte.perfectworld.com/cn/' },
+        { n: '卡拉彼丘',   k: '卡', bg: '#eee8fa', fg: '#65469b', u: 'https://klbq.qq.com/' }
       ];
 
       GAMES.forEach(function (g) {

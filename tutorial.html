@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SteamCN-GameLauncher 使用教程：安装、添加游戏、选择启动方式、保存配置、管理截图与更新软件。">
+  <meta name="description" content="SteamCN-GameLauncher 使用教程：安装、添加游戏、配置桥接程序、选择启动方式、管理截图与更新软件。">
   <title>使用教程 | SteamCN-GameLauncher</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20261011124346">
+  <link rel="stylesheet" href="css/style.css?v=20261011124924">
 </head>
 <body>
 
@@ -42,6 +42,7 @@
         <li><a href="#prepare">准备工作</a></li>
         <li><a href="#install">安装助手</a></li>
         <li><a href="#add">添加游戏（两种方式）</a></li>
+        <li><a href="#bridge">配置桥接程序（特殊游戏）</a></li>
         <li><a href="#save">保存并选择启动方式</a></li>
         <li><a href="#screenshots">管理截图</a></li>
         <li><a href="#update">后续一键更新</a></li>
@@ -91,7 +92,19 @@
       <p>当前 ACF 只支持一个 Depot。若出现多个 Depot，请核对后选择，必要时参考文档中的<a href="docs.html#limits">已知限制</a>。</p>
     </div>
 
-    <h2 id="save">四、保存并选择启动方式</h2>
+    <h2 id="bridge">四、配置桥接程序（特殊游戏）</h2>
+    <p>燕云十六声、无限暖暖、卡拉彼丘等启动链较特殊的游戏需要使用对应的桥接 EXE。具体适用游戏和最新下载链接见<a href="game-guide.html">游戏适配指南</a>。</p>
+    <ol class="steps-list">
+      <li><strong>下载对应桥接程序</strong>从游戏适配指南提供的 CNB 或 GitHub 链接下载当前版本。</li>
+      <li><strong>放入游戏安装目录</strong>保持桥接 EXE 下载后的文件名不变，直接放到对应游戏的安装目录；不要覆盖游戏官方 EXE。</li>
+      <li><strong>选择桥接 EXE</strong>回到软件的游戏配置界面，将刚才放入安装目录的桥接 EXE 选择为可执行文件。</li>
+      <li><strong>保存并测试</strong>保存游戏配置后从软件启动一次，确认游戏与桥接进程能正常启动，并在退出游戏后正常结束。</li>
+    </ol>
+    <div class="note">
+      <p>桥接 EXE 无需重命名。部分游戏首次使用前需要先通过官方启动器成功进入游戏一次，请以<a href="game-guide.html">游戏适配指南</a>中的对应说明为准。</p>
+    </div>
+
+    <h2 id="save">五、保存并选择启动方式</h2>
     <ol class="steps-list">
       <li><strong>保存配置</strong>点击保存按钮；离开页面时也会自动保存。</li>
       <li><strong>选择启动方式</strong>为当前游戏选择“国服”“Steam 玩国服”或“Steam 玩国际服”。</li>
@@ -100,7 +113,7 @@
       <li><strong>验证 Steam 功能</strong>使用 Steam 模式时，进入游戏后检查覆盖层与好友状态；实际可用性取决于游戏兼容性。</li>
     </ol>
 
-    <h2 id="screenshots">五、管理截图</h2>
+    <h2 id="screenshots">六、管理截图</h2>
     <ol class="steps-list">
       <li><strong>打开“截图”页面</strong>从侧边栏进入截图管理。</li>
       <li><strong>选择当前游戏的目录</strong>每款游戏的路径会独立保存。</li>
@@ -108,7 +121,7 @@
       <li><strong>管理文件</strong>右键缩略图或大图，可在资源管理器中定位，或将图片移入 Windows 回收站。</li>
     </ol>
 
-    <h2 id="update">六、后续更新</h2>
+    <h2 id="update">七、后续更新</h2>
     <h3>更新游戏配置</h3>
     <p>游戏本体或 Steam 侧数据变化后，可在预设区域点击「一键更新」：</p>
     <ul>

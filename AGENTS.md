@@ -4,7 +4,7 @@
 > 仓库用途：`clearlove0923.github.io` —— SteamCN-GameLauncher 的产品展示与下载官网，纯静态站点，托管在 GitHub Pages。
 > 软件源码仓库另有其处，**发布流程与版本规则统一以本文件为准**，不在两边各写一份，避免规则分散冲突。
 
-最后更新：2026-10-09 · 适用于 v3.1.6 及之后的所有维护工作
+最后更新：2026-10-11 · 适用于 v3.1.6 及之后的所有维护工作
 
 ---
 
@@ -16,7 +16,8 @@
 | 远端地址 | `https://github.com/Clearlove0923/clearlove0923.github.io.git` |
 | 默认分支 | `main` |
 | 线上地址 | `https://clearlove0923.github.io/` |
-| 软件源码仓库 | `F:\zzy_work_space\SteamCN-GameLauncher`（远端 `Violet0923/SteamCN-GameLauncher`） |
+| 软件源码仓库 | `F:\zzy_work_space\SteamCN-GameLauncher`（远端 `Clearlove0923/SteamCN-GameLauncher`） |
+| 游戏桥接程序仓库 | `Clearlove0923/GameLaunchBridges`（个别游戏所需的桥接 EXE） |
 | Release 发布仓库 | `Clearlove0923/SteamCN-GameLauncher`（当前对外分发用） |
 | git 可执行文件 | `F:\Git\cmd\git.exe` |
 
@@ -182,6 +183,13 @@ bash deploy.sh "更新到 v2.6.3"
 1. 新增 Markdown 文档如需公开分享，转换为网页放在 `docs/`，并在首页或文档页加入口。
 2. 转换时保留原有技术细节，同时按第 2 节做措辞中性化。
 3. 官网只保留与 SteamCN-GameLauncher 直接相关的产品、使用、适配与开发内容，不新增通用前端演示或文档转换工具。
+
+### 游戏桥接程序
+
+1. `Clearlove0923/GameLaunchBridges` 是个别游戏所需桥接 EXE 的源码与发布仓库；`Clearlove0923/SteamCN-GameLauncher` 是主程序源码及 Release 发布仓库，二者用途不可混淆。
+2. 桥接程序只在 `game-guide.html` 的对应游戏条目中说明，不放入官网主程序下载区，也不提交 EXE 到本站仓库。
+3. 每个已发布的桥接程序应同时提供当前版本的 CNB 与 GitHub Release 链接，并写明下载后的重命名、放置位置、Steam 启动选项及首次运行前置条件。
+4. 桥接程序更新后，应以 `GameLaunchBridges` 仓库 README 和 Releases 为准，同步版本号、文件名、使用办法与验证状态；不能使用仓库级 `releases/latest` 代替单个游戏的版本链接，因为不同游戏独立发布。
 
 ---
 

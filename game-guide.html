@@ -70,14 +70,22 @@
     <p>启动器版本更新后，该参数是否仍有效需要重新验证。</p>
 
     <h2 id="where-winds-meet">燕云十六声</h2>
-    <p>下载 <strong>WhereWindsMeetLaunchBridge v1.2</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/WhereWindsMeet-v1.2">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/WhereWindsMeet-v1.2">GitHub 下载</a>），保持文件名 <code>WhereWindsMeetLaunchBridge_v1.2.exe</code> 不变，直接放到游戏安装根目录，也就是与官方 <code>launcher.exe</code> 或其快捷方式同级的位置。不要覆盖官方的 <code>launcher.exe</code> 或 <code>yysls.exe</code>。</p>
+    <p>下载 <strong>WhereWindsMeetLaunchBridge v1.4</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/WhereWindsMeet-v1.4">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/WhereWindsMeet-v1.4">GitHub 下载</a>），保持文件名 <code>WhereWindsMeetLaunchBridge_v1.4.exe</code> 不变。桥接器可放在游戏安装目录树中的任意常规位置，不必与 <code>launcher.exe</code> 同级；不要覆盖官方的 <code>launcher.exe</code> 或 <code>yysls.exe</code>。</p>
     <ul>
       <li>默认会查找 <code>Win64r</code> 或 <code>Win64rh</code> 下的真实游戏进程，并在游戏退出后再结束桥接进程。</li>
       <li><code>--attach-only</code>：只跟踪已经启动或随后由官方启动器启动的游戏，不主动启动本体。</li>
       <li><code>--dry-run</code>：只输出识别到的目录和启动命令，不启动游戏，适合先检查配置。</li>
       <li><code>--no-dialog</code>：出错时不弹窗，诊断信息仍写入日志。</li>
-      <li>在软件的游戏配置界面，将 <code>WhereWindsMeetLaunchBridge_v1.2.exe</code> 选择为可执行文件。</li>
+      <li>无法识别、缺少值或值无效的参数会被自动忽略并记录到同级日志，便于确认软件或 Steam 实际传入的内容。</li>
+      <li>在软件的游戏配置界面，将 <code>WhereWindsMeetLaunchBridge_v1.4.exe</code> 选择为可执行文件。</li>
     </ul>
+    <h3>选择 DirectX 11 或 DirectX 12</h3>
+    <p>桥接器负责拉起游戏本体，不会修改官方 DX 配置。请先在官方启动器中选择所需模式并成功进入一次游戏，之后通过桥接器启动会沿用该设置：</p>
+    <ul>
+      <li><strong>DX11：</strong>勾选“使用 DirectX 11 启动”，再通过官方启动器成功进入一次游戏。</li>
+      <li><strong>DX12：</strong>取消勾选“使用 DirectX 11 启动”，再通过官方启动器成功进入一次游戏。</li>
+    </ul>
+    <p>2026-10-14 标准版实机确认：勾选后官方配置保存为 <code>DX12=false</code>，游戏加载 <code>d3d11.dll</code>，随后从 Steam 启动桥接器仍沿用 DX11；取消勾选后配置恢复为 <code>DX12=true</code>。Steam 尾随命令中出现的 DX 控制参数由桥接器忽略并写入日志，实际模式以官方启动器已经保存的设置为准。</p>
     <p>完整参数见软件源码仓库中的 <a href="https://github.com/Clearlove0923/SteamCN-GameLauncher/blob/master_preview/docs/GameSpecialSetting.md">游戏特殊启动设置</a>。</p>
 
     <h2 id="infinity-nikki">无限暖暖</h2>

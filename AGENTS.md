@@ -188,7 +188,7 @@ bash deploy.sh "更新到 v2.6.3"
 
 1. `Clearlove0923/GameLaunchBridges` 是个别游戏所需桥接 EXE 的源码与发布仓库；`Clearlove0923/SteamCN-GameLauncher` 是主程序源码及 Release 发布仓库，二者用途不可混淆。
 2. 桥接程序只在 `game-guide.html` 的对应游戏条目中说明，不放入官网主程序下载区，也不提交 EXE 到本站仓库。
-3. 每个已发布的桥接程序应同时提供当前版本的 CNB 与 GitHub Release 链接，并写明原始文件名、放置位置、在软件游戏配置界面选择该桥接 EXE 作为可执行文件的步骤，以及首次运行前置条件；桥接 EXE 下载后无需重命名。
+3. 每个已发布的桥接程序应提供当前版本已实际发布的 CNB 与 GitHub Release 链接；未发布的渠道必须明确标注，不能生成失效下载链接。并写明原始文件名、放置位置、在软件游戏配置界面选择该桥接 EXE 作为可执行文件的步骤，以及首次运行前置条件；桥接 EXE 下载后无需重命名。
 4. 桥接程序更新后，应以 `GameLaunchBridges` 仓库 README 和 Releases 为准，同步版本号、文件名、使用办法与验证状态；不能使用仓库级 `releases/latest` 代替单个游戏的版本链接，因为不同游戏独立发布。
 
 ---

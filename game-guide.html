@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SteamCN-GameLauncher 游戏适配指南：绝区零、鸣潮、异环、燕云十六声、无限暖暖与卡拉彼丘的特殊启动参数和桥接说明。">
+  <meta name="description" content="SteamCN-GameLauncher 游戏适配指南：绝区零、鸣潮、异环、明日方舟：终末地、燕云十六声、无限暖暖与卡拉彼丘的特殊启动参数和桥接说明。">
   <title>游戏适配指南 | SteamCN-GameLauncher</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20261014233531">
@@ -40,6 +40,7 @@
         <li><a href="#zzz">绝区零</a></li>
         <li><a href="#wuthering-waves">鸣潮</a></li>
         <li><a href="#nte">异环</a></li>
+        <li><a href="#endfield">明日方舟：终末地</a></li>
         <li><a href="#where-winds-meet">燕云十六声</a></li>
         <li><a href="#infinity-nikki">无限暖暖</a></li>
         <li><a href="#calabiyau">卡拉彼丘</a></li>
@@ -68,6 +69,18 @@
     <p>如需让官方启动器静默运行并自动启动游戏，可尝试：</p>
     <pre class="code-block"><code>/autoplay</code></pre>
     <p>启动器版本更新后，该参数是否仍有效需要重新验证。</p>
+
+    <h2 id="endfield">明日方舟：终末地</h2>
+    <p>下载 <strong>ArknightsEndfieldLaunchBridge v1.0</strong>（<a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/download/ArknightsEndfield-v1.0/ArknightsEndfieldLaunchBridge_v1.0.exe">GitHub 下载 EXE</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/ArknightsEndfield-v1.0">发布说明</a>）。CNB 暂未提供 v1.0。保持文件名 <code>ArknightsEndfieldLaunchBridge_v1.0.exe</code> 不变，将它放在游戏安装目录内；不要覆盖官方启动器或游戏 EXE。</p>
+    <ul>
+      <li>首次使用前，请先通过官方鹰角启动器完成登录和更新。在软件的游戏配置界面，将桥接 EXE 选择为可执行文件；运行时按提示接受 UAC。</li>
+      <li>桥接器自动识别安装位置，等待官方启动器检查完成后启动游戏；后台隐藏启动器主窗口，保留官方托盘图标。</li>
+      <li>游戏退出后默认等待 10 秒，再关闭官方启动器，桥接器随之退出。需要登录或更新等人工操作时，会恢复官方界面并提示。</li>
+      <li>图形模式沿用官方启动器设置；需要 DX11 时在官方启动器勾选对应选项。桥接器不提供独立 DX11/DX12 参数，未勾选时使用官方默认模式。</li>
+      <li>C++20 原生 Windows x64 单文件，无需安装 .NET 或额外 VC++ 运行库。可选 INI 配置及使用细节见<a href="https://github.com/Clearlove0923/GameLaunchBridges/blob/main/ArknightsEndfield/README.md">桥接器文档</a>。</li>
+      <li>日志位于 EXE 同级的 <code>ArknightsEndfieldLaunchBridge-log</code> 文件夹，使用一个主要日志文件，保留最近 7 天记录。</li>
+    </ul>
+    <p>2026-10-15 用户实机确认 C++ v1.0 启动正常，47 项原生回归及产物检查通过。C++ 版托盘与退出清理的逐项完整复测未另行记录，历史原型已验证相应行为；Steam 状态与时长、语音及其他渠道仍待验证。启动器主窗口可能短暂闪现，官方更新后需重新检查启动链。</p>
 
     <h2 id="where-winds-meet">燕云十六声</h2>
     <p>下载 <strong>WhereWindsMeetLaunchBridge v1.4</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/WhereWindsMeet-v1.4">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/WhereWindsMeet-v1.4">GitHub 下载</a>），保持文件名 <code>WhereWindsMeetLaunchBridge_v1.4.exe</code> 不变。桥接器可放在游戏安装目录树中的任意常规位置，不必与 <code>launcher.exe</code> 同级；不要覆盖官方的 <code>launcher.exe</code> 或 <code>yysls.exe</code>。</p>

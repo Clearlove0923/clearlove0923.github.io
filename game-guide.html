@@ -29,7 +29,7 @@
   <section class="page-head">
     <div class="container">
       <h1>游戏适配指南</h1>
-      <p>按软件仓库当前文档整理的特殊启动参数、桥接程序用法与更新后复查事项。</p>
+      <p>查看各游戏的下载、配置步骤和启动参数。</p>
     </div>
   </section>
 
@@ -52,9 +52,9 @@
       <p>普通游戏可直接使用助手提供的三种启动方式。只有官方启动链较特殊时，才需要本页参数或桥接程序；实际文件路径请以本机安装目录为准。</p>
     </div>
 
-    <p>内容依据：<a href="https://github.com/Clearlove0923/SteamCN-GameLauncher/blob/master/docs/GameSpecialSetting.md">游戏特殊启动设置</a>（2026-10-17 同步）。桥接器细节与验证范围以各自 README 和 Release 为准。首次使用前请通过官方启动器完成登录、更新并成功进入一次游戏；推荐将启动器与本体放在同一个总目录下，便于识别安装位置。</p>
+    <p>首次使用桥接器前，请通过官方启动器完成登录、更新并成功进入一次游戏。推荐将启动器与游戏本体放在同一个总目录下。</p>
 
-    <p>本页所用桥接程序由 <a href="https://github.com/Clearlove0923/GameLaunchBridges">GameLaunchBridges</a> 单独维护，主程序及其更新由 <a href="https://github.com/Clearlove0923/SteamCN-GameLauncher">SteamCN-GameLauncher</a> 仓库维护。桥接 EXE 下载后无需重命名：将它放到对应游戏的安装目录，再到软件的游戏配置界面选择该桥接 EXE 作为可执行文件即可。</p>
+    <p>桥接 EXE 下载后无需重命名：放到对应游戏的安装目录，再到软件的游戏配置界面选择该桥接 EXE 作为可执行文件。</p>
 
     <h2 id="zzz">绝区零</h2>
     <p>如需启用 DirectX 12，可在对应游戏配置的启动参数中填写：</p>
@@ -72,71 +72,53 @@
     <p>下载 <strong>NevernessToEvernessLaunchBridge v1.0</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/NevernessToEverness-v1.0">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/NevernessToEverness-v1.0">GitHub 下载</a>），保持文件名 <code>NevernessToEvernessLaunchBridge_v1.0.exe</code> 不变，放到包含官方启动器与游戏本体的安装根目录，在软件的游戏配置界面将该桥接 EXE 选择为可执行文件。</p>
     <ul>
       <li>首次运行前通过官方启动器完成登录和更新；运行桥接器时按提示接受 UAC。</li>
-      <li>桥接器后台运行官方启动器，等待资源检查完成后触发“开始游戏”，持续跟踪游戏进程，并在游戏退出后清理本次创建的启动器。</li>
-      <li>不再推荐 <code>/autoplay</code>：实机对照发现该流程可能在资源检查完成前启动游戏，导致角色语音缺失。</li>
       <li>在官方启动器中勾选 DX11 使用 DirectX 11，取消勾选使用默认 DirectX 12；桥接器沿用官方设置。</li>
-      <li>日志位于 EXE 同级的 <code>NevernessToEvernessLaunchBridge-log</code> 文件夹，配置细节见<a href="https://github.com/Clearlove0923/GameLaunchBridges/blob/main/NevernessToEverness/README.md">桥接器文档</a>。</li>
     </ul>
-    <p>C++ v1.0 已通过自动测试及双击启动实机验证；Steam 尾随参数修复仍需客户端实机复测。语音正常的结论来自官方完成资源检查后手动点击的采集流程，桥接流程的语音表现仍需实机核对。</p>
 
     <h2 id="endfield">明日方舟：终末地</h2>
     <p>下载 <strong>ArknightsEndfieldLaunchBridge v1.0</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/download/ArknightsEndfield-v1.0/ArknightsEndfieldLaunchBridge_v1.0.exe">CNB 下载 EXE</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/download/ArknightsEndfield-v1.0/ArknightsEndfieldLaunchBridge_v1.0.exe">GitHub 下载 EXE</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/ArknightsEndfield-v1.0">发布说明</a>）。保持文件名 <code>ArknightsEndfieldLaunchBridge_v1.0.exe</code> 不变，将它放在游戏安装目录内；不要覆盖官方启动器或游戏 EXE。</p>
     <ul>
       <li>首次使用前，请先通过官方鹰角启动器完成登录和更新。在软件的游戏配置界面，将桥接 EXE 选择为可执行文件；运行时按提示接受 UAC。</li>
-      <li>桥接器自动识别安装位置，等待官方启动器检查完成后启动游戏；后台隐藏启动器主窗口，保留官方托盘图标。</li>
-      <li>游戏退出后默认等待 10 秒，再关闭官方启动器，桥接器随之退出。需要登录或更新等人工操作时，会恢复官方界面并提示。</li>
       <li>图形模式沿用官方启动器设置；需要 DX11 时在官方启动器勾选对应选项。桥接器不提供独立 DX11/DX12 参数，未勾选时使用官方默认 DX12 模式。</li>
-      <li>C++20 原生 Windows x64 单文件，无需安装 .NET 或额外 VC++ 运行库。可选 INI 配置及使用细节见<a href="https://github.com/Clearlove0923/GameLaunchBridges/blob/main/ArknightsEndfield/README.md">桥接器文档</a>。</li>
-      <li>日志位于 EXE 同级的 <code>ArknightsEndfieldLaunchBridge-log</code> 文件夹，使用一个主要日志文件，保留最近 7 天记录。</li>
     </ul>
-    <p>2026-10-15 用户实机确认 C++ v1.0 启动正常，47 项原生回归及产物检查通过。C++ 版托盘与退出清理的逐项完整复测未另行记录，历史原型已验证相应行为；Steam 状态与时长、语音及其他渠道仍待验证。启动器主窗口可能短暂闪现，官方更新后需重新检查启动链。</p>
 
     <h2 id="where-winds-meet">燕云十六声</h2>
     <p>下载 <strong>WhereWindsMeetLaunchBridge v1.4</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/WhereWindsMeet-v1.4">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/WhereWindsMeet-v1.4">GitHub 下载</a>），保持文件名 <code>WhereWindsMeetLaunchBridge_v1.4.exe</code> 不变。桥接器可放在游戏安装目录树中的任意常规位置，不必与 <code>launcher.exe</code> 同级；不要覆盖官方的 <code>launcher.exe</code> 或 <code>yysls.exe</code>。</p>
     <p>以下可选参数填写到软件游戏配置的“特殊启动参数”中。首次使用前请先通过官方启动器成功进入一次游戏。</p>
     <ul>
-      <li>默认会查找 <code>Win64r</code> 或 <code>Win64rh</code> 下的真实游戏进程，并在游戏退出后再结束桥接进程。</li>
       <li><code>--attach-only</code>：只跟踪已经启动或随后由官方启动器启动的游戏，不主动启动本体，默认最多等待 180 秒。</li>
       <li><code>--startup-timeout-seconds N</code>：附着模式等待游戏出现的最长时间，范围 1–1800 秒。</li>
       <li><code>--exit-delay-seconds N</code>：游戏进程消失后的延时退出时间，范围 0–300 秒，默认 10 秒。</li>
       <li><code>--install-root "安装根目录"</code>：显式指定安装根目录，默认从桥接 EXE 所在目录向上查找。</li>
       <li><code>--variant Win64r</code> 或 <code>--variant Win64rh</code>：指定直启本体目录，默认优先 Win64r，再尝试 Win64rh。</li>
       <li><code>--dry-run</code>：只输出识别到的目录和启动命令，不启动游戏，适合先检查配置。</li>
-      <li><code>--no-dialog</code>：出错时不弹窗，诊断信息仍写入日志。</li>
-      <li>无法识别、缺少值或值无效的参数会被自动忽略并记录到同级日志，便于确认软件或 Steam 实际传入的内容。</li>
+      <li><code>--no-dialog</code>：出错时不弹窗。</li>
       <li>在软件的游戏配置界面，将 <code>WhereWindsMeetLaunchBridge_v1.4.exe</code> 选择为可执行文件。</li>
     </ul>
     <h3>选择 DirectX 11 或 DirectX 12</h3>
-    <p>桥接器负责拉起游戏本体，不会修改官方 DX 配置。请先在官方启动器中选择所需模式并成功进入一次游戏，之后通过桥接器启动会沿用该设置：</p>
+    <p>请先在官方启动器中选择所需模式并成功进入一次游戏，之后通过桥接器启动会沿用该设置：</p>
     <ul>
       <li><strong>DX11：</strong>勾选“使用 DirectX 11 启动”，再通过官方启动器成功进入一次游戏。</li>
       <li><strong>DX12：</strong>取消勾选“使用 DirectX 11 启动”，再通过官方启动器成功进入一次游戏。</li>
     </ul>
-    <p>2026-10-14 标准版实机确认：勾选后官方配置保存为 <code>DX12=false</code>，游戏加载 <code>d3d11.dll</code>，随后从 Steam 启动桥接器仍沿用 DX11；取消勾选后配置恢复为 <code>DX12=true</code>。Steam 尾随命令中出现的 DX 控制参数由桥接器忽略并写入日志，实际模式以官方启动器已经保存的设置为准。</p>
-    <p>完整参数见软件源码仓库中的 <a href="https://github.com/Clearlove0923/SteamCN-GameLauncher/blob/master/docs/GameSpecialSetting.md">游戏特殊启动设置</a>。</p>
 
     <h2 id="infinity-nikki">无限暖暖</h2>
-    <p>下载 <strong>InfinityNikkiLaunchBridge v1.1</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/InfinityNikki-v1.1">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/InfinityNikki-v1.1">GitHub 下载</a>），保持文件名 <code>InfinityNikkiLaunchBridge_v1.1.exe</code> 不变，直接放在游戏安装根目录，再在软件的游戏配置界面将它选择为可执行文件。桥接程序会启动 <code>xstarter.exe -skiplauncher</code>，等待真实游戏进程出现，并在游戏退出后再结束自身。</p>
-    <pre class="code-block"><code>-skiplauncher</code></pre>
-    <p><code>-skiplauncher</code> 由桥接器传给官方入口，无需单独填写；运行时按提示接受 UAC。图形接口以桥接器 v1.1 文档为准：在“特殊启动参数”中填写 <code>--dx11</code>（或 <code>--d3d11</code>）或 <code>--dx12</code>（或 <code>--d3d12</code>），两者不能同时使用；不填写时由游戏自行选择。参数生成已通过验证，官方启动链是否完整转发参数及游戏最终使用的图形接口仍需实机确认，详见<a href="https://github.com/Clearlove0923/GameLaunchBridges/blob/main/InfinityNikki/README.md">桥接器文档</a>。</p>
-    <p>桥接程序不改变 Steam 在线状态；它通过保持稳定的启动生命周期，让 Steam 能持续跟踪对应 AppID 的运行状态与时长。</p>
+    <p>下载 <strong>InfinityNikkiLaunchBridge v1.1</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/InfinityNikki-v1.1">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/InfinityNikki-v1.1">GitHub 下载</a>），保持文件名 <code>InfinityNikkiLaunchBridge_v1.1.exe</code> 不变，直接放在游戏安装根目录，再在软件的游戏配置界面将它选择为可执行文件。</p>
+    <p>运行时按提示接受 UAC。如需指定图形接口，在“特殊启动参数”中填写 <code>--dx11</code>（或 <code>--d3d11</code>）或 <code>--dx12</code>（或 <code>--d3d12</code>），两者不能同时使用；不填写时使用默认模式。</p>
 
     <h2 id="calabiyau">卡拉彼丘</h2>
-    <p>首次使用前，至少通过对应渠道的官方启动器成功进入游戏一次。下载 <strong>CalabiyauLaunchBridge v1.3</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/Calabiyau-v1.3">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/Calabiyau-v1.3">GitHub 下载</a>），保持文件名 <code>CalabiyauLaunchBridge_v1.3.exe</code> 不变，放到游戏安装目录内任意常规位置，桥接器会向上识别安装根目录；不要覆盖官方 <code>CalabiYau.exe</code>。</p>
+    <p>首次使用前，至少通过对应渠道的官方启动器成功进入游戏一次。下载 <strong>CalabiyauLaunchBridge v1.3</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/Calabiyau-v1.3">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/Calabiyau-v1.3">GitHub 下载</a>），保持文件名 <code>CalabiyauLaunchBridge_v1.3.exe</code> 不变，放到游戏安装目录内任意常规位置；不要覆盖官方 <code>CalabiYau.exe</code>。</p>
     <ul>
-      <li>运行时可能出现一次 UAC 提示；桥接器会在后台初始化官方 SDK，然后直接启动游戏，无需点击“开始游戏”。</li>
-      <li>官方启动器主窗口会持续隐藏，右下角托盘图标会保留；游戏本体连续退出 3 秒后，桥接器会关闭由它启动的官方入口并退出。</li>
+      <li>运行时按提示接受 UAC，无需点击官方启动器的“开始游戏”。</li>
       <li>在软件的游戏配置界面，将 <code>CalabiyauLaunchBridge_v1.3.exe</code> 选择为可执行文件。</li>
-      <li>日志位于桥接器同级的 <code>CalabiyauLaunchBridge-log</code> 文件夹。</li>
     </ul>
-    <p>历史版本已完成标准版与腾讯版真实启动和退出生命周期验证；v1.2 原生重构及 v1.3 子目录识别、未知参数忽略行为已通过自动检查，尚未完成对应真实游戏回归。未知参数会忽略并写入日志，已识别参数缺值或数值越界仍会报错，详见<a href="https://github.com/Clearlove0923/GameLaunchBridges/blob/main/Calabiyau/README.md">桥接器文档</a>。如需切换 DX11 或 DX12，请先在官方启动器中修改设置并成功进入游戏一次，桥接器会沿用最近一次官方成功启动记录。官方启动链发生变化时，应先用官方启动器更新并成功进入一次，再重新测试桥接器。</p>
+    <p>如需切换 DX11 或 DX12，请先在官方启动器中修改设置并成功进入游戏一次，再使用桥接器启动。</p>
 
     <h2 id="after-update">游戏更新后的检查</h2>
     <ol class="steps-list">
       <li><strong>先用官方启动器更新并启动一次</strong>确认游戏本体和登录流程正常。</li>
-      <li><strong>检查路径与文件名</strong>确认真实 EXE、工作目录和桥接程序仍在原位。</li>
-      <li><strong>重新验证参数</strong>官方启动器可能改变命令行、环境变量、登录令牌或反作弊初始化流程。</li>
-      <li><strong>验证 Steam 跟踪</strong>进入游戏后检查运行状态、时长与覆盖层；自动化检查不能替代真实启动验证。</li>
+      <li><strong>检查游戏配置</strong>确认选择的桥接 EXE 仍在原位。</li>
+      <li><strong>验证 Steam 跟踪</strong>进入游戏后检查运行状态、时长与覆盖层。</li>
     </ol>
   </main>
 

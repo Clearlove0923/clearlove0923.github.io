@@ -1,36 +1,27 @@
 # AGENTS.md
-
-> 本文件是 **AI 助手（WorkBuddy）在本仓库中的协作与操作约束**。
 > 仓库用途：`clearlove0923.github.io` —— SteamCN-GameLauncher 的产品展示与下载官网，纯静态站点，托管在 GitHub Pages。
 > 软件源码仓库另有其处，**发布流程与版本规则统一以本文件为准**，不在两边各写一份，避免规则分散冲突。
-
-最后更新：2026-10-11 · 适用于 v3.1.6 及之后的所有维护工作
-
+https://github.com/Clearlove0923/SteamCN-GameLauncher/blob/master/docs/GameSpecialSetting.md
 ---
 
 ## 1. 环境与路径
 
 | 项目 | 值 |
 |---|---|
-| 站点仓库本地路径 | `F:\my-site` |
 | 远端地址 | `https://github.com/Clearlove0923/clearlove0923.github.io.git` |
 | 默认分支 | `main` |
 | 线上地址 | `https://clearlove0923.github.io/` |
-| 软件源码仓库 | `F:\zzy_work_space\SteamCN-GameLauncher`（远端 `Clearlove0923/SteamCN-GameLauncher`） |
-| 游戏桥接程序仓库 | `Clearlove0923/GameLaunchBridges`（个别游戏所需的桥接 EXE） |
-| Release 发布仓库 | `Clearlove0923/SteamCN-GameLauncher`（当前对外分发用） |
-| git 可执行文件 | `F:\Git\cmd\git.exe` |
+| 软件源码仓库 | `https://github.com/Clearlove0923/SteamCN-GameLauncher`|
+| 游戏桥接程序仓库 | `https://github.com/Clearlove0923/GameLaunchBridges`（个别游戏所需的桥接 EXE） |
 
-### 工具环境限制（必须知道）
 
-1. **AI 可按用户明确要求推送**：用户明确要求提交并推送时，AI 可在核对工作区、目标分支与远端地址后执行普通 `git push`。若网络或 TLS 失败，应保留本地提交并把可直接执行的推送命令交给用户。
-2. **Bash 工具缺少 coreutils**：`ls` / `mkdir` / `head` 等不可用；`sed --version` 无输出。创建目录、写文件改用 Write/Edit/Glob；需要 shell 能力时用 PowerShell 调用 `F:\Git\cmd\git.exe` 或 bash 的绝对路径。
-3. **PowerShell 输出不回显**：需要查看命令结果时，把输出写入临时文件（如 `_gs.txt`）再读取，用完立即删除。
+
+### 工具环境限制
+
 
 ---
 
 ## 2. 称呼与隐私
-
 1. 不主动使用未经用户确认的称呼，正文与提交说明均不使用系统账户名。
 2. 仓库内的文档、注释、配置文件中**禁止出现**：
    - Windows 系统账户路径（如 `C:\Users\...`）
@@ -143,21 +134,13 @@ bash rollback.sh                  # 列出最近 10 次提交，输入序号即�
 
 | 渠道 | 角色 |
 |---|---|
-| GitHub Release（`Clearlove0923/SteamCN-GameLauncher`） | **主**：版本记录与下载的唯一权威来源 |
-| 官网主按钮 | 展示与跳转，指向 Release 直链 |
-| 网盘（蓝奏云等） | 国内加速备用，失效不阻塞发布 |
+| GitHub Release`https://github.com/Clearlove0923/SteamCN-GameLauncher/releases` | 
+| CNB Release`https://cnb.cool/SteamCN-GameLauncher/SteamCN-GameLauncher/-/releases` | 
+| 官网主按钮 | 展示与跳转，指向 Release 直链，优先引导用户从CNB下载 |
 
 ### 安装包命名
-
-1. 对外分发统一使用固定名 `SteamCN-GameLauncher-Setup.exe`，禁止空格、中文。
-2. 需要保留版本化归档名时，采用**双附件**：同一 Release 同时上传
-   - `SteamCN-GameLauncher-Setup.exe`（固定名，供永久 `latest` 直链）
-   - `SteamCN-GameLauncher-vX.Y.Z-win-x64-setup.exe`（版本化名，归档用）
-3. 固定名附件必须存在于**最新** Release 中，否则 `latest` 直链 404。
-
+每次桥接器更新，或者软件版本更新时，需要同步更新官网安装包下载连接
 ### 版本号
-
-语义化三段式：功能更新 +0.1，修复 +0.01，破坏性变更 +1.0.0；tag 带 `v` 前缀。软件侧四处版本号（version.json / csproj / AppInfo / appxmanifest）必须一致。
 
 ### 官网同步（本仓库要做的事）
 

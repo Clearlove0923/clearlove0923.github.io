@@ -6,7 +6,7 @@
   <meta name="description" content="SteamCN-GameLauncher 使用教程：安装、添加游戏、配置桥接程序、选择启动方式、管理截图与更新软件。">
   <title>使用教程 | SteamCN-GameLauncher</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20261014233531">
+  <link rel="stylesheet" href="css/style.css?v=20261017">
 </head>
 <body>
 
@@ -34,18 +34,22 @@
     </div>
   </section>
 
-  <main class="container doc-body">
+  <main class="container doc-body tutorial-body">
+
+    <p>本教程根据<a href="https://www.xiaoheihe.cn/app/bbs/link/cd36726760b4" target="_blank" rel="noopener noreferrer">小黑盒原帖《一个软件让你在Steam或者本地管理所有二游》</a>整理，配图来自原帖。截图中的路径、账号与游戏数据仅作演示，请使用自己的实际配置。</p>
 
     <div class="toc">
       <strong>本页内容</strong>
       <ol>
         <li><a href="#prepare">准备工作</a></li>
         <li><a href="#install">安装助手</a></li>
+        <li><a href="#steam-settings">配置全局 Steam 信息</a></li>
         <li><a href="#add">添加游戏（两种方式）</a></li>
-        <li><a href="#bridge">配置桥接程序（特殊游戏）</a></li>
-        <li><a href="#save">保存并选择启动方式</a></li>
+        <li><a href="#bridge">选择游戏可执行文件与桥接程序</a></li>
+        <li><a href="#save">生成配置并设置 Steam 启动选项</a></li>
         <li><a href="#screenshots">管理截图</a></li>
-        <li><a href="#update">后续一键更新</a></li>
+        <li><a href="#appearance">设置外观</a></li>
+        <li><a href="#update">游戏与软件更新</a></li>
       </ol>
     </div>
 
@@ -55,11 +59,12 @@
       <li>Windows 10 / 11（x64）操作系统</li>
       <li>如需使用 Steam 启动方式，已安装 Steam 客户端并正常登录</li>
       <li>如需使用 Steam 启动方式，游戏库内已入库对应游戏</li>
-      <li>国服游戏本体已安装在本地</li>
+      <li>国服游戏本体已安装在本地，并通过官方启动器完成更新、登录、进入游戏与正常退出至少一次</li>
     </ul>
     <div class="note">
       <p>官方安装包已包含 .NET 与 Windows App SDK 运行库，无需另行下载安装。</p>
     </div>
+    <p>只需要本地管理与时长记录时，启动方式选择「国服」即可。使用 Steam 模式前，必须先将对应游戏加入当前 Steam 账号的游戏库。</p>
 
     <h2 id="install">二、安装助手</h2>
     <ol class="steps-list">
@@ -71,7 +76,17 @@
       <p>仍安装在 <code>Program Files</code> 的 v3.0.0 以前用户，请先卸载旧版再安装新版；游戏配置与自定义 Manifest 等设置文件会保留。</p>
     </div>
 
-    <h2 id="add">三、添加游戏（两种方式）</h2>
+    <h2 id="steam-settings">三、配置全局 Steam 信息</h2>
+    <p>使用 Steam 启动方式时，先进入助手的「设置」，确认以下三项。仅使用本地「国服」模式时可跳过本节。</p>
+    <ol class="steps-list">
+      <li><strong>Steam 安装路径</strong>使用「自动检测」或手动浏览，选择包含 <code>steam.exe</code> 的安装目录。</li>
+      <li><strong>Steam 游戏库路径</strong>选择包含 <code>steamapps</code> 子目录的游戏库根目录。有多个库时，请核对是否为你希望存放安装记录的库。</li>
+      <li><strong>Steam ID（SteamID64）</strong>填写当前登录账号的 SteamID64，可在 Steam 的账户明细中查看。</li>
+    </ol>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-1.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-1.jpg" alt="助手设置中的 Steam 安装路径、游戏库路径和 SteamID64" width="1280" height="720" loading="lazy"></a><figcaption>全局 Steam 配置。点击图片可查看原图。</figcaption></figure>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-2.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-2.jpg" alt="Steam 账户明细中的 Steam ID 位置，示例账号已遮挡" width="1280" height="194" loading="lazy"></a><figcaption>在 Steam 账户明细中查看自己的 Steam ID。</figcaption></figure>
+
+    <h2 id="add">四、添加游戏（两种方式）</h2>
 
     <h3>方式 A：使用预设（推荐新手）</h3>
     <ol class="steps-list">
@@ -88,11 +103,15 @@
       <li><strong>处理候选列表</strong>唯一候选会直接填入；出现多个 Depot 或启动 EXE 时，在候选列表中选择（同一个 EXE 的不同启动参数会合并展示）。选择 Depot 时会同步对应 Manifest。</li>
       <li><strong>手动选择真实启动器</strong>真实游戏 EXE / 启动器位置仍需你在本地选择。</li>
     </ol>
+    <p>AppID 可在 Steam 游戏的「属性 → 更新」中查看。原帖以明日方舟：终末地的 <code>4732690</code> 为例；配置其他游戏时请填写对应的 AppID。若自动获取失败，先检查网络连接后重试。</p>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-3.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-3.jpg" alt="填写 AppID 后自动获取游戏名称、安装目录和 Steam 配置" width="1280" height="720" loading="lazy"></a><figcaption>填写 AppID 并点击「自动获取游戏信息」，核对自动填入的内容。</figcaption></figure>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-4.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-4.jpg" alt="Steam 游戏属性的更新页面中显示 App ID 的位置" width="1280" height="830" loading="lazy"></a><figcaption>查看 AppID 的位置示例，图中为绝区零。</figcaption></figure>
     <div class="note">
       <p>当前 ACF 只支持一个 Depot。若出现多个 Depot，请核对后选择，必要时参考文档中的<a href="docs.html#limits">已知限制</a>。</p>
     </div>
 
-    <h2 id="bridge">四、配置桥接程序（特殊游戏）</h2>
+    <h2 id="bridge">五、选择游戏可执行文件与桥接程序</h2>
+    <p>能直接运行的游戏，应选择游戏本体 EXE，而不是仅用于打开官方启动器的 EXE。可先双击候选文件，确认能否正常进入游戏；也可在游戏运行时通过任务管理器定位实际游戏进程。官方启动器路径可另外填入「游戏启动器（可选）」，便于后续更新游戏。</p>
     <p>燕云十六声、无限暖暖、卡拉彼丘等启动链较特殊的游戏需要使用对应的桥接 EXE。具体适用游戏和最新下载链接见<a href="game-guide.html">游戏适配指南</a>。</p>
     <ol class="steps-list">
       <li><strong>下载对应桥接程序</strong>从游戏适配指南提供的 CNB 或 GitHub 链接下载当前版本。</li>
@@ -103,25 +122,46 @@
     <div class="note">
       <p>桥接 EXE 无需重命名。部分游戏首次使用前需要先通过官方启动器成功进入游戏一次，请以<a href="game-guide.html">游戏适配指南</a>中的对应说明为准。</p>
     </div>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-5.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-5.jpg" alt="游戏本体与官方启动器分别存放在两个文件夹的目录示例" width="1280" height="668" loading="lazy"></a><figcaption>目录组织示例：游戏本体与官方启动器可分别存放，填写路径时注意区分。</figcaption></figure>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-6.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-6.jpg" alt="原帖中桥接程序与游戏本体位于同一目录的示例" width="1280" height="676" loading="lazy"></a><figcaption>桥接程序放置位置示例；对应游戏的文件名、下载与前置条件以<a href="game-guide.html">游戏适配指南</a>为准。</figcaption></figure>
 
-    <h2 id="save">五、保存并选择启动方式</h2>
+    <h2 id="save">六、生成配置并设置 Steam 启动选项</h2>
+    <p>先保存配置并选择启动方式。选择「国服」时，可以直接从助手首页启动并记录本地时长；选择「Steam 玩国服」时，继续完成下面的 Steam 配置。</p>
     <ol class="steps-list">
       <li><strong>保存配置</strong>点击保存按钮；离开页面时也会自动保存。</li>
       <li><strong>选择启动方式</strong>为当前游戏选择“国服”“Steam 玩国服”或“Steam 玩国际服”。</li>
+      <li><strong>生成 Steam 配置文件</strong>使用「Steam 玩国服」时，点击页面底部「生成配置文件（appmanifest_&lt;AppID&gt;.acf）」，按提示生成并替换配置，然后重启 Steam，确认库中的按钮变为「开始游戏」。</li>
+      <li><strong>复制启动命令</strong>点击「复制启动命令到剪贴板」，在 Steam 库中右键对应游戏，打开「属性 → 通用」，将完整命令粘贴到「启动选项」。保留助手生成的引号和 <code>%command%</code>。</li>
       <li><strong>从首页启动</strong>助手会按保存的方式启动；Steam 模式也可回到 Steam 库启动。</li>
       <li><strong>验证运行状态</strong>确认真实游戏进程启动，并在统计页面查看本次会话。</li>
       <li><strong>验证 Steam 功能</strong>使用 Steam 模式时，进入游戏后检查覆盖层与好友状态；实际可用性取决于游戏兼容性。</li>
     </ol>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-7.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-7.jpg" alt="选择实际可执行文件和可选启动器后生成配置文件并复制启动命令" width="1280" height="720" loading="lazy"></a><figcaption>「游戏可执行文件」用于实际启动；「Steam 占位文件名」用于 Steam 配置，二者用途不同。</figcaption></figure>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-8.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-8.jpg" alt="Steam 属性通用页面中的启动选项输入框" width="1259" height="898" loading="lazy"></a><figcaption>将生成的完整命令粘贴到 Steam 的「启动选项」。截图中的路径和附加参数仅供对应游戏示例使用。</figcaption></figure>
+    <h3>DX11、DX12 与其他启动设置</h3>
+    <p>需要特殊启动参数时，请查阅<a href="game-guide.html">游戏适配指南</a>。原帖中的终末地桥接示例沿用官方启动器的图形设置：需要 DX11 时在官方启动器中勾选「DX11 启动」，无需再给桥接器添加同类参数。</p>
 
-    <h2 id="screenshots">六、管理截图</h2>
+    <h2 id="screenshots">七、管理截图</h2>
     <ol class="steps-list">
       <li><strong>打开“截图”页面</strong>从侧边栏进入截图管理。</li>
-      <li><strong>选择当前游戏的目录</strong>每款游戏的路径会独立保存。</li>
-      <li><strong>浏览与筛选</strong>按日期分组或通过日历跳转，可切换最新或最早优先。</li>
+      <li><strong>选择当前游戏的目录</strong>点击「更改文件夹」，可选择游戏自带截图、显卡截图或其他图片目录；每款游戏的路径会独立保存。</li>
+      <li><strong>浏览与筛选</strong>按日期分组或通过日历跳转，可切换最新或最早优先；没有截图的日期无法跳转。双击图片可放大预览。</li>
       <li><strong>管理文件</strong>右键缩略图或大图，可在资源管理器中定位，或将图片移入 Windows 回收站。</li>
     </ol>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-10.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-10.jpg" alt="截图页面按日期分组展示游戏截图，并可选择游戏和排序方式" width="1280" height="720" loading="lazy"></a><figcaption>按游戏、日期和排序方式浏览截图。</figcaption></figure>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-11.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-11.jpg" alt="截图日历中可跳转到有截图的日期" width="1280" height="720" loading="lazy"></a><figcaption>通过日历跳转到有截图的日期。</figcaption></figure>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-12.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-12.jpg" alt="点击更改文件夹后选择自定义截图目录" width="1280" height="724" loading="lazy"></a><figcaption>选择自己的截图文件夹，也可使用显卡工具保存截图的目录。</figcaption></figure>
 
-    <h2 id="update">七、后续更新</h2>
+    <h2 id="appearance">八、设置外观</h2>
+    <p>进入「外观」页面，启用自定义背景后点击「导入图片」。可导入多张图片并随时切换，按喜好调整显示方式、不透明度等参数；首页动画与资讯栏也可单独控制显示。</p>
+    <figure class="tutorial-figure"><a href="assets/tutorial/step-9.jpg" target="_blank" rel="noopener"><img src="assets/tutorial/step-9.jpg" alt="外观页面中的首页动画开关、自定义背景开关与导入图片按钮" width="1280" height="720" loading="lazy"></a><figcaption>导入并选择背景图片，调整首页内容与外观。</figcaption></figure>
+
+    <h2 id="update">九、游戏与软件更新</h2>
+    <h3>Steam 的「开始游戏」变成了「更新」</h3>
+    <p>Steam 侧更新与国服更新并不同步。先在助手中更新 Steam 配置，或重新生成配置文件并按提示替换，然后重启 Steam。国服游戏文件仍通过官方启动器更新。</p>
+    <p>若已误点 Steam 的「更新」并开始下载国际服文件，先停止下载，核对 Steam 安装目录与国服目录后清理误下载的内容，再重新配置；避免误删国服游戏文件。</p>
+    <h3>国服游戏发布新版本</h3>
+    <p>点击助手中的「打开游戏启动器」，通过官方启动器完成国服更新。更新完成后，再更新或重新生成 Steam 配置并重启 Steam。</p>
     <h3>更新游戏配置</h3>
     <p>游戏本体或 Steam 侧数据变化后，可在预设区域点击「一键更新」：</p>
     <ul>

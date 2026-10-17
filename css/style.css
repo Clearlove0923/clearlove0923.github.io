@@ -1077,6 +1077,25 @@ body.dock-open .dock-handle { right: min(33vw, 380px); }
 }
 .steps-list strong { display: block; color: var(--text); margin-bottom: 2px; }
 
+/* 教程原帖配图：保留完整界面，窄屏按正文宽度缩放。 */
+.tutorial-figure { margin: 24px 0; }
+.tutorial-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.tutorial-figure figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+@media (max-width: 868px) {
+  .tutorial-body { padding-left: 24px; padding-right: 24px; }
+}
+.tutorial-body h2 { scroll-margin-top: 80px; }
+
 .feature-block {
   display: grid;
   grid-template-columns: 240px 1fr;

@@ -69,10 +69,14 @@
     </table>
 
     <h2 id="nte">异环</h2>
-    <p>下载 <strong>NevernessToEvernessLaunchBridge v1.0</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/tag/NevernessToEverness-v1.0">CNB 下载</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/NevernessToEverness-v1.0">GitHub 下载</a>），保持文件名 <code>NevernessToEvernessLaunchBridge_v1.0.exe</code> 不变，放到包含官方启动器与游戏本体的安装根目录，在软件的游戏配置界面将该桥接 EXE 选择为可执行文件。</p>
+    <p>下载 <strong>NevernessToEvernessLaunchBridge v1.1</strong>（<a href="https://cnb.cool/SteamCN-GameLauncher/GameLaunchBridges/-/releases/download/NevernessToEverness-v1.1/NevernessToEvernessLaunchBridge_v1.1.exe">CNB 下载 EXE</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/download/NevernessToEverness-v1.1/NevernessToEvernessLaunchBridge_v1.1.exe">GitHub 下载 EXE</a> / <a href="https://github.com/Clearlove0923/GameLaunchBridges/releases/tag/NevernessToEverness-v1.1">发布说明</a>），保持文件名 <code>NevernessToEvernessLaunchBridge_v1.1.exe</code> 不变，放到包含官方启动器与游戏本体的安装根目录或其子目录，在软件的游戏配置界面将该桥接 EXE 选择为可执行文件，不覆盖官方文件。</p>
     <ul>
-      <li>首次运行前通过官方启动器完成登录和更新；运行桥接器时按提示接受 UAC。</li>
-      <li>在官方启动器中勾选 DX11 使用 DirectX 11，取消勾选使用默认 DirectX 12；桥接器沿用官方设置。</li>
+      <li>首次运行前通过官方启动器完成登录和更新；运行桥接器时按提示接受 UAC。在官方启动器中勾选 DX11 使用 DirectX 11，取消勾选使用默认 DirectX 12；桥接器沿用官方设置。</li>
+      <li>v1.1 保留英文报错并追加中文排查提示；等待资源检查超时后恢复官方启动器窗口，请在该窗口完成更新后重试。</li>
+      <li>再次双击会结束安装目录内已确认身份的旧桥接器并重新接管，包括旧版错误弹窗；不结束游戏、官方启动器或更新任务。请同步修改旧版快捷方式。</li>
+      <li>游戏已运行时继续跟踪，不重复启动；此时退出游戏后不强制清理旧启动器。安装范围外的旧桥接器须手动退出。</li>
+      <li>自动测试覆盖异常窗口恢复、旧进程结束及接管；用户反馈窗口恢复符合预期。登录、语音、反作弊、游戏运行中接管与 Steam 连续在线状态尚未完成本次逐项实机复测。</li>
+      <li>日志位于 EXE 同级 <code>NevernessToEvernessLaunchBridge-log/NevernessToEvernessLaunchBridge.log</code>，保留最近七天；可选 INI 与详细验证边界见发布说明及源码文档。</li>
     </ul>
 
     <h2 id="endfield">明日方舟：终末地</h2>
